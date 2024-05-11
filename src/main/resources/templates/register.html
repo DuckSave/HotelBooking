@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en" dir="ltr" xmlns="https://www.thymeleaf.org">
+
+</html>>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <title> Registration or Sign Up form in HTML CSS | CodingLab </title>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #4070f4;
+    }
+
+    .wrapper {
+      position: relative;
+      max-width: 430px;
+      width: 100%;
+      background: #fff;
+      padding: 34px;
+      border-radius: 6px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .wrapper h2 {
+      position: relative;
+      font-size: 22px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .wrapper h2::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 28px;
+      border-radius: 12px;
+      background: #4070f4;
+    }
+
+    .wrapper form {
+      margin-top: 30px;
+    }
+
+    .wrapper form .input-box {
+      height: 52px;
+      margin: 18px 0;
+    }
+
+    form .input-box input {
+      height: 100%;
+      width: 100%;
+      outline: none;
+      padding: 0 15px;
+      font-size: 17px;
+      font-weight: 400;
+      color: #333;
+      border: 1.5px solid #C7BEBE;
+      border-bottom-width: 2.5px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .input-box input:focus,
+    .input-box input:valid {
+      border-color: #4070f4;
+    }
+
+    form .policy {
+      display: flex;
+      align-items: center;
+    }
+
+    form h3 {
+      color: #707070;
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 10px;
+    }
+
+    .input-box.button input {
+      color: #fff;
+      letter-spacing: 1px;
+      border: none;
+      background: #4070f4;
+      cursor: pointer;
+    }
+
+    .input-box.button input:hover {
+      background: #0e4bf1;
+    }
+
+    form .text h3 {
+      color: #333;
+      width: 100%;
+      text-align: center;
+    }
+
+    form .text h3 a {
+      color: #4070f4;
+      text-decoration: none;
+    }
+
+    form .text h3 a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <h2>Registration</h2>
+    <form >
+      <div class="input-box">
+        <input type="text" placeholder="first name" name="firstName" required>
+      </div>
+      <div class="input-box">
+        <input type="text" placeholder="last name" name="lastName" required>
+      </div>
+      <div class="input-box">
+        <input type="text" placeholder="phone number" name="phoneNumber" required>
+      </div>
+      <div class="input-box">
+        <input type="password" placeholder="password" name="password" required>
+      </div>
+      <div class="policy">
+
+      </div>
+      <div class="input-box button">
+        <input type="button" id="register" value="Register Now">
+      </div>
+      <div class="text">
+        <h3>Already have an account? <a th:href="@{/login}">Login now</a></h3>
+      </div>
+
+    </form>
+    <button id="alert">alert</button>
+  </div>
+
+  <!-- OTP Modal Dialog -->
+  <div th:replace="/User_UI/fragments/otpDialog::otpDialog"></div>
+
+  <div th:replace="/User_UI/fragments/script::script"></div>
+  <script>
+
+    // register button click
+    document.getElementById("register").addEventListener("click", () => {
+
+      const phoneNumber = document.querySelector('input[name="phoneNumber"]').value;
+      const otpModal = document.getElementById('otpModal');
+
+      fetch('/check-phoneNumber', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ phoneNumber: phoneNumber })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "OTP_REQUIRED") {
+            otpModal.classList.remove('hidden');
+            sendOTP(data.message);
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => console.error('Error:', error));
+
+    });
+
+
+    // send OTP button click
+    document.getElementById("sendOTP").addEventListener("click", () => {
+      
+
+    });
+
+    // verify buttion click
+    document.getElementById("verifyOTP").addEventListener("click", (event) => {
+      event.preventDefault();
+      let phoneNumber = document.querySelector('input[name="phoneNumber"]').value;
+      const form = document.getElementById('otp-form')
+      const inputs = [...form.querySelectorAll('input[type=text]')]
+      let otpInput = inputs.map(input => input.value).join('');
+
+      fetch('/validateOtp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          phoneNumber: phoneNumber,
+          otp: otpInput 
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "OTP_VALID") {
+          register();
+        }else{
+          AlertDialog("warning","Verify OTP","OTP INVALID");
+        }
+      })
+      .catch(error => console.error('Error:', error));
+
+    });
+
+    function sendOTP(otp) {
+      const phoneNumber = document.querySelector('input[name="phoneNumber"]').value;
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", "Bearer eyJjdHkiOiJzdHJpbmdlZS1hcGk7dj0xIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJTSy4wLkQzZ1NNN2phOTJ2N1BqTHA2N1lNNTNIanBnNDB6YzBlLTE3MTU0NTEwMDYiLCJpc3MiOiJTSy4wLkQzZ1NNN2phOTJ2N1BqTHA2N1lNNTNIanBnNDB6YzBlIiwiZXhwIjoxNzE4MDQzMDA2LCJyZXN0X2FwaSI6dHJ1ZX0.E9t24K3QLSE8YDL_PDqJGB5gkzKmHBAwu-ta9rJxNr8");
+      myHeaders.append("Cookie", "SRVNAME=SD");
+
+      const raw = JSON.stringify({
+        "from": {
+          "type": "external",
+          "number": "842871027933",
+          "alias": "STRINGEE_NUMBER"
+        },
+        "to": [
+          {
+            "type": "external",
+            "number": "84"+phoneNumber,
+            "alias": "TO_NUMBER"
+          }
+        ],
+        "answer_url": "https://example.com/answerurl",
+        "actions": [
+          {
+            "action": "talk",
+            "text": "Mã xác thực của bạn là " + otp,
+            "loop": 3
+          }
+        ]
+      });
+
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+      };
+
+      fetch("https://api.stringee.com/v1/call2/callout", requestOptions)
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.error(error));
+
+    }
+
+    function register(){
+      let firstNameIP = document.querySelector('input[name="firstName"]').value;
+      let lastNameIP = document.querySelector('input[name="lastName"]').value;
+      let phoneNumberIP = document.querySelector('input[name="phoneNumber"]').value;
+      let passwordIP = document.querySelector('input[name="password"]').value;
+
+      fetch('/addAccount', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          firstName: firstNameIP,
+          lastName: lastNameIP,
+          phoneNumber: phoneNumberIP,
+          password: passwordIP
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.status === "ACCOUNT_CREATED"){
+          AlertDialog("success", "Registration", "Registration successfully");
+          otpModal.classList.add('hidden');
+        }else{
+          AlertDialog("warning","Registration","Registration Failed");
+        }
+      });
+    }
+
+
+  </script>
+</body>
+
+</html>
