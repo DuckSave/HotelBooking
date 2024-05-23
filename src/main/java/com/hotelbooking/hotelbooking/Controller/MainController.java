@@ -15,11 +15,10 @@ import com.hotelbooking.hotelbooking.Repository.HotelRepo;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-
 @Controller
 public class MainController {
-    
-    @Autowired 
+
+    @Autowired
     HotelRepo hotelRepo;
 
     @GetMapping("/login")
@@ -48,41 +47,41 @@ public class MainController {
     }
 
     @GetMapping("/hotels")
-    public String hotel(Model model){
+    public String hotel(Model model) {
         List<Hotel> listHotel = hotelRepo.findAll();
         model.addAttribute("listHotel", listHotel);
         return "/User_UI/hotels.html";
     }
 
     @GetMapping("/hotel")
-    public String hotel(@RequestParam("id") String id, Model model){
+    public String hotel(@RequestParam("id") String id, Model model) {
         Hotel hotel = hotelRepo.findById(id).orElse(null);
         model.addAttribute("hotel", hotel);
         return "User_UI/hotel-room.html";
     }
 
     @GetMapping("room")
-    public String room(@RequestParam("id") String id){
+    public String room(@RequestParam("id") String id) {
         return "User_UI/room.html";
     }
 
     @GetMapping("/contact")
-    public String contact(){
+    public String contact() {
         return "/User_UI/contact.html";
     }
 
     @GetMapping("/about")
-    public String about(){
+    public String about() {
         return "/User_UI/about.html";
     }
 
     @GetMapping("/blog")
-    public String blog(){
+    public String blog() {
         return "/User_UI/blog.html";
     }
 
     @GetMapping("/services")
-    public String services(){
+    public String services() {
         return "/User_UI/services.html";
     }
 
@@ -98,12 +97,15 @@ public class MainController {
     }
 
     @GetMapping("/admin/hotel")
-    public String addHotel(){
+    public String addHotel() {
         return "/Admin_UI/addHotel.html";
     }
 
     @GetMapping("admin/hotel/room")
-    public String addRoom(){
+    public String addRoom(Model model) {
+        List<Hotel> listHotel = hotelRepo.findAll();
+        model.addAttribute("listHotel", listHotel);
         return "/Admin_UI/addRoom.html";
     }
+
 }

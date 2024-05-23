@@ -20,5 +20,5 @@ public class Room {
     private int price;
     private List<String> images;
     private boolean isBooking;
-    
+    private String idHotel;
 }
