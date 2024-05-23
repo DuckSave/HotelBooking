@@ -1,10 +1,17 @@
 package com.hotelbooking.hotelbooking.Controller;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hotelbooking.hotelbooking.Entity.Account;
+import com.hotelbooking.hotelbooking.Entity.Hotel;
+import com.hotelbooking.hotelbooking.Repository.HotelRepo;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -12,6 +19,9 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 public class MainController {
     
+    @Autowired 
+    HotelRepo hotelRepo;
+
     @GetMapping("/login")
     public String login() {
         return "login.html";
@@ -38,8 +48,22 @@ public class MainController {
     }
 
     @GetMapping("/hotels")
-    public String hotel(){
+    public String hotel(Model model){
+        List<Hotel> listHotel = hotelRepo.findAll();
+        model.addAttribute("listHotel", listHotel);
         return "/User_UI/hotels.html";
+    }
+
+    @GetMapping("/hotel")
+    public String hotel(@RequestParam("id") String id, Model model){
+        Hotel hotel = hotelRepo.findById(id).orElse(null);
+        model.addAttribute("hotel", hotel);
+        return "User_UI/hotel-room.html";
+    }
+
+    @GetMapping("room")
+    public String room(@RequestParam("id") String id){
+        return "User_UI/room.html";
     }
 
     @GetMapping("/contact")
@@ -73,8 +97,13 @@ public class MainController {
         }
     }
 
-    @GetMapping("/test")
-    public String test(){
-        return "testMap.html";
+    @GetMapping("/admin/hotel")
+    public String addHotel(){
+        return "/Admin_UI/addHotel.html";
+    }
+
+    @GetMapping("admin/hotel/room")
+    public String addRoom(){
+        return "/Admin_UI/addRoom.html";
     }
 }

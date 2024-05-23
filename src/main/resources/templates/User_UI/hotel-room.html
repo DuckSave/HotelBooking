@@ -38,7 +38,7 @@
     <aside id="colorlib-hero">
       <div class="flexslider">
         <ul class="slides">
-          <li style="background-image: url(/assetsimages/cover-img-4.jpg);">
+          <li th:style="'background-image: url(/assets/images/' + ${hotel.image} + ');'">
             <div class="overlay"></div>
             <div class="container-fluid">
               <div class="row">
@@ -69,7 +69,7 @@
                       <div class="room-wrap">
                         <div class="row">
                           <div class="col-md-6 col-sm-6">
-                            <div class="room-img" style="background-image: url(/assetsimages/room-1.jpg);"></div>
+                            <div class="room-img" style="background-image: url(/assets/images/room-1.jpg);"></div>
                           </div>
                           <div class="col-md-6 col-sm-6">
                             <div class="desc">
@@ -88,7 +88,7 @@
                       <div class="room-wrap">
                         <div class="row">
                           <div class="col-md-6 col-sm-6">
-                            <div class="room-img" style="background-image: url(/assetsimages/room-2.jpg);"></div>
+                            <div class="room-img" style="background-image: url(/assets/images/room-2.jpg);"></div>
                           </div>
                           <div class="col-md-6 col-sm-6">
                             <div class="desc">
@@ -107,7 +107,7 @@
                       <div class="room-wrap">
                         <div class="row">
                           <div class="col-md-6 col-sm-6">
-                            <div class="room-img" style="background-image: url(/assetsimages/room-3.jpg);"></div>
+                            <div class="room-img" style="background-image: url(/assets/images/room-3.jpg);"></div>
                           </div>
                           <div class="col-md-6 col-sm-6">
                             <div class="desc">
@@ -126,7 +126,7 @@
                       <div class="room-wrap">
                         <div class="row">
                           <div class="col-md-6 col-sm-6">
-                            <div class="room-img" style="background-image: url(/assetsimages/room-4.jpg);"></div>
+                            <div class="room-img" style="background-image: url(/assets/images/room-4.jpg);"></div>
                           </div>
                           <div class="col-md-6 col-sm-6">
                             <div class="desc">
@@ -145,7 +145,7 @@
                       <div class="room-wrap">
                         <div class="row">
                           <div class="col-md-6 col-sm-6">
-                            <div class="room-img" style="background-image: url(/assetsimages/room-5.jpg);"></div>
+                            <div class="room-img" style="background-image: url(/assets/images/room-5.jpg);"></div>
                           </div>
                           <div class="col-md-6 col-sm-6">
                             <div class="desc">
@@ -164,7 +164,7 @@
                       <div class="room-wrap">
                         <div class="row">
                           <div class="col-md-6 col-sm-6">
-                            <div class="room-img" style="background-image: url(/assetsimages/room-6.jpg);"></div>
+                            <div class="room-img" style="background-image: url(/assets/images/room-6.jpg);"></div>
                           </div>
                           <div class="col-md-6 col-sm-6">
                             <div class="desc">
@@ -437,7 +437,7 @@
         </div>
       </div>
     </div>
-    <div id="colorlib-subscribe" style="background-image: url(/assetsimages/img_bg_2.jpg);"
+    <div id="colorlib-subscribe" style="background-image: url(/assets/images/img_bg_2.jpg);"
       data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">

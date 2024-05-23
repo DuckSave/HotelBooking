@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import com.hotelbooking.hotelbooking.Entity.Account;
 
-public interface AccountRepo extends MongoRepository<Account,Integer> {
+public interface AccountRepo extends MongoRepository<Account,String> {
 
     Map<String,String> otpStorage = new HashMap<>();
 
