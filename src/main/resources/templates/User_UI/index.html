@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
 
-<head th:replace="User_UI/fragments/head :: head">
-  
+<head th:replace="User_UI/fragments/head :: head"><meta charset="utf-8">
+
 </head>
 <body>
   <div class="colorlib-loader"></div>
@@ -159,13 +159,22 @@
                 </div>
               </form>
             </div>
+            <!-- //HOTEL -->
             <div id="hotel" class="tab-pane fade">
-              <form method="post" class="colorlib-form">
+              <form method="get" th:action="@{/searchHotels}" class="colorlib-form">
                 <div class="row">
                   <div class="col-md-2">
                     <div class="booknow">
                       <h2>Book Now</h2>
                       <span>Best Price Online</span>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="date">Where:</label>
+                      <div class="form-field">
+                        <input type="text" name="location" id="location" class="form-control" placeholder="Search Location">
+                      </div>
                     </div>
                   </div>
                   <div class="col-md-3">

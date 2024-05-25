@@ -53,6 +53,14 @@ public class MainController {
         return "/User_UI/hotels.html";
     }
 
+    @GetMapping("/searchHotels")
+    public String searchHotel(@RequestParam("location") String  location, Model model) {
+        List<Hotel> listHotel= hotelRepo.findListHotelByLocation(location);
+        model.addAttribute("listHotel", listHotel);
+        return "/User_UI/hotels.html";
+    }
+    
+
     @GetMapping("/hotel")
     public String hotel(@RequestParam("id") String id, Model model) {
         Hotel hotel = hotelRepo.findById(id).orElse(null);
