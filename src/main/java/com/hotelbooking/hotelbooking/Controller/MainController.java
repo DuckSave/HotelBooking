@@ -97,6 +97,11 @@ public class MainController {
         }
     }
 
+    @GetMapping("/booking")
+    public String booking(){
+        return "/User_UI/bookingForm.html";
+    }
+
     @GetMapping("/admin/hotel")
     public String addHotel(){
         return "/Admin_UI/addHotel.html";
@@ -106,4 +111,5 @@ public class MainController {
     public String addRoom(){
         return "/Admin_UI/addRoom.html";
     }
+
 }

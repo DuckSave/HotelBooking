@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Booking</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e9f1f7;
+            padding-top: 20px;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-image {
+            width: 100%;
+            height: 200px;
+            background: url('/assets/images/hotel-1.jpg') no-repeat center center;
+            background-size: cover;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .header-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-header h2 {
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: #888;
+        }
+
+        .header-image{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+        .image-room{
+            width: 150px;
+            height: 150px;
+            margin: 30px;
+        }
+
+        .image-room img{
+            width: 150px;
+            height: 150px;
+            border: 15px solid white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container shadow p-4">
+        <div class="header-image">
+            <div class="image-room">
+                <img th:src="@{/assets/images/room-1.jpg}" alt="">
+            </div>
+            <div class="image-room">
+                <img th:src="@{/assets/images/room-2.jpg}" alt="">
+            </div>
+            <div class="image-room">
+                <img th:src="@{/assets/images/room-3.jpg}" alt="">
+            </div>
+        </div>
+        <div class="form">
+            <div class="form-header mt-5">
+                <h2>Hotel Booking</h2>
+                <p>Experience something new every moment</p>
+            </div>
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="firstName">First Name</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="First Name" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Last Name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="email">E-mail</label>
+                        <input type="email" class="form-control" id="email" placeholder="ex: myname@example.com"
+                            required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="guests">Number of Guests</label>
+                        <input type="number" class="form-control" id="guests" placeholder="e.g., 2" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="roomType">Room Type</label>
+                    <select class="form-control" id="roomType" required>
+                        <option value="" disabled selected>Please Select</option>
+                        <option value="single">Single Room</option>
+                        <option value="double">Double Room</option>
+                        <option value="suite">Suite</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="arrivalDate">Arrival Date</label>
+                        <input type="date" class="form-control" id="arrivalDate" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="arrivalTime">Arrival Time</label>
+                        <input type="time" class="form-control" id="arrivalTime" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="departureDate">Departure Date</label>
+                        <input type="date" class="form-control" id="departureDate" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="departureTime">Departure Time</label>
+                        <input type="time" class="form-control" id="departureTime" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success btn-block">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
