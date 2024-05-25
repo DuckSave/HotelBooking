@@ -16,6 +16,7 @@ public class Hotel {
     private String id;
     private String hotelName;
     private String location;
+    private String address;
     private int star;
     private int price;
     private String image;

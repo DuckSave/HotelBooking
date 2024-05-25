@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +35,19 @@ public class HotelController {
     public ResponseEntity<?> addHotel(
             @RequestParam("hotelName") String hotelName,
             @RequestParam("location") String location,
+            @RequestParam("address") String address,
             @RequestParam("star") int star,
             @RequestParam("price") int price,
             @RequestParam("description") String description,
             @RequestParam("image") MultipartFile image) {
 
 
-            Hotel existHotel = hotelRepository.findHotelByLocation(location);
+            Hotel existHotel = hotelRepository.findHotelByAddress(address);
 
             // Save the image
             String imageFileName = FileStorageUtil.saveFile(image, ASSETS_IMAGES_DIR);
             if (imageFileName == null) {
+                System.out.println("asdasd");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(Map.of("status", "ADD_HOTEL_FAILED", "message", "Image upload failed"));
             }
@@ -53,6 +56,7 @@ public class HotelController {
                 Hotel newHotel = new Hotel();
                 newHotel.setHotelName(hotelName);
                 newHotel.setLocation(location);
+                newHotel.setAddress(address);
                 newHotel.setStar(star);
                 newHotel.setPrice(price);
                 newHotel.setDescription(description);
