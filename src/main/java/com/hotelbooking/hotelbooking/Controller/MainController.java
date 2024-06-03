@@ -147,14 +147,14 @@ public class MainController {
         return "/Admin_UI/addRoom.html";
     }
 
-    @GetMapping("/sendMail")
-    public ResponseEntity<?> sendMail() {
-        HotelBooking booking = bookingService.getBooking("665d8e4945db4e4bb4f07446");
-        mailService.sendEmailToBookingPerson(booking);
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("status", "SUCCESS");
-        return ResponseEntity.ok().body(map);
-    }
+    // @GetMapping("/sendMail")
+    // public ResponseEntity<?> sendMail() {
+    //     HotelBooking booking = bookingService.getBooking("665d8e4945db4e4bb4f07446");
+    //     mailService.sendEmailToBookingPerson(booking);
+    //     Map<String, String> map = new HashMap<String, String>();
+    //     map.put("status", "SUCCESS");
+    //     return ResponseEntity.ok().body(map);
+    // }
 
     @GetMapping("/cart")
      public String getBookings(Model model, 

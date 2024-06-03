@@ -10,8 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.hotelbooking.hotelbooking.Class.BookDetail;
-import com.hotelbooking.hotelbooking.Class.CheckInTime;
 import com.hotelbooking.hotelbooking.Entity.Account;
 import com.hotelbooking.hotelbooking.Entity.HotelBooking;
 import com.hotelbooking.hotelbooking.Entity.Room;
@@ -43,30 +41,31 @@ public class BookingHotelService {
     }
 
     public HotelBooking createBooking(Map<String, String> payload, Account account) {
-        HotelBooking newBooking = new HotelBooking();
-        BookDetail bookingDetail = new BookDetail();
-        CheckInTime checkInTime = new CheckInTime(); 
+    //     HotelBooking newBooking = new HotelBooking();
+    //     BookDetail bookingDetail = new BookDetail();
+    //     CheckInTime checkInTime = new CheckInTime(); 
 
-        newBooking.setFirstName(payload.get("firstName"));
-        newBooking.setLastName(payload.get("lastName"));
-        newBooking.setEmail(payload.get("email"));
-        newBooking.setNumberOfGuests(Integer.parseInt(payload.get("guests")));
+    //     newBooking.setFirstName(payload.get("firstName"));
+    //     newBooking.setLastName(payload.get("lastName"));
+    //     newBooking.setEmail(payload.get("email"));
+    //     newBooking.setNumberOfGuests(Integer.parseInt(payload.get("guests")));
         
-        checkInTime.setArrivalTime(LocalTime.parse(payload.get("arrivalTime")));
-        checkInTime.setDepartureTime(LocalTime.parse(payload.get("departureTime")));
-        checkInTime.setArrivalDate(LocalDate.parse(payload.get("arrivalDate")));
-        checkInTime.setDepartureDate(LocalDate.parse(payload.get("departureDate")));
-        newBooking.setCheckInTime(checkInTime);
+    //     checkInTime.setArrivalTime(LocalTime.parse(payload.get("arrivalTime")));
+    //     checkInTime.setDepartureTime(LocalTime.parse(payload.get("departureTime")));
+    //     checkInTime.setArrivalDate(LocalDate.parse(payload.get("arrivalDate")));
+    //     checkInTime.setDepartureDate(LocalDate.parse(payload.get("departureDate")));
+    //     newBooking.setCheckInTime(checkInTime);
         
-        Room room = roomService.getRoomById(payload.get("roomId"));
-        room.setBooking(true); // Cập nhật trạng thái phòng
+    //     Room room = roomService.getRoomById(payload.get("roomId"));
+    //     room.setBooking(true); // Cập nhật trạng thái phòng
         
-        bookingDetail.setAccount(account);
-        bookingDetail.setRoom(room);
-        newBooking.setBookDetail(bookingDetail);
+    //     bookingDetail.setAccount(account);
+    //     bookingDetail.setRoom(room);
+    //     newBooking.setBookDetail(bookingDetail);
 
-        roomService.updateRoom(room); // Lưu trạng thái phòng đã được cập nhật
-        return bookingRepo.save(newBooking);
+    //     roomService.updateRoom(room); // Lưu trạng thái phòng đã được cập nhật
+    //     return bookingRepo.save(newBooking);
+    return null;
     }
 
 }
