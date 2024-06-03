@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.hotelbooking.hotelbooking.Entity.Hotel;
 import com.hotelbooking.hotelbooking.Entity.Room;
 import com.hotelbooking.hotelbooking.Repository.RoomRepo;
+import com.hotelbooking.hotelbooking.Service.RoomService;
 import com.hotelbooking.hotelbooking.Utils.FileStorageUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -26,14 +27,15 @@ public class RoomController {
     private static final String ASSETS_IMAGES_DIR = "src/main/resources/static/assets/images/";
 
     @Autowired
-    RoomRepo roomRepo;
+    RoomService roomService;
 
     @PostMapping("/rooms/add")
     public ResponseEntity<Map<String, String>> addRoom(@RequestParam("RoomNumber") String id,
             @RequestParam("HotelName") String hotelId,
             @RequestParam("RoomName") String roomType,
             @RequestParam("price") int price,
-            @RequestParam("images") List<MultipartFile> images) {
+            @RequestParam("images") List<MultipartFile> images,
+            @RequestParam("description") String description){
 
         List<String> imagePaths = new ArrayList<>();
         for (MultipartFile image : images) {
@@ -43,15 +45,16 @@ public class RoomController {
             }
         }
 
-        Room exitsRoom = roomRepo.findById(id).orElse(null);
+        Room exitsRoom = roomService.getRoomById(id);
         if (exitsRoom == null) {
             Room room = new Room();
             room.setId(id);
             room.setRoomType(roomType);
             room.setPrice(price);
             room.setImages(imagePaths);
-            room.setIdHotel(hotelId);
-            roomRepo.save(room);
+            room.setHotelId(hotelId);
+            room.setDescription(description);
+            roomService.createRoom(room);
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("status", "ADD_ROOM_SUCCESS"));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

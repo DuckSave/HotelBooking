@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 <html>
 <head th:replace="/User_UI/fragments/head::head"></head>
-
 <body>
   <div class="colorlib-loader"></div>
   <div id="page">
@@ -64,27 +63,25 @@
                   <div class="col-md-12 col-md-offset-0 heading2 animate-box">
                     <h2>Hotel Edison</h2>
                   </div>
-                  <div class="row">
+                  <div class="row" th:each="room : ${listRoom}">
                     <div class="col-md-12 animate-box">
                       <div class="room-wrap">
                         <div class="row">
                           <div class="col-md-6 col-sm-6">
-                            <div class="room-img" style="background-image: url(/assets/images/room-1.jpg);"></div>
+                            <div class="room-img" th:style="'background-image: url(/assets/images/' + ${room.images.get(0)} +');'"></div>
                           </div>
                           <div class="col-md-6 col-sm-6">
                             <div class="desc">
-                              <h2>Family Room</h2>
-                              <p class="price"><span>$45</span> <small>/ night</small></p>
-                              <p>Even the all-powerful Pointing has no control about the blind texts it is an almost
-                                unorthographic life One day however a small line of blind text by the name of Lorem
-                                Ipsum decided to leave for the far World of Grammar.</p>
-                              <p><a href="#" class="btn btn-primary">Book Now!</a></p>
+                              <h2 th:text="${room.roomType}"></h2>
+                              <p class="price"><span th:text="${room.price}">$</span> <small>/ night</small></p>
+                              <p th:text="${room.description}"></p>
+                              <p><a th:href="@{/booking(id=${room.id})}" class="btn btn-primary">Book Now!</a></p>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-12 animate-box">
+                    <!-- <div class="col-md-12 animate-box">
                       <div class="room-wrap">
                         <div class="row">
                           <div class="col-md-6 col-sm-6">
@@ -178,7 +175,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>

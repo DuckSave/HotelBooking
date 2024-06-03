@@ -24,8 +24,7 @@
 
         .header-image {
             width: 100%;
-            height: 200px;
-            background: url('/assets/images/hotel-1.jpg') no-repeat center center;
+            height: 350px;
             background-size: cover;
             border-radius: 8px 8px 0 0;
         }
@@ -49,19 +48,19 @@
             color: #888;
         }
 
-        .header-image{
+        .header-image {
             display: flex;
             justify-content: center;
             align-items: center;
-
         }
-        .image-room{
+
+        .image-room {
             width: 150px;
             height: 150px;
             margin: 30px;
         }
 
-        .image-room img{
+        .image-room img {
             width: 150px;
             height: 150px;
             border: 15px solid white;
@@ -72,15 +71,15 @@
 <body>
 
     <div class="container shadow p-4">
-        <div class="header-image">
+        <div class="header-image" th:style="'background-image: url(/assets/images/' + ${hotel.image} +');'">
             <div class="image-room">
-                <img th:src="@{/assets/images/room-1.jpg}" alt="">
+                <img th:src="@{|/assets/images/${room.images.get(0)}|}" alt="">
             </div>
             <div class="image-room">
-                <img th:src="@{/assets/images/room-2.jpg}" alt="">
+                <img th:src="@{|/assets/images/${room.images.get(1)}|}" alt="">
             </div>
             <div class="image-room">
-                <img th:src="@{/assets/images/room-3.jpg}" alt="">
+                <img th:src="@{|/assets/images/${room.images.get(2)}|}" alt="">
             </div>
         </div>
         <div class="form">
@@ -88,57 +87,52 @@
                 <h2>Hotel Booking</h2>
                 <p>Experience something new every moment</p>
             </div>
-            <form>
+            <form id="booking">
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="firstName">First Name</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="First Name" required>
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name"
+                            required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="lastName">Last Name</label>
-                        <input type="text" class="form-control" id="lastName" placeholder="Last Name" required>
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name"
+                            required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="email">E-mail</label>
-                        <input type="email" class="form-control" id="email" placeholder="ex: myname@example.com"
-                            required>
+                        <input type="email" class="form-control" id="email" name="email"
+                            placeholder="ex: myname@example.com" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="guests">Number of Guests</label>
-                        <input type="number" class="form-control" id="guests" placeholder="e.g., 2" required>
+                        <input type="number" class="form-control" id="guests" name="guests" placeholder="e.g., 2"
+                            required>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="roomType">Room Type</label>
-                    <select class="form-control" id="roomType" required>
-                        <option value="" disabled selected>Please Select</option>
-                        <option value="single">Single Room</option>
-                        <option value="double">Double Room</option>
-                        <option value="suite">Suite</option>
-                    </select>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="arrivalDate">Arrival Date</label>
-                        <input type="date" class="form-control" id="arrivalDate" required>
+                        <input type="date" class="form-control" id="arrivalDate" name="arrivalDate" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="arrivalTime">Arrival Time</label>
-                        <input type="time" class="form-control" id="arrivalTime" required>
+                        <input type="time" class="form-control" id="arrivalTime" name="arrivalTime" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="departureDate">Departure Date</label>
-                        <input type="date" class="form-control" id="departureDate" required>
+                        <input type="date" class="form-control" id="departureDate" name="departureDate" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="departureTime">Departure Time</label>
-                        <input type="time" class="form-control" id="departureTime" required>
+                        <input type="time" class="form-control" id="departureTime" name="departureTime" required>
                     </div>
                 </div>
+                <input type="hidden" id="roomId" name="roomId" th:value="${room.id}" required>
                 <button type="submit" class="btn btn-success btn-block">Submit</button>
             </form>
         </div>
@@ -148,6 +142,42 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        document.getElementById('booking').addEventListener('submit', (event) => {
+            event.preventDefault();
+            alert('submit');
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            const payload = {};
+            formData.forEach((value, key) => {
+                if (!isNaN(value) && value.trim() !== '') {
+                    payload[key] = Number(value); // Chuyển đổi giá trị số
+                } else {
+                    payload[key] = value; // Giữ nguyên các giá trị không phải số
+                }
+            });
+
+            fetch('/booking', {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    alert(data.message);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error with the booking process.');
+                });
+        });
+    </script>
 
 </body>
 
