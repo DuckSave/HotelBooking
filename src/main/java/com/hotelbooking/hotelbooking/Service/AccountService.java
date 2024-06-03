@@ -16,4 +16,8 @@ public class AccountService {
         return account == null ? null : account;
     }
 
+    public void updateAccount(Account account){
+        accountRepo.save(account);
+    }
+
 }
