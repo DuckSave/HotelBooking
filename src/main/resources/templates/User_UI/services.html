@@ -46,7 +46,7 @@
                 <div class="col-md-6 col-sm-12 col-md-offset-3 slider-text">
                   <div class="slider-text-inner text-center">
                     <h2>by colorlib.com</h2>
-                    <h1>Our Services</h1>
+                    <h1>My Bookings</h1>
                   </div>
                 </div>
               </div>
@@ -58,117 +58,95 @@
     <div id="colorlib-services">
       <div class="container">
         <div class="row">
-          <div class="col-md-3 animate-box text-center">
-            <div class="services">
-              <span class="icon">
-                <i class="flaticon-around"></i>
-              </span>
-              <h3>Amazing Travel</h3>
-              <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A
-                small river named Duden flows by their place and supplies</p>
-            </div>
+          <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box">
+            <h2>Your Bookings</h2>
+            <h3>Here are your current bookings. You can review and proceed to payment.</h3>
           </div>
-          <div class="col-md-3 animate-box text-center">
-            <div class="services">
-              <span class="icon">
-                <i class="flaticon-boat"></i>
-              </span>
-              <h3>Our Cruises</h3>
-              <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A
-                small river named Duden flows by their place and supplies</p>
+        </div>
+        <div class="row">
+          <!-- Example booking details, replace with dynamic content from HotelBooking -->
+          <div class="col-md-10 animate-box" th:each="booking : ${bookings}">
+            <div class="col-md-6 card-body m-3">
+              <h5 class="card-title">Booking <span th:text="${booking.id}">#1</span></h5>
+              <p class="card-text">Customer : <span
+                  th:text="${booking.firstName} + ' ' + ${booking.lastName}">John</span></p>
+              <p class="card-text">Email: <span th:text="${booking.email}"></span></p>
+              <p class="card-text">Number of Guests: <span th:text="${booking.numberOfGuests}"></span></p>
+              <p class="card-text" th:text="'Check-In Time: '+${booking.checkInTime.arrivalTime}"><span
+                  th:text="${booking.checkInTime}">2024-06-10</span></p>
+              <p class="card-text">Payment Status: <span
+                  th:text="${booking.isPayment ? 'Paid' : 'Pending'}">Pending</span></p>
+              <button class="btn btn-primary" onclick="showPaymentOptions()">Proceed to Payment</button>
             </div>
-          </div>
-          <div class="col-md-3 animate-box text-center">
-            <div class="services">
-              <span class="icon">
-                <i class="flaticon-car"></i>
-              </span>
-              <h3>Book Your Trip</h3>
-              <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A
-                small river named Duden flows by their place and supplies</p>
-            </div>
-          </div>
-          <div class="col-md-3 animate-box text-center">
-            <div class="services">
-              <span class="icon">
-                <i class="flaticon-postcard"></i>
-              </span>
-              <h3>Nice Support</h3>
-              <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A
-                small river named Duden flows by their place and supplies</p>
+            <div class="col-md-6">
+              <img class="card-img-top" th:src="@{/assets/images/hotel-1.jpg}" alt="Room image">
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div id="colorlib-testimony" class="colorlib-light-grey">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box">
-            <h2>Our Satisfied Guests says</h2>
-            <p>We love to tell our successful far far away, behind the word mountains, far from the countries Vokalia
-              and Consonantia, there live the blind texts.</p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-8 col-md-offset-2 animate-box">
-            <div class="owl-carousel2">
-              <div class="item">
-                <div class="testimony text-center">
-                  <span class="img-user" style="background-image: url(/assets/images/person1.jpg);"></span>
-                  <span class="user">Alysha Myers</span>
-                  <small>Miami Florida, USA</small>
-                  <blockquote>
-                    <p>" A small river named Duden flows by their place and supplies it with the necessary regelialia.
-                    </p>
-                  </blockquote>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony text-center">
-                  <span class="img-user" style="background-image: url(/assets/images/person2.jpg);"></span>
-                  <span class="user">James Fisher</span>
-                  <small>New York, USA</small>
-                  <blockquote>
-                    <p>One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the
-                      far World of Grammar.</p>
-                  </blockquote>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony text-center">
-                  <span class="img-user" style="background-image: url(/assets/images/person3.jpg);"></span>
-                  <span class="user">Jacob Webb</span>
-                  <small>Athens, Greece</small>
-                  <blockquote>
-                    <p>Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran
-                      over her cheek, then she continued her way.</p>
-                  </blockquote>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <ul class="pagination">
+            <li class="page-item" th:if="${currentPage > 0}">
+              <a class="page-link" th:href="@{/services(page=${currentPage - 1})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+              th:classappend="${currentPage == i} ? 'active'">
+              <a class="page-link" th:href="@{/services(page=${i})}" th:text="${i + 1}">1</a>
+            </li>
+            <li class="page-item" th:if="${currentPage < totalPages - 1}">
+              <a class="page-link" th:href="@{/services(page=${currentPage + 1})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-    <div id="colorlib-subscribe" style="background-image: url(/assets/images/img_bg_2.jpg);"
-      data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
+    <div id="colorlib-payment" style="display:none;" class="colorlib-light-grey">
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box">
-            <h2>Sign Up for a Newsletter</h2>
-            <p>Sign up for our mailing list to get latest updates and offers.</p>
-            <form class="form-inline qbstp-header-subscribe">
-              <div class="row">
-                <div class="col-md-12 col-md-offset-0">
-                  <div class="form-group">
-                    <input type="text" class="form-control" id="email" placeholder="Enter your email">
-                    <button type="submit" class="btn btn-primary">Subscribe</button>
-                  </div>
-                </div>
-              </div>
-            </form>
+            <h2>Payment Options</h2>
+            <p>Select your preferred payment method.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 animate-box">
+            <div class="payment-option">
+              <span class="icon">
+                <i class="flaticon-credit-card"></i>
+              </span>
+              <h3>Credit Card</h3>
+              <p>Pay securely using your credit card.</p>
+              <button class="btn btn-primary">Pay with Credit Card</button>
+            </div>
+          </div>
+          <div class="col-md-4 animate-box">
+            <div class="payment-option">
+              <span class="icon">
+                <i class="flaticon-paypal"></i>
+              </span>
+              <h3>PayPal</h3>
+              <p>Pay easily using your PayPal account.</p>
+              <button class="btn btn-primary">Pay with PayPal</button>
+            </div>
+          </div>
+          <div class="col-md-4 animate-box">
+            <div class="payment-option">
+              <span class="icon">
+                <i class="flaticon-bank-transfer"></i>
+              </span>
+              <h3>Bank Transfer</h3>
+              <p>Transfer the amount directly from your bank.</p>
+              <button class="btn btn-primary">Pay with Bank Transfer</button>
+            </div>
           </div>
         </div>
       </div>
@@ -180,84 +158,71 @@
             <h4>Tour Agency</h4>
             <p>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci
               architecto culpa amet.</p>
-            <p>
             <ul class="colorlib-social-icons">
               <li><a href="#"><i class="icon-twitter"></i></a></li>
               <li><a href="#"><i class="icon-facebook"></i></a></li>
               <li><a href="#"><i class="icon-linkedin"></i></a></li>
               <li><a href="#"><i class="icon-dribbble"></i></a></li>
             </ul>
-            </p>
           </div>
-          <div class="col-md-2 colorlib-widget">
-            <h4>Book Now</h4>
-            <p>
+          <div class="col-md-3 colorlib-widget">
+            <h4>Information</h4>
             <ul class="colorlib-footer-links">
-              <li><a href="#">Flight</a></li>
-              <li><a href="#">Hotels</a></li>
-              <li><a href="#">Tour</a></li>
-              <li><a href="#">Car Rent</a></li>
-              <li><a href="#">Beach &amp; Resorts</a></li>
-              <li><a href="#">Cruises</a></li>
-            </ul>
-            </p>
-          </div>
-          <div class="col-md-2 colorlib-widget">
-            <h4>Top Deals</h4>
-            <p>
-            <ul class="colorlib-footer-links">
-              <li><a href="#">Edina Hotel</a></li>
-              <li><a href="#">Quality Suites</a></li>
-              <li><a href="#">The Hotel Zephyr</a></li>
-              <li><a href="#">Da Vinci Villa</a></li>
-              <li><a href="#">Hotel Epikk</a></li>
-            </ul>
-            </p>
-          </div>
-          <div class="col-md-2">
-            <h4>Blog Post</h4>
-            <ul class="colorlib-footer-links">
-              <li><a href="#">The Ultimate Packing List For Female Travelers</a></li>
-              <li><a href="#">How These 5 People Found The Path to Their Dream Trip</a></li>
-              <li><a href="#">A Definitive Guide to the Best Dining and Drinking Venues in the City</a></li>
+              <li><a href="#"><i class="icon-check"></i> Home</a></li>
+              <li><a href="#"><i class="icon-check"></i> Tours</a></li>
+              <li><a href="#"><i class="icon-check"></i> Hotels</a></li>
+              <li><a href="#"><i class="icon-check"></i> Booking</a></li>
+              <li><a href="#"><i class="icon-check"></i> Services</a></li>
+              <li><a href="#"><i class="icon-check"></i> About</a></li>
+              <li><a href="#"><i class="icon-check"></i> Contact</a></li>
             </ul>
           </div>
-          <div class="col-md-3 col-md-push-1">
-            <h4>Contact Information</h4>
+          <div class="col-md-3 colorlib-widget">
+            <h4>Recent Blog</h4>
+            <div class="f-blog">
+              <a href="blog.html" class="blog-img" style="background-image: url(/assets/images/blog-1.jpg);"></a>
+              <div class="desc">
+                <h2><a href="blog.html">Most Beautiful Website in 2018</a></h2>
+                <p class="admin"><span>25 March 2018</span></p>
+              </div>
+            </div>
+            <div class="f-blog">
+              <a href="blog.html" class="blog-img" style="background-image: url(/assets/images/blog-2.jpg);"></a>
+              <div class="desc">
+                <h2><a href="blog.html">Most Beautiful Website in 2018</a></h2>
+                <p class="admin"><span>24 March 2018</span></p>
+              </div>
+            </div>
+            <div class="f-blog">
+              <a href="blog.html" class="blog-img" style="background-image: url(/assets/images/blog-3.jpg);"></a>
+              <div class="desc">
+                <h2><a href="blog.html">Most Beautiful Website in 2018</a></h2>
+                <p class="admin"><span>23 March 2018</span></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 colorlib-widget">
+            <h4>Contact Info</h4>
             <ul class="colorlib-footer-links">
               <li>291 South 21th Street, <br> Suite 721 New York NY 10016</li>
-              <li><a href="tel://1234567920">+ 1235 2355 98</a></li>
-              <li><a
-                  href="https://preview.colorlib.com/cdn-cgi/l/email-protection#3c55525a537c4553494e4f554859125f5351"><span
-                    class="__cf_email__"
-                    data-cfemail="b9d0d7dfd6f9c0d6cccbcad0cddc97dad6d4">[email&#160;protected]</span></a></li>
-              <li><a href="#">yoursite.com</a></li>
+              <li><a href="tel://1234567920"><i class="icon-phone"></i> + 1235 2355 98</a></li>
+              <li><a href="mailto:info@yoursite.com"><i class="icon-envelope"></i> info@yoursite.com</a></li>
+              <li><a href="http://luxehotel.com"><i class="icon-location4"></i> yoursite.com</a></li>
             </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12 text-center">
-            <p>
-
-              Copyright &copy;
-              <script data-cfasync="false"
-                src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-              <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made
-              with <i class="icon-heart2" aria-hidden="true"></i> by <a href="https://colorlib.com/"
-                target="_blank">Colorlib</a>
-              </span>
-              <span class="block">Demo Images: <a href="http://unsplash.co/" target="_blank">Unsplash</a> , <a
-                  href="http://pexels.com/" target="_blank">Pexels.com</a></span>
-            </p>
           </div>
         </div>
       </div>
     </footer>
   </div>
   <div class="gototop js-top">
-    <a href="#" class="js-gotop"><i class="icon-arrow-up2"></i></a>
+    <a href="#" class="js-gototop"><i class="icon-arrow-up2"></i></a>
   </div>
-
+  <script>
+    function showPaymentOptions() {
+      document.getElementById('colorlib-payment').style.display = 'block';
+    }
+  </script>
   <div th:replace="/User_UI/fragments/script::script"></div>
+</body>
 
 </html>
