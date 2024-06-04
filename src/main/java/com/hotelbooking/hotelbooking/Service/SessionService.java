@@ -7,13 +7,13 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class SessionService {
 
-    public void setSession(String key, String value, HttpSession session){
+    public void setSession(String key, Object value, HttpSession session){
         session.setAttribute(key, value);
     }
 
-    public String getSession(String key,HttpSession session){
+    public Object getSession(String key,HttpSession session){
         Object value = session.getAttribute(key);
-        return value != null ? value.toString() : null;
+        return value != null ? value : null;
     }
 
 }

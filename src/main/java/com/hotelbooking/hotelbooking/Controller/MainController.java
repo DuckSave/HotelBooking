@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,11 +69,17 @@ public class MainController {
     }
 
     @GetMapping("/hotels")
-    public String hotel(Model model) {
-        List<Hotel> listHotel = hotelRepo.findAll();
+    public String hotel(Model model,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "4") int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<Hotel> listHotel = hotelRepo.findAll(pageable);
         model.addAttribute("listHotel", listHotel);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", listHotel.getTotalPages());
         return "/User_UI/hotels.html";
     }
+
 
     @GetMapping("/searchHotels")
     public String searchHotel(@RequestParam("location") String  location, Model model) {
