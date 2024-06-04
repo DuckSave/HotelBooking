@@ -144,6 +144,17 @@ public class MainController {
     }
 
     @GetMapping("/admin/hotel")
+<<<<<<< HEAD
+    public String addHotel(){
+        return "/Admin_UI/adminHotel.html";
+    }
+
+    @GetMapping("/admin/hotel/room")
+    public String adminRoom(){
+        return "/Admin_UI/adminRoom.html";
+    }
+   
+=======
     public String addHotel() {
         return "/Admin_UI/addHotel.html";
     }
@@ -175,4 +186,5 @@ public class MainController {
         return "/User_UI/cart.html";
     }
 
+>>>>>>> 2a771154c5090d7e381b1ca35b873ee69dbb232a
 }
