@@ -99,11 +99,12 @@ public class MainController {
 
     @GetMapping("/admin/hotel")
     public String addHotel(){
-        return "/Admin_UI/addHotel.html";
+        return "/Admin_UI/adminHotel.html";
     }
 
-    @GetMapping("admin/hotel/room")
-    public String addRoom(){
-        return "/Admin_UI/addRoom.html";
+    @GetMapping("/admin/hotel/room")
+    public String adminRoom(){
+        return "/Admin_UI/adminRoom.html";
     }
+   
 }
