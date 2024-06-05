@@ -144,7 +144,6 @@ public class MainController {
     }
 
     @GetMapping("/admin/hotel")
-<<<<<<< HEAD
     public String addHotel(){
         return "/Admin_UI/adminHotel.html";
     }
@@ -154,17 +153,12 @@ public class MainController {
         return "/Admin_UI/adminRoom.html";
     }
    
-=======
-    public String addHotel() {
-        return "/Admin_UI/addHotel.html";
-    }
-
-    @GetMapping("admin/hotel/room")
-    public String addRoom(Model model) {
-        List<Hotel> listHotel = hotelRepo.findAll();
-        model.addAttribute("listHotel", listHotel);
-        return "/Admin_UI/addRoom.html";
-    }
+    // @GetMapping("admin/hotel/room")
+    // public String addRoom(Model model) {
+    //     List<Hotel> listHotel = hotelRepo.findAll();
+    //     model.addAttribute("listHotel", listHotel);
+    //     return "/Admin_UI/addRoom.html";
+    // }
 
     // @GetMapping("/sendMail")
     // public ResponseEntity<?> sendMail() {
@@ -186,5 +180,5 @@ public class MainController {
         return "/User_UI/cart.html";
     }
 
->>>>>>> 2a771154c5090d7e381b1ca35b873ee69dbb232a
+
 }
