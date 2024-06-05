@@ -20,4 +20,5 @@ public class Account {
     private String phoneNumber;
     private String password;
     private String bookingId;
+    private boolean roles ; 
 }

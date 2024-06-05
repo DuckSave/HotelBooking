@@ -74,8 +74,8 @@ public class MainController {
     }
 
     @GetMapping("/searchHotels")
-    public String searchHotel(@RequestParam("location") String  location, Model model) {
-        List<Hotel> listHotel= hotelRepo.findListHotelByLocation(location);
+    public String searchHotel(@RequestParam("location") String location, Model model) {
+        List<Hotel> listHotel = hotelRepo.findListHotelByLocation(location);
         model.addAttribute("listHotel", listHotel);
         return "/User_UI/hotels.html";
     }
@@ -127,7 +127,7 @@ public class MainController {
     }
 
     @GetMapping("/booking")
-    public String booking(@RequestParam("id") String roomId, Model model){
+    public String booking(@RequestParam("id") String roomId, Model model) {
         Room room = roomService.getRoomById(roomId);
         Hotel hotel = hotelRepo.findById(room.getHotelId()).get();
         model.addAttribute("room", room);
@@ -149,17 +149,17 @@ public class MainController {
 
     // @GetMapping("/sendMail")
     // public ResponseEntity<?> sendMail() {
-    //     HotelBooking booking = bookingService.getBooking("665d8e4945db4e4bb4f07446");
-    //     mailService.sendEmailToBookingPerson(booking);
-    //     Map<String, String> map = new HashMap<String, String>();
-    //     map.put("status", "SUCCESS");
-    //     return ResponseEntity.ok().body(map);
+    // HotelBooking booking = bookingService.getBooking("665d8e4945db4e4bb4f07446");
+    // mailService.sendEmailToBookingPerson(booking);
+    // Map<String, String> map = new HashMap<String, String>();
+    // map.put("status", "SUCCESS");
+    // return ResponseEntity.ok().body(map);
     // }
 
     @GetMapping("/cart")
-     public String getBookings(Model model, 
-                              @RequestParam(name = "page", defaultValue = "0") int page, 
-                              @RequestParam(name = "size", defaultValue = "1") int size) {
+    public String getBookings(Model model,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "1") int size) {
         Page<HotelBooking> bookingPage = bookingService.getBookings(page, size);
         model.addAttribute("bookings", bookingPage.getContent());
         model.addAttribute("currentPage", page);

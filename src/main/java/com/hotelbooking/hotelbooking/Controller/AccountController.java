@@ -33,7 +33,7 @@ public class AccountController {
             HttpServletResponse response, HttpServletRequest request) {
 
         Account existingAccount = accountRepository.findAccountByPhoneNumber(account.getPhoneNumber());
-        String EncodePassword = Encode.encode(account.getPassword());        
+        String EncodePassword = Encode.encode(account.getPassword());
         if (existingAccount != null) {
             if (existingAccount.getPassword().equals(EncodePassword)) {
                 if (rememberMe) {
@@ -64,21 +64,17 @@ public class AccountController {
     }
 
     @PostMapping("/addAccount")
-    public ResponseEntity<?> addAccount(@RequestBody Map<String, String> payload){
+    public ResponseEntity<?> addAccount(@RequestBody Map<String, String> payload) {
         Account newAccount = new Account();
         newAccount.setFirstName(payload.get("firstName"));
         newAccount.setLastName(payload.get("lastName"));
         newAccount.setPhoneNumber(payload.get("phoneNumber"));
         newAccount.setPassword(Encode.encode(payload.get("password")));
+        newAccount.setRoles(false);
         System.out.println(newAccount.toString());
         accountRepository.save(newAccount);
         return ResponseEntity.ok(Map.of("status", "ACCOUNT_CREATED"));
     }
-
-
-
-
-
 
     @PostMapping("/updateAccount")
     public String updateAccount(@RequestBody Account account) {
@@ -89,6 +85,7 @@ public class AccountController {
             exitsAccount.setLastName(account.getLastName());
             exitsAccount.setPhoneNumber(account.getPhoneNumber());
             exitsAccount.setPassword(account.getPassword());
+            exitsAccount.setRoles(false);
             accountRepository.save(exitsAccount);
         } else {
             System.out.println("account not found");
@@ -98,35 +95,35 @@ public class AccountController {
     }
 
     @PostMapping("/check-phoneNumber")
-    public ResponseEntity<?> checkPhoneNumber(@RequestBody Map<String, String> payload){
+    public ResponseEntity<?> checkPhoneNumber(@RequestBody Map<String, String> payload) {
         String phoneNumber = payload.get("phoneNumber");
         Account exitsAccount = accountRepository.findAccountByPhoneNumber(phoneNumber);
         if (exitsAccount == null) {
             String otp = AccountRepo.generateOtp(phoneNumber);
-            return ResponseEntity.ok(Map.of( "status", "OTP_REQUIRED","message",otp));
+            return ResponseEntity.ok(Map.of("status", "OTP_REQUIRED", "message", otp));
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Phone number already registered", "status", "ALREADY_REGISTERED"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", "Phone number already registered", "status", "ALREADY_REGISTERED"));
     }
 
-    
-
     @PostMapping("/validateOtp")
-    public ResponseEntity<?> validateOtp(@RequestBody Map<String, String> payload){
+    public ResponseEntity<?> validateOtp(@RequestBody Map<String, String> payload) {
         String phoneNumber = payload.get("phoneNumber");
         String otp = payload.get("otp");
         boolean isValid = AccountRepo.validateOtp(phoneNumber, otp);
         if (isValid) {
             return ResponseEntity.ok(Map.of("status", "OTP_VALID"));
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Invalid OTP", "status", "OTP_INVALID"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", "Invalid OTP", "status", "OTP_INVALID"));
     }
 
     @PostMapping("/generateOtp")
-    public ResponseEntity<?> generateOtp(@RequestBody Map<String, String> payload){
+    public ResponseEntity<?> generateOtp(@RequestBody Map<String, String> payload) {
         String phoneNumber = payload.get("phoneNumber");
         String otp = AccountRepo.generateOtp(phoneNumber);
-        return ResponseEntity.ok(Map.of( "status", "OTP_REQUIRED","message",otp));
+        return ResponseEntity.ok(Map.of("status", "OTP_REQUIRED", "message", otp));
     }
 
     @PostMapping("/testPhoneNumber")
@@ -134,11 +131,11 @@ public class AccountController {
         String phoneNumber = payload.get("phoneNumber");
         Account exitsAccount = accountRepository.findAccountByPhoneNumber(phoneNumber);
 
-        if(exitsAccount == null){
-            return ResponseEntity.ok(Map.of("status","yes","message","dang ky thanh cong"));
+        if (exitsAccount == null) {
+            return ResponseEntity.ok(Map.of("status", "yes", "message", "dang ky thanh cong"));
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of( "message", "dang ky that bai"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "dang ky that bai"));
     }
 
 }
