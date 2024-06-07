@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,6 +70,7 @@ public class MainController {
     }
 
     @GetMapping("/hotels")
+<<<<<<< HEAD
     public String hotel(Model model, @RequestParam(value = "priceFrom", required = false) Integer priceFrom,
                                      @RequestParam(value = "priceTo", required = false) Integer priceTo,
                                      @RequestParam(value = "stars", required = false) List<Integer> stars,
@@ -119,6 +122,26 @@ public class MainController {
     //     model.addAttribute("listHotel", listHotel);
     //     return "/User_UI/hotels.html";
     // }
+=======
+    public String hotel(Model model,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "4") int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<Hotel> listHotel = hotelRepo.findAll(pageable);
+        model.addAttribute("listHotel", listHotel);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", listHotel.getTotalPages());
+        return "/User_UI/hotels.html";
+    }
+
+
+    @GetMapping("/searchHotels")
+    public String searchHotel(@RequestParam("location") String  location, Model model) {
+        List<Hotel> listHotel= hotelRepo.findListHotelByLocation(location);
+        model.addAttribute("listHotel", listHotel);
+        return "/User_UI/hotels.html";
+    }
+>>>>>>> c037deefcf14b2431ae61160d65ad89df034b176
 
     @GetMapping("/hotel")
     public String room(@RequestParam("id") String id, Model model) {
@@ -176,25 +199,30 @@ public class MainController {
     }
 
     @GetMapping("/admin/hotel")
-    public String addHotel() {
-        return "/Admin_UI/addHotel.html";
+    public String addHotel(){
+        return "/Admin_UI/adminHotel.html";
     }
 
-    @GetMapping("admin/hotel/room")
-    public String addRoom(Model model) {
-        List<Hotel> listHotel = hotelRepo.findAll();
-        model.addAttribute("listHotel", listHotel);
-        return "/Admin_UI/addRoom.html";
+    @GetMapping("/admin/hotel/room")
+    public String adminRoom(){
+        return "/Admin_UI/adminRoom.html";
     }
+   
+    // @GetMapping("admin/hotel/room")
+    // public String addRoom(Model model) {
+    //     List<Hotel> listHotel = hotelRepo.findAll();
+    //     model.addAttribute("listHotel", listHotel);
+    //     return "/Admin_UI/addRoom.html";
+    // }
 
-    @GetMapping("/sendMail")
-    public ResponseEntity<?> sendMail() {
-        HotelBooking booking = bookingService.getBooking("665d8e4945db4e4bb4f07446");
-        mailService.sendEmailToBookingPerson(booking);
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("status", "SUCCESS");
-        return ResponseEntity.ok().body(map);
-    }
+    // @GetMapping("/sendMail")
+    // public ResponseEntity<?> sendMail() {
+    //     HotelBooking booking = bookingService.getBooking("665d8e4945db4e4bb4f07446");
+    //     mailService.sendEmailToBookingPerson(booking);
+    //     Map<String, String> map = new HashMap<String, String>();
+    //     map.put("status", "SUCCESS");
+    //     return ResponseEntity.ok().body(map);
+    // }
 
     @GetMapping("/cart")
      public String getBookings(Model model, 
@@ -206,5 +234,6 @@ public class MainController {
         model.addAttribute("totalPages", bookingPage.getTotalPages());
         return "/User_UI/cart.html";
     }
+
 
 }

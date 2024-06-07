@@ -1,15 +1,10 @@
 package com.hotelbooking.hotelbooking.Entity;
 
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
+import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.hotelbooking.hotelbooking.Class.BookDetail;
-import com.hotelbooking.hotelbooking.Class.CheckInTime;
-
+import com.hotelbooking.hotelbooking.Class.BookingDetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,12 +16,5 @@ import lombok.NoArgsConstructor;
 public class HotelBooking {
     @Id
     private String id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private int numberOfGuests;
-    private BookDetail bookDetail;
-    private CheckInTime checkInTime;
-    private boolean isPayment;
-    
+    private List<BookingDetail> bookingDetail;
 }
