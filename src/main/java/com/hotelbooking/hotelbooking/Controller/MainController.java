@@ -1,5 +1,6 @@
 package com.hotelbooking.hotelbooking.Controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,18 +68,57 @@ public class MainController {
     }
 
     @GetMapping("/hotels")
-    public String hotel(Model model) {
-        List<Hotel> listHotel = hotelRepo.findAll();
-        model.addAttribute("listHotel", listHotel);
-        return "/User_UI/hotels.html";
-    }
+    public String hotel(Model model, @RequestParam(value = "priceFrom", required = false) Integer priceFrom,
+                                     @RequestParam(value = "priceTo", required = false) Integer priceTo,
+                                     @RequestParam(value = "stars", required = false) List<Integer> stars,
+                                     @RequestParam(value = "location", required = false) String location,
+                                     @RequestParam(value = "address", required = false) String address) {
+        List<Hotel> hotels = new ArrayList<>();
+        if(priceFrom != null && priceTo != null){
+            hotels = hotelRepo.findByPriceBetween(priceFrom, priceTo);
+            if (hotels.isEmpty()) {
+                model.addAttribute("message", "No hotels found in the given price range");
+            }
+        }else if(stars != null && !stars.isEmpty()){
+            hotels = hotelRepo.findByStarIn(stars);
+        }else if(address != null && !address.isEmpty()){
+            Hotel hotel = hotelRepo.findHotelByLocationAndAddress(location, address);
+            if(hotel != null){
+                hotels.add(hotel);
+            }
+        }else if(location != null && !location.isEmpty()){
+            hotels = hotelRepo.findListHotelByLocation(location);
+        }else{
+            hotels = hotelRepo.findAll();
+        }
+         // Add checkedStars to the model to mark checkboxes as checked
+        model.addAttribute("checkedStars", stars);
+        model.addAttribute("listHotel", hotels);
+        System.out.println(stars);
+        System.out.println(priceFrom);
+        System.out.println(priceTo);
+        return "/User_UI/hotels";
 
-    @GetMapping("/searchHotels")
-    public String searchHotel(@RequestParam("location") String  location, Model model) {
-        List<Hotel> listHotel= hotelRepo.findListHotelByLocation(location);
-        model.addAttribute("listHotel", listHotel);
-        return "/User_UI/hotels.html";
-    }
+    } 
+
+    // @GetMapping("/searchHotels")
+    // public String searchHotel(@RequestParam(value = "location", required = false) String location,
+    //                           @RequestParam(value = "address", required = false) String address, Model model) {
+    //     List<Hotel> listHotel = new ArrayList<>();
+
+    //     if(address != null && !address.isEmpty()){
+    //         Hotel hotel = hotelRepo.findHotelByLocationAndAddress(location, address);
+    //         if(hotel != null){
+    //             listHotel.add(hotel);
+    //         }
+    //     }else if(location != null && !location.isEmpty()){
+    //         listHotel = hotelRepo.findListHotelByLocation(location);
+    //     }else{
+    //         listHotel = hotelRepo.findAll();
+    //     }
+    //     model.addAttribute("listHotel", listHotel);
+    //     return "/User_UI/hotels.html";
+    // }
 
     @GetMapping("/hotel")
     public String room(@RequestParam("id") String id, Model model) {

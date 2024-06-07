@@ -14,4 +14,11 @@ public interface HotelRepo extends MongoRepository<Hotel,String> {
 
     @Query(value = "{'location':?0}")
     List<Hotel> findListHotelByLocation(String location);
+
+    @Query(value = "{'location': ?0, 'address': ?1}")
+    Hotel findHotelByLocationAndAddress(String location, String address);
+
+    List<Hotel> findByPriceBetween(int priceFrom, int priceTo );
+
+    List<Hotel> findByStarIn(List<Integer> stars);
 }

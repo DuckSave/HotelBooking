@@ -8,6 +8,7 @@ import com.hotelbooking.hotelbooking.Utils.Encode;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +32,7 @@ public class AccountController {
     @PostMapping("/login")
     public String login(@ModelAttribute Account account,
             @RequestParam(value = "rememberMe", required = false, defaultValue = "false") boolean rememberMe,
-            HttpServletResponse response, HttpServletRequest request) {
+            HttpSession session, HttpServletResponse response, HttpServletRequest request, Model model){
 
         Account existingAccount = accountRepository.findAccountByPhoneNumber(account.getPhoneNumber());
         String EncodePassword = Encode.encode(account.getPassword());        
@@ -51,7 +53,9 @@ public class AccountController {
 
                     response.addCookie(phoneNumberCookie);
                     response.addCookie(passwordCookie);
+                    // model.addAttribute("loginUser", existingAccount);
                 }
+                // session.setAttribute("loginUser", existingAccount);
 
                 return "redirect:/profile";
             } else {
