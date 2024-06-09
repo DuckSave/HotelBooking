@@ -63,29 +63,7 @@
           <div class="col-md-9">
             <div class="row">
               <div class="wrap-division">
-<<<<<<< HEAD
-                <div th:each="hotel : ${listHotel}">
-                  <div class="col-md-6 col-sm-6 animate-box">
-                    <div class="hotel-entry">
-                      <a th:href="@{/hotel(id=${hotel.id})}" class="hotel-img" th:style="'background-image: url(/assets/images/' + ${hotel.image} + ');'">
-                        
-                        <p class="price"><span th:text="${hotel.price}"></span>$<small> /night</small></p>
-                      </a>
-                      <div class="desc">
-                        <p class="star">
-                          <span th:each="i : ${#numbers.sequence(1, hotel.star)}">
-                            <i class="icon-star-full"></i>
-                          </span>
-                          <span th:each="i : ${#numbers.sequence(1, 5 - hotel.star)}">
-                            <i class="icon-star-empty"></i>
-                          </span>
-                        </p>
-                        <h3><a th:href="@{/room?id=${hotel.id}}" th:text="${hotel.hotelName}"></a></h3>
-                        <span class="place" th:text="${hotel.location}"></span>
-                        <span class="place" th:text="${hotel.address}"></span>
-                        <p th:text="${hotel.description}">
-                        </p>
-=======
+
                 <div th:if="${message}">
                   <p th:text="${message}"></p>
                 </div>
@@ -112,7 +90,6 @@
                           <p th:text="${hotel.description}">
                           </p>
                         </div>
->>>>>>> e0398fe49c9f896943aab516509178329fd9cb8e
                       </div>
                     </div>
                   </div>
