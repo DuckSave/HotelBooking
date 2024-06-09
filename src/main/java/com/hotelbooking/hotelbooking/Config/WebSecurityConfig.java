@@ -9,15 +9,23 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
+                                .csrf(csrf -> csrf
+                                                .ignoringRequestMatchers("/check-phoneNumber", "/validateOtp",
+                                                                "/addAccount", "/login"))
                                 .authorizeHttpRequests((requests) -> requests
-                                                .requestMatchers("/register", "/contact", "/index").permitAll()
-                                                .requestMatchers("/assets/**").permitAll()
+                                                .requestMatchers("/register", "/contact", "/assets/**", "/login",
+                                                                "/index" )
+                                                .permitAll()
+                                                .requestMatchers("/check-phoneNumber", "/validateOtp", "/addAccount")
+                                                .permitAll()
                                                 .anyRequest().authenticated())
                                 .formLogin((form) -> form
-                                                .loginPage("/index")
+                                                .loginPage("/login")
+                                                .successForwardUrl("/index")
                                                 .permitAll())
                                 .logout((logout) -> logout.permitAll());
 

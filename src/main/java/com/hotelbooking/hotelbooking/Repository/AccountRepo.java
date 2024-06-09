@@ -1,7 +1,7 @@
 package com.hotelbooking.hotelbooking.Repository;
 
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -10,14 +10,14 @@ import org.springframework.data.mongodb.repository.Query;
 
 import com.hotelbooking.hotelbooking.Entity.Account;
 
-public interface AccountRepo extends MongoRepository<Account,String> {
+public interface AccountRepo extends MongoRepository<Account, String> {
 
-    Map<String,String> otpStorage = new HashMap<>();
+    Map<String, String> otpStorage = new HashMap<>();
 
     @Query(value = "{'phoneNumber':?0}")
     Account findAccountByPhoneNumber(String phoneNumber);
 
-    public static String generateOtp(String key){
+    public static String generateOtp(String key) {
         if (otpStorage.containsKey(key)) {
             otpStorage.remove(key);
         }
@@ -26,7 +26,7 @@ public interface AccountRepo extends MongoRepository<Account,String> {
         return otp;
     }
 
-    public static  boolean validateOtp(String key, String otp){
+    public static boolean validateOtp(String key, String otp) {
         if (otpStorage.containsKey(key) && otpStorage.containsValue(otp)) {
             otpStorage.remove(key);
             return true;
@@ -34,4 +34,7 @@ public interface AccountRepo extends MongoRepository<Account,String> {
         return false;
     }
 
-} 
+    @Query(value = "{'role': true}")
+    List<Account> findAccountsByRoleTrue();
+
+}
