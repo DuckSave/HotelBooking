@@ -1,7 +1,9 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="/User_UI/fragments/head::head"><meta charset="utf-8"></head>
+<head th:replace="/User_UI/fragments/head::head">
+  <meta charset="utf-8">
+</head>
 
 <body>
   <div class="colorlib-loader"></div>
@@ -61,46 +63,69 @@
           <div class="col-md-9">
             <div class="row">
               <div class="wrap-division">
-                <div th:each="hotel : ${listHotel}">
-                  <div class="col-md-6 col-sm-6 animate-box">
-                    <div class="hotel-entry">
-                      <a th:href="@{/hotel(id=${hotel.id})}" class="hotel-img" th:style="'background-image: url(/assets/images/' + ${hotel.image} + ');'">
-                       
-                        <p class="price"><span th:text="${hotel.price}"></span>$<small> /night</small></p>
-                      </a>
-                      <div class="desc">
-                        <p class="star">
-                          <span th:each="i : ${#numbers.sequence(1, hotel.star)}">
-                            <i class="icon-star-full"></i>
-                          </span>
-                          <span th:each="i : ${#numbers.sequence(1, 5 - hotel.star)}">
-                            <i class="icon-star-empty"></i>
-                          </span>
-                        </p>
-                        <h3><a th:href="@{/room?id=${hotel.id}}" th:text="${hotel.hotelName}"></a></h3>
-                        <span class="place" th:text="${hotel.location}"></span>
-                        <span class="place" th:text="${hotel.address}"></span>
-                        <p th:text="${hotel.description}">
-                        </p>
+                <div th:if="${message}">
+                  <p th:text="${message}"></p>
+                </div>
+                <div id="listHotel">
+                  <div th:each="hotel : ${listHotel}">
+                    <div class="col-md-6 col-sm-6 animate-box">
+                      <div class="hotel-entry">
+                        <a th:href="@{/hotel(id=${hotel.id})}" class="hotel-img"
+                          th:style="'background-image: url(/assets/images/' + ${hotel.image} + ');'">
+                          <p class="price"><span th:text="${hotel.price}"></span>$<small> /night</small></p>
+                        </a>
+                        <div class="desc">
+                          <p class="star">
+                            <span th:each="i : ${#numbers.sequence(1, hotel.star)}">
+                              <i class="icon-star-full"></i>
+                            </span>
+                            <span th:each="i : ${#numbers.sequence(1, 5 - hotel.star)}">
+                              <i class="icon-star-empty"></i>
+                            </span>
+                          </p>
+                          <h3><a th:href="@{/room?id=${hotel.id}}" th:text="${hotel.hotelName}"></a></h3>
+                          <span class="place" th:text="${hotel.location}"></span>
+                          <span class="place" th:text="${hotel.address}"></span>
+                          <p th:text="${hotel.description}">
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12 text-center">
-                <ul class="pagination">
-                  <li th:classappend="${currentPage == 1} ? 'disabled'">
-                    <a th:href="@{/hotels(page=${currentPage - 1}, size=${listHotel.size})}">&laquo;</a>
-                  </li>
-                  <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}" th:classappend="${pageNum == currentPage} ? 'active'">
-                    <a th:href="@{/hotels(page=${pageNum}, size=${listHotel.size})}" th:text="${pageNum}"></a>
-                  </li>
-                  <li th:classappend="${currentPage == totalPages} ? 'disabled'">
-                    <a th:href="@{/hotels(page=${currentPage + 1}, size=${listHotel.size})}">&raquo;</a>
-                  </li>
-                </ul>
+                <!-- <div class="row">
+                  <div class="col-md-12 text-center">
+                    <ul class="pagination">
+                      <li th:classappend="${currentPage == 1} ? 'disabled'">
+                        <a th:if="${currentPage > 1}" th:href="@{/pageHotels(page=${currentPage - 1}, size=${size})}">&laquo;</a>
+                      </li>
+                      <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
+                        th:classappend="${pageNum == currentPage} ? 'active'">
+                        <a th:href="@{/pageHotels(page=${pageNum}, size=${size})}" th:text="${pageNum}"></a>
+                      </li>
+                      <li th:classappend="${currentPage == totalPages} ? 'disabled'">
+                        <a th:if="${currentPage < totalPages}" th:href="@{/pageHotels(page=${currentPage + 1}, size=${size})}">&raquo;</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div> -->
+                <div class="row">
+                  <div class="col-md-12 text-center">
+                    <ul class="pagination">
+                      <li th:classappend="${currentPage == 1} ? 'disabled'">
+                        <a th:if="${currentPage > 1}" th:href="@{/hotels(page=${currentPage - 1}, size=${size})}">&laquo;</a>
+                        <!-- <a th:if="${currentPage == 1}">&laquo;</a> -->
+                      </li>
+                      <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}" th:classappend="${pageNum == currentPage} ? 'active'">
+                        <a th:href="@{/hotels(page=${pageNum}, size=${size})}" th:text="${pageNum}"></a>
+                      </li>
+                      <li th:classappend="${currentPage == totalPages} ? 'disabled'">
+                        <a th:if="${currentPage < totalPages}" th:href="@{/hotels(page=${currentPage + 1}, size=${size})}">&raquo;</a>
+                        <!-- <a th:if="${currentPage == totalPages}">&raquo;</a> -->
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -109,23 +134,21 @@
             <div class="sidebar-wrap">
               <div class="side search-wrap animate-box">
                 <h3 class="sidebar-heading">Find your hotel</h3>
-                <form method="post" class="colorlib-form">
+                <form th:action="@{/hotels/addressAndLocation}" method="get" class="colorlib-form">
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label for="date">Check-in:</label>
+                        <label for="location">Location</label>
                         <div class="form-field">
-                          <i class="icon icon-calendar2"></i>
-                          <input type="text" id="date" class="form-control date" placeholder="Check-in date">
+                          <input type="text" id="location" name="location" class="form-control" placeholder="Location">
                         </div>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label for="date">Check-out:</label>
+                        <label for="address">Address</label>
                         <div class="form-field">
-                          <i class="icon icon-calendar2"></i>
-                          <input type="text" id="date" class="form-control date" placeholder="Check-out date">
+                          <input type="text" id="address" name="address" class="form-control" placeholder="Address">
                         </div>
                       </div>
                     </div>
@@ -135,11 +158,11 @@
                         <div class="form-field">
                           <i class="icon icon-arrow-down3"></i>
                           <select name="people" id="people" class="form-control">
-                            <option value="#">1</option>
-                            <option value="#">2</option>
-                            <option value="#">3</option>
-                            <option value="#">4</option>
-                            <option value="#">5+</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5+</option>
                           </select>
                         </div>
                       </div>
@@ -151,83 +174,101 @@
                   </div>
                 </form>
               </div>
+
               <div class="side animate-box">
                 <div class="row">
                   <div class="col-md-12">
                     <h3 class="sidebar-heading">Price Range</h3>
-                    <form method="post" class="colorlib-form-2">
+                    <form th:action="@{/hotels/price}" method="get" class="colorlib-form-2">
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group">
-                            <label for="guests">Price from:</label>
+                            <label for="priceFrom">Price from:</label>
                             <div class="form-field">
                               <i class="icon icon-arrow-down3"></i>
-                              <select name="people" id="people" class="form-control">
-                                <option value="#">1</option>
-                                <option value="#">200</option>
-                                <option value="#">300</option>
-                                <option value="#">400</option>
-                                <option value="#">1000</option>
+                              <select name="priceFrom" id="priceFrom" class="form-control">
+                                <option value="1">1</option>
+                                <option value="200">200</option>
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="1000">1000</option>
                               </select>
                             </div>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                            <label for="guests">Price to:</label>
+                            <label for="priceTo">Price to:</label>
                             <div class="form-field">
                               <i class="icon icon-arrow-down3"></i>
-                              <select name="people" id="people" class="form-control">
-                                <option value="#">2000</option>
-                                <option value="#">4000</option>
-                                <option value="#">6000</option>
-                                <option value="#">8000</option>
-                                <option value="#">10000</option>
+                              <select name="priceTo" id="priceTo" class="form-control">
+                                <option value="2000">2000</option>
+                                <option value="4000">4000</option>
+                                <option value="6000">6000</option>
+                                <option value="8000">8000</option>
+                                <option value="10000">10000</option>
                               </select>
                             </div>
                           </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <button type="submit" class="btn btn-primary">Filter</button>
                         </div>
                       </div>
                     </form>
                   </div>
                 </div>
               </div>
+              <!-- onchange="filterHotels()" -->
               <div class="side animate-box">
                 <div class="row">
                   <div class="col-md-12">
                     <h3 class="sidebar-heading">Review Rating</h3>
-                    <form method="post" class="colorlib-form-2">
+                    <form th:action="@{/hotels/stars}" method="GET" class="colorlib-form-2">
                       <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
+                        <input type="checkbox" class="form-check-input" id="star5" name="stars" value="5"
+                          th:checked="${checkedStars != null and checkedStars.contains(5)}"
+                          onclick="window.location.href = '/hotels/stars?stars=' + (this.checked ? '5' : '')">
+                        <label class="form-check-label" for="star5">
                           <p class="rate"><span><i class="icon-star-full"></i><i class="icon-star-full"></i><i
                                 class="icon-star-full"></i><i class="icon-star-full"></i><i
                                 class="icon-star-full"></i></span></p>
                         </label>
                       </div>
                       <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
+                        <input type="checkbox" class="form-check-input" id="star4" name="stars" value="4"
+                          th:checked="${checkedStars != null and checkedStars.contains(4)}"
+                          onclick="window.location.href = '/hotels/stars?stars=' + (this.checked ? '4' : '')">
+                        <label class="form-check-label" for="star4">
                           <p class="rate"><span><i class="icon-star-full"></i><i class="icon-star-full"></i><i
                                 class="icon-star-full"></i><i class="icon-star-full"></i></span></p>
                         </label>
                       </div>
                       <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
+                        <input type="checkbox" class="form-check-input" id="star3" name="stars" value="3"
+                          th:checked="${checkedStars != null and checkedStars.contains(3)}"
+                          onclick="window.location.href = '/hotels/stars?stars=' + (this.checked ? '3' : '')">
+                        <label class="form-check-label" for="star3">
                           <p class="rate"><span><i class="icon-star-full"></i><i class="icon-star-full"></i><i
                                 class="icon-star-full"></i></span></p>
                         </label>
                       </div>
                       <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <p class="rate"><span><i class="icon-star-full"></i><i class="icon-star-full"></i></span></p>
+                        <input type="checkbox" class="form-check-input" id="star2" name="stars" value="2"
+                          th:checked="${checkedStars != null and checkedStars.contains(2)}"
+                          onclick="window.location.href = '/hotels/stars?stars=' + (this.checked ? '2' : '')">
+                        <label class="form-check-label" for="star2">
+                          <p class="rate"><span><i class="icon-star-full"></i><i class="icon-star-full"></i></span>
+                          </p>
                         </label>
                       </div>
                       <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
+                        <input type="checkbox" class="form-check-input" id="star1" name="stars" value="1"
+                          th:checked="${checkedStars != null and checkedStars.contains(1)}"
+                          onclick="window.location.href = '/hotels/stars?stars=' + (this.checked ? '1' : '')">
+                        <label class="form-check-label" for="star1">
                           <p class="rate"><span><i class="icon-star-full"></i></span></p>
                         </label>
                       </div>
@@ -235,7 +276,8 @@
                   </div>
                 </div>
               </div>
-              <div class="side animate-box">
+
+              <!-- <div class="side animate-box">
                 <div class="row">
                   <div class="col-md-12">
                     <h3 class="sidebar-heading">Categories</h3>
@@ -351,7 +393,7 @@
                     </form>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -476,5 +518,37 @@
     });
   </script>
   <div th:replace="/User_UI/fragments/script::script"></div>
+
+  <!-- <script>
+    function filterHotels() {
+      var selectedStars = [];
+      $('#filterForm input[name="stars"]:checked').each(function () {
+        selectedStars.push($(this).val());
+      });
+
+      // Tạo URL với các tham số query dựa trên các checkbox đã chọn
+      var queryString = $.param({ stars: selectedStars });
+
+      $.ajax({
+        url: '/hotels',
+        type: 'GET',
+        data: { stars: selectedStars },
+        success: function (response) {
+          var newContent = $(response).find('#listHotel').html();
+          if (newContent) {
+            $('#listHotel').html(newContent);
+            // Áp dụng lại trạng thái checked cho các checkbox
+            selectedStars.forEach(function (star) {
+              $('#filterForm input[name="stars"][value="' + star + '"]').prop('checked', true);
+            });
+            // Cập nhật URL mà không tải lại trang
+            history.pushState(null, '', '/hotels?' + queryString);
+          } else {
+            console.log('Không có phần tử #listHotel trong phản hồi.');
+          }
+        }
+      });
+    }
+  </script> -->
 
 </html>

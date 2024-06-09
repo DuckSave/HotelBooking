@@ -6,6 +6,11 @@ import com.hotelbooking.hotelbooking.Repository.AccountRepo;
 import com.hotelbooking.hotelbooking.Service.GenerateCode;
 import com.hotelbooking.hotelbooking.Service.SessionService;
 import com.hotelbooking.hotelbooking.Utils.Encode;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import jakarta.servlet.http.HttpSession;
 
 import java.util.Map;
@@ -14,9 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+<<<<<<< HEAD
+=======
+import org.springframework.web.bind.annotation.RequestParam;
+>>>>>>> 064c6781307f5b4c241d6d27b1b5ec80fc808910
 
 @Controller
 public class AccountController {
@@ -31,14 +41,50 @@ public class AccountController {
     SessionService sessionService;
 
     @PostMapping("/login")
+<<<<<<< HEAD
     public String login(@ModelAttribute Account account, HttpSession session) {
         System.out.println("lloginnnnnn");
+=======
+    // public String login(@ModelAttribute Account account,
+    // @RequestParam(value = "rememberMe", required = false, defaultValue = "false")
+    // boolean rememberMe,
+    // HttpSession session, HttpServletResponse response, HttpServletRequest
+    // request, Model model){
+
+    public String login(@ModelAttribute Account account,
+            @RequestParam(value = "rememberMe", required = false, defaultValue = "false") boolean rememberMe,
+            HttpSession session, HttpServletResponse response, HttpServletRequest request, Model model) {
+
+>>>>>>> 064c6781307f5b4c241d6d27b1b5ec80fc808910
         Account existingAccount = accountRepository.findAccountByPhoneNumber(account.getPhoneNumber());
         String EncodePassword = Encode.encode(account.getPassword());
         if (existingAccount != null) {
             if (existingAccount.getPassword().equals(EncodePassword)) {
+
+                if (rememberMe) {
+                    request.getSession().setAttribute("account", existingAccount);
+
+                    Cookie phoneNumberCookie = new Cookie("phoneNumber", account.getPhoneNumber());
+                    phoneNumberCookie.setMaxAge(60 * 60); // 1 hour
+                    phoneNumberCookie.setPath("/");
+                    phoneNumberCookie.setHttpOnly(true);
+
+                    Cookie passwordCookie = new Cookie("password", existingAccount.getPassword());
+                    passwordCookie.setMaxAge(60 * 60); // 1 hour
+                    passwordCookie.setPath("/");
+                    passwordCookie.setHttpOnly(true);
+
+                    response.addCookie(phoneNumberCookie);
+                    response.addCookie(passwordCookie);
+                    // model.addAttribute("loginUser", existingAccount);
+                }
+                // session.setAttribute("loginUser", existingAccount);
+
+                // return "redirect:/profile";
+
                 sessionService.setSession("account", existingAccount, session);
                 return "redirect:/index";
+
             } else {
                 return "redirect:/login";
             }
@@ -83,7 +129,10 @@ public class AccountController {
 
     @PostMapping("/check-phoneNumber")
     public ResponseEntity<?> checkPhoneNumber(@RequestBody Map<String, String> payload) {
+<<<<<<< HEAD
         System.out.println("checkPhoneNumber");
+=======
+>>>>>>> 064c6781307f5b4c241d6d27b1b5ec80fc808910
         String phoneNumber = payload.get("phoneNumber");
         Account exitsAccount = accountRepository.findAccountByPhoneNumber(phoneNumber);
         if (exitsAccount == null) {
