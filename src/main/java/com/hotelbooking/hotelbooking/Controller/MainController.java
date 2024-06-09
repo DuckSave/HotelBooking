@@ -25,8 +25,10 @@ import com.hotelbooking.hotelbooking.Service.BookingHotelService;
 import com.hotelbooking.hotelbooking.Service.EmailSenderService;
 import com.hotelbooking.hotelbooking.Service.HotelService;
 import com.hotelbooking.hotelbooking.Service.RoomService;
+import com.hotelbooking.hotelbooking.Service.SessionService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
@@ -42,6 +44,9 @@ public class MainController {
 
     @Autowired
     private EmailSenderService mailService;
+
+    @Autowired
+    private SessionService sessionService;
 
     @GetMapping("/login")
     public String login() {
@@ -113,13 +118,12 @@ public class MainController {
     }
 
     @GetMapping("/services")
-    public String services(Model model,
+    public String services(Model model,HttpSession seesion,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "1") int size) {
-        Page<HotelBooking> bookingPage = bookingService.getBookings(page, size);
-        model.addAttribute("bookings", bookingPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", bookingPage.getTotalPages());
+        Account account = (Account) sessionService.getSession("account", seesion);
+        HotelBooking booking = bookingService.getBooking(account);
+        model.addAttribute("bookings", booking);
         return "/User_UI/services.html";
     }
 
@@ -148,17 +152,17 @@ public class MainController {
         return "/Admin_UI/adminHotel.html";
     }
 
-    @GetMapping("/admin/hotel/room")
-    public String adminRoom(){
-        return "/Admin_UI/adminRoom.html";
-    }
-   
-    // @GetMapping("admin/hotel/room")
-    // public String addRoom(Model model) {
-    //     List<Hotel> listHotel = hotelRepo.findAll();
-    //     model.addAttribute("listHotel", listHotel);
+    // @GetMapping("/admin/hotel/room")
+    // public String adminRoom(){
     //     return "/Admin_UI/addRoom.html";
     // }
+   
+    @GetMapping("admin/hotel/room")
+    public String addRoom(Model model) {
+        List<Hotel> listHotel = hotelRepo.findAll();
+        model.addAttribute("listHotel", listHotel);
+        return "/Admin_UI/addRoom.html";
+    }
 
     // @GetMapping("/sendMail")
     // public ResponseEntity<?> sendMail() {
@@ -169,16 +173,6 @@ public class MainController {
     //     return ResponseEntity.ok().body(map);
     // }
 
-    @GetMapping("/cart")
-     public String getBookings(Model model, 
-                              @RequestParam(name = "page", defaultValue = "0") int page, 
-                              @RequestParam(name = "size", defaultValue = "1") int size) {
-        Page<HotelBooking> bookingPage = bookingService.getBookings(page, size);
-        model.addAttribute("bookings", bookingPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", bookingPage.getTotalPages());
-        return "/User_UI/cart.html";
-    }
 
 
 }

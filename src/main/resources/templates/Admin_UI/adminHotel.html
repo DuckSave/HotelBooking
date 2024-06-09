@@ -7,5 +7,34 @@
     <div th:replace="/Admin_UI/fragments/header::header">
         
     </div>
+    <button id="buton"></button>
+    <form action="" id="add">
+        <input type="text" name="hotelName" id="">
+    </form>
 </body>
+<div th:replace="/User_UI/fragments/script::script"></div>
+<script>
+    document.getElementById("add").addEventListener("submit", (event) =>{
+        event.preventDefault();
+        let Data = new FormData(this);
+        fetch('/addHotel', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                Data
+            )
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "Add_Hotel_Fail") {
+                    alert('')
+                } else {
+                    AlertDialog("warning", "Verify OTP", "OTP INVALID");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
 </html>
