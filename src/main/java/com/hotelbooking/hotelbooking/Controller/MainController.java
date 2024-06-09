@@ -39,6 +39,9 @@ public class MainController {
     private HotelRepo hotelRepo;
 
     @Autowired
+    private RoomRepo roomRepo ; 
+
+    @Autowired
     private EmailSenderService mailService;
 
     @GetMapping("/login")
@@ -136,28 +139,40 @@ public class MainController {
     }
 
     @GetMapping("/admin/hotel")
-<<<<<<< HEAD
+ 
     public String addHotel(){
         return "/Admin_UI/adminHotel.html";
     }
 
-    @GetMapping("/admin/hotel/room")
-    public String adminRoom(){
-        return "/Admin_UI/adminRoom.html";
-    }
    
-=======
-    public String addHotel() {
-        return "/Admin_UI/addHotel.html";
-    }
+    
 
     @GetMapping("admin/hotel/room")
     public String addRoom(Model model) {
         List<Hotel> listHotel = hotelRepo.findAll();
         model.addAttribute("listHotel", listHotel);
-        return "/Admin_UI/addRoom.html";
+        return "/Admin_UI/adminRoom.html";
+        
     }
 
+    @GetMapping("/admin/hotel/room/detail")
+    public String getRoomDetail(Model model ) {
+        List<Hotel> listHotel = hotelRepo.findAll();
+        List<Room> listRooms = roomRepo.findAll();
+        model.addAttribute("listRooms", listRooms);
+        model.addAttribute("listHotel", listHotel);
+        return "/Admin_UI/adminRoomDetail.html" ;
+    }
+
+    @GetMapping("/admin/hotel/room/search")
+    public String searchRoomsByHotelId(@RequestParam("hotelId") String hotelId, Model model) {
+        List<Hotel> listHotel = hotelRepo.findAll();
+        List<Room> listRooms = roomRepo.findRoomsByHotelId(hotelId); // Using roomRepo method to find rooms by hotelId
+        model.addAttribute("listRooms", listRooms);
+        model.addAttribute("listHotel", listHotel);
+        return "/Admin_UI/adminRoomDetail"; // Return the same view with updated room list
+    }
+    
     // @GetMapping("/sendMail")
     // public ResponseEntity<?> sendMail() {
     //     HotelBooking booking = bookingService.getBooking("665d8e4945db4e4bb4f07446");
@@ -178,5 +193,5 @@ public class MainController {
         return "/User_UI/cart.html";
     }
 
->>>>>>> 2a771154c5090d7e381b1ca35b873ee69dbb232a
+
 }

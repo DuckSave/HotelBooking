@@ -3,6 +3,7 @@ package com.hotelbooking.hotelbooking.Controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.support.Repositories;
@@ -20,6 +21,8 @@ import com.hotelbooking.hotelbooking.Repository.RoomRepo;
 import com.hotelbooking.hotelbooking.Service.RoomService;
 import com.hotelbooking.hotelbooking.Utils.FileStorageUtil;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 public class RoomController {
@@ -28,6 +31,9 @@ public class RoomController {
 
     @Autowired
     RoomService roomService;
+
+    @Autowired
+    RoomRepo roomRepo;
 
     @PostMapping("/rooms/add")
     public ResponseEntity<Map<String, String>> addRoom(@RequestParam("RoomNumber") String id,
@@ -44,6 +50,7 @@ public class RoomController {
                 imagePaths.add(imagePath);
             }
         }
+        
 
         Room exitsRoom = roomService.getRoomById(id);
         if (exitsRoom == null) {
@@ -60,4 +67,18 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Map.of("status", "ADD_ROOM_FAILED", "message", "room already exists"));
     }
+
+    @PostMapping("/rooms/delete")
+    public ResponseEntity<?> deleteRoom(@RequestBody Map<String, String> payload , Model model){
+        String id = payload.get("roomid");
+        Optional<Room> exitroom = roomRepo.findById(id);
+        if (exitroom.isPresent()) {
+            roomRepo.delete(exitroom.get());
+            return ResponseEntity.ok().body(Map.of("message","Delete_SUCCESS"));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message","Delete_UnSuccess","error","500"));
+        
+    }
+    
+    
 }

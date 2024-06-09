@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+    <head th:replace="/Admin_UI/fragments/head::head">
+
+    </head>
+<body>
+    <div th:replace="/Admin_UI/fragments/header::header">
+        
+    </div>
+    <div th:replace="/User_UI/fragments/script::script" ></div>
+    <div style="margin-top: 50px;">
+        <main class="app-content">
+            <div class="app-title">
+              <ul class="app-breadcrumb breadcrumb side">
+                <li class="breadcrumb-item active"><a href="#"><b>Danh sách phòng</b></a></li>
+              </ul>
+            <div id="clock"></div>
+            </div>
+        
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tile">
+                  <div class="tile-body">
+                    <div class="row element-button">
+                        <div class="col-sm-2">
+                        <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" 
+                      id="sampleTable">
+                      <form id="searchRoomForm" action="/admin/hotel/room/search" method="get" class="form-inline">
+                        <div class="form-group col-md-6">
+                            <label for="HotelName">Chọn khách sạn:</label>
+                            <select class="form-control" id="HotelName" name="hotelId" required>
+                                <option th:each="hotel : ${listHotel}" th:text="${hotel.hotelName}" th:value="${hotel.id}"></option>
+                            </select>
+                            <button type="submit" class="btn btn-add btn-sm" title="Tìm Phòng"><i class="fas fa-plus"></i> Tìm phòng</button>
+                        </div>
+                        </form>
+                   
+                    </div>
+                      <thead>
+                        <tr>                 
+                          <th width="80">Mã phòng</th>
+                          <th width="130">Loại phòng</th>
+                          <th width="100">Giá</th>
+                          <th width="90">Trạng thái</th>
+                          <th width="190">Mô tả</th>
+                          <th width="80">Chức năng</th>
+                        </tr>
+                      </thead>
+                      <tbody th:each ="roomHotel : ${listRooms}">
+                            <tr >
+                                  <th th:text="${roomHotel.id}"></th>
+                                  <th th:text="${roomHotel.roomType}"></th>                                 
+                                  <th th:text="${roomHotel.price}"></th>                                 
+                                   <td>
+                                        <span class="btn btn-primary btn-sm trash">Đã đặt</span> 
+                                        <span class="badge bg-success">Còn trống</span>
+                                   </td>
+                                   <th th:text="${roomHotel.description}"></th>   
+                                  <td class="table-td-center"><button class="btn btn-primary btn-sm trash" type="button"  title="Xóa" th:data-room-name="${roomHotel.id}" onclick="deleteRoom(this)"><i class="fas fa-trash-alt" ></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i class="fas fa-edit"></i>
+                                    </button>
+                                  </td>
+                            </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+       </div>
+       
+<script>
+  function deleteRoom(element){
+    var roomid = element.getAttribute("data-room-name");
+    fetch('/rooms/delete' ,{
+      method: 'POST', 
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({roomid: roomid})
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.message === 'Delete_SUCCESS' ){
+        AlertDialog('success', 'Delete successfully', 'success');
+
+      }else{
+        AlertDialog('error', 'Delete unsuccessfully', data.message);
+      }
+
+    })
+  }
+</script>
+
+
+</div>
+</body>
+</html>
