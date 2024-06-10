@@ -3,6 +3,7 @@ package com.hotelbooking.hotelbooking.Service;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -14,19 +15,41 @@ import java.util.Iterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hotelbooking.hotelbooking.Class.BookingDetail;
 import com.hotelbooking.hotelbooking.Config.VnpayConfig;
+import com.hotelbooking.hotelbooking.Entity.HotelBooking;
+import com.hotelbooking.hotelbooking.Entity.Room;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class PaymentService {
     @Autowired
     private VnpayConfig Config;
 
-    public String getPaymentUrl(long amount) {
+    @Autowired
+    private BookingHotelService bookingService ;
+
+    public String getPaymentUrl(Map<String, Object> payload,HttpServletRequest req) {
+
+        String bookingId = (String) payload.get("bookingId");
+        HotelBooking booking = bookingService.getBookingById(bookingId);
+
+        if(booking == null){
+            return null;
+        }
+
+        
+
+        List<BookingDetail> BookingDetails =  booking.getBookingDetail();
+        long amount = getAmount(BookingDetails);
+
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
         String vnp_TxnRef = Config.getRandomNumber(8);
         String vnp_TmnCode = Config.vnp_TmnCode;
+        String vnp_IpAddr = Config.getIpAddress(req);
         
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
@@ -40,7 +63,7 @@ public class PaymentService {
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl);
-
+        vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -84,5 +107,15 @@ public class PaymentService {
         String paymentUrl = Config.vnp_PayUrl + "?" + queryUrl;
 
         return paymentUrl;
+    }
+
+    private long getAmount(List<BookingDetail> bookingDetails){
+        long amount = 0;
+        for(BookingDetail booking : bookingDetails){
+            int price = booking.getRoom().getPrice();
+            int totalDay = (int) ChronoUnit.DAYS.between(booking.getArrivalDate(), booking.getDepartureDate());
+            amount += price * totalDay;
+        }
+        return amount;
     }
 }

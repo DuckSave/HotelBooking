@@ -142,6 +142,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div th:replace="/User_UI/fragments/script::script"></div>
 
     <script>
         document.getElementById('booking').addEventListener('submit', (event) => {
@@ -169,8 +170,11 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
-                    alert(data.message);
+                    if(data.status === "BOOKING_SUCCESS"){
+                        window.location.href = "/services";
+                    }else{
+                        AlertDialog('error','BOOKING ROOM','this room has been booked');
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);

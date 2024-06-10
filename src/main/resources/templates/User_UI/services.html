@@ -65,15 +65,15 @@
         </div>
         <div class="row">
           <!-- Example booking details, replace with dynamic content from HotelBooking -->
-          <div class="col-md-10 animate-box" th:each="booking : ${bookings}">
+          <div class="col-md-10 animate-box" th:each="booking : ${bookings.bookingDetail}">
             <div class="col-md-6 card-body m-3">
-              <h5 class="card-title">Booking <span th:text="${booking.id}">#1</span></h5>
+              <input type="text" name="bookingId" id="bookingId" th:value="${bookings.id}" hidden>
               <p class="card-text">Customer : <span
                   th:text="${booking.firstName} + ' ' + ${booking.lastName}">John</span></p>
               <p class="card-text">Email: <span th:text="${booking.email}"></span></p>
               <p class="card-text">Number of Guests: <span th:text="${booking.numberOfGuests}"></span></p>
-              <p class="card-text" th:text="'Check-In Time: '+${booking.checkInTime.arrivalTime}"><span
-                  th:text="${booking.checkInTime}">2024-06-10</span></p>
+              <p class="card-text" th:text="'Check-In Time: '+${booking.arrivalTime}"><span></span></p>
+              <p class="card-text" th:text="'Check-In Date: '+${booking.arrivalDate}"><span></span></p>
               <p class="card-text">Payment Status: <span
                   th:text="${booking.isPayment ? 'Paid' : 'Pending'}">Pending</span></p>
               <button class="btn btn-primary" onclick="showPaymentOptions()">Proceed to Payment</button>
@@ -86,7 +86,7 @@
       </div>
     </div>
     <div class="container">
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-12 text-center">
           <ul class="pagination">
             <li class="page-item" th:if="${currentPage > 0}">
@@ -107,7 +107,7 @@
             </li>
           </ul>
         </div>
-      </div>
+      </div> -->
     </div>
     <div id="colorlib-payment" style="display:none;" class="colorlib-light-grey">
       <div class="container">
@@ -124,8 +124,8 @@
                 <i class="flaticon-credit-card"></i>
               </span>
               <h3>Credit Card</h3>
-              <p>Pay securely using your credit card.</p>
-              <button class="btn btn-primary">Pay with Credit Card</button>
+              <p>VNPay Payment</p>
+              <a id="vnpay" class="btn btn-primary">Pay with Credit Card</a>
             </div>
           </div>
           <div class="col-md-4 animate-box">
@@ -182,21 +182,21 @@
             <div class="f-blog">
               <a href="blog.html" class="blog-img" style="background-image: url(/assets/images/blog-1.jpg);"></a>
               <div class="desc">
-                <h2><a href="blog.html">Most Beautiful Website in 2018</a></h2>
+                
                 <p class="admin"><span>25 March 2018</span></p>
               </div>
             </div>
             <div class="f-blog">
               <a href="blog.html" class="blog-img" style="background-image: url(/assets/images/blog-2.jpg);"></a>
               <div class="desc">
-                <h2><a href="blog.html">Most Beautiful Website in 2018</a></h2>
+                
                 <p class="admin"><span>24 March 2018</span></p>
               </div>
             </div>
             <div class="f-blog">
               <a href="blog.html" class="blog-img" style="background-image: url(/assets/images/blog-3.jpg);"></a>
               <div class="desc">
-                <h2><a href="blog.html">Most Beautiful Website in 2018</a></h2>
+                
                 <p class="admin"><span>23 March 2018</span></p>
               </div>
             </div>
@@ -217,10 +217,32 @@
   <div class="gototop js-top">
     <a href="#" class="js-gototop"><i class="icon-arrow-up2"></i></a>
   </div>
+  <div th:replace="/User_UI/fragments/script::script"></div>
   <script>
     function showPaymentOptions() {
       document.getElementById('colorlib-payment').style.display = 'block';
     }
+
+    document.getElementById('vnpay').addEventListener('click', () => {
+      let bookingId = document.getElementById('bookingId').value;
+      fetch('/api/payment/create_payment', {
+        method : 'POST',
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify({
+          bookingId: bookingId
+        })
+      })
+      .then( response => response.json() )
+      .then( data => {
+        if( data.status === "PAYMENT_SUCCESS"){
+          window.location.href = data.paymentURL;
+        }else{
+          console.log(data.paymentURL)
+          AlertDialog("error","Payment With Card","Payment Failed");
+        }
+      })
+      .catch( error => console.log( error));
+    });
   </script>
   <div th:replace="/User_UI/fragments/script::script"></div>
 </body>

@@ -1,120 +1,100 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head th:replace="/Admin_UI/fragments/head::head">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <div th:replace="/Admin_UI/fragments/header::header">
-        </div>
+    <div th:replace="/Admin_UI/fragments/header::header"></div>
+    <div class="" th:replace="/User_UI/fragments/script::script"></div>
     <div style="margin-top: 50px;">
         <main class="app-content">
             <div class="app-title">
-              <ul class="app-breadcrumb breadcrumb side">
-                <li class="breadcrumb-item active"><a href="#"><b>Danh sách phòng</b></a></li>
-              </ul>
-            <div id="clock"></div>
+                <ul class="app-breadcrumb breadcrumb side">
+                    <li class="breadcrumb-item active"><a href="#"><b>Danh sách phòng</b></a></li>
+                </ul>
+                <div id="clock"></div>
             </div>
-        
+
             <div class="row">
-              <div class="col-md-12">
-                <div class="tile">
-                  <div class="tile-body">
-        
-                    <div class="row element-button">
-                      <div class="col-sm-2">
-        
-                        <a class="btn btn-add btn-sm" href="" title="Thêm"><i class="fas fa-plus"></i>
-                          Tạo mới phòng</a>
-                      </div>
-                      <div class="col-sm-2">
-                        <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập"><i
-                            class="fas fa-file-upload"></i> Tải từ file</a>
-                      </div>
-        
-                      <div class="col-sm-2">
-                        <a class="btn btn-delete btn-sm print-file" type="button" title="In"><i
-                            class="fas fa-print"></i> In dữ liệu</a>
-                      </div>
-                      <div class="col-sm-2">
-                        <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
-                            class="fas fa-copy"></i> Sao chép</a>
-                      </div>
-        
-                      <div class="col-sm-2">
-                        <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất Excel</a>
-                      </div>
-                      <div class="col-sm-2">
-                        <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" ><i
-                            class="fas fa-file-pdf"></i> Xuất PDF</a>
-                      </div>
-                      <div class="col-sm-2">
-                        <a class="btn btn-delete btn-sm" type="button" title="Xóa"><i
-                            class="fas fa-trash-alt"></i> Xóa tất cả</a>
-                      </div>
+                <div class="col-md-12">
+                    <div class="tile">
+                        <div class="tile-body">
+
+                            <div class="row element-button">
+                                <div class="col-sm-2">
+                                    <a class="btn btn-add btn-sm" href="" title="Thêm"><i class="fas fa-plus"></i> Tạo mới phòng</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập"><i class="fas fa-file-upload"></i> Tải từ file</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm print-file" type="button" title="In"><i class="fas fa-print"></i> In dữ liệu</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i class="fas fa-copy"></i> Sao chép</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất Excel</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In"><i class="fas fa-file-pdf"></i> Xuất PDF</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm" type="button" title="Xóa"><i class="fas fa-trash-alt"></i> Xóa tất cả</a>
+                                </div>
+                            </div>
+                            
+                            <form id="fileUploadForm" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="roomType">Hotel name</label>
+                                        <select class="form-control" id="HotelName" name="HotelName" required>
+                                            <option th:each="hotel : ${listHotel}" th:text="${hotel.hotelName}" th:value="${hotel.id}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="roomType">RoomType</label>
+                                        <select class="form-control" id="RoomName" name="RoomName" required>
+                                            <option value="">Select a room</option>
+                                            <option value="Room1">King Room</option>
+                                            <option value="Room2">Double Room</option>
+                                            <option value="Room3">Single Room</option>
+                                            <option value="Room4">Suite Room</option>
+                                            <option value="Room5">Cabana Room</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="roomNumber">Room Number</label>
+                                        <input type="text" class="form-control" id="RoomNumber" name="RoomNumber" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="price">Price</label>
+                                        <input type="number" class="form-control" name="price" id="price" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="description">Description</label>
+                                        <textarea class="form-control" id="description" name="description" required></textarea>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="images">Images</label>
+                                        <input type="file" class="form-control" id="images" name="images" multiple required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block" id="addRoom">Submit</button>
+                            </form>
+                            
+                            <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" id="sampleTable">
+                                <thead></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="row">
-                        <form id="fileUploadForm" enctype="multipart/form-data ">
-                            <div class="form-group col-md-6">
-                                <label for="roomType">Hotel name</label>
-                                <select class="form-control" id="HotelName" name="HotelName" required>
-                                    <option th:each="hotel : ${listHotel}" th:text="${hotel.hotelName}" th:value="${hotel.id}">
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="roomType">RoomType</label>
-                                <select class="form-control" id="RoomName" name="RoomName" required>
-                                    <option value="">Select a room</option>
-                                    <option value="Room1">King Room</option>
-                                    <option value="Room2">Double Room</option>
-                                    <option value="Room3">Singel Room</option>
-                                    <option value="Room4">Suite Room</option>
-                                    <option value="Room5">Cabana Room </option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="roomType">Room Number</label>
-                                <input type="text" class="form-control" id="RoomNumber" name="RoomNumber" required>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="price">Price</label>
-                                <input type="number" class="form-control" name="price" id="price" required>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="images">Description</label>
-                                <textarea type="text" class="form-control" id="description" name="description" multiple
-                                    required></textarea>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="images">Images</label>
-                                <input type="file" class="form-control" id="images" name="images" multiple required>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block" id="addRoom">Submit</button>
-                        </form>
-                    <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" 
-                      id="sampleTable">
-                      <thead>
-                        <!-- <tr>                 
-                          <th width="80">Mã phòng</th>
-                          <th width="130">Tên khách sạn</th>
-                          <th width="130">Loại phòng</th>
-                          <th width="100">Giá</th>
-                          <th width="90">Trạng thái</th>
-                          <th width="190">Mô tả</th>
-                          <th width="80">Chức năng</th>
-                        </tr> -->
-                      </thead>
-                      <tbody>
-                        
-                      </tbody>
-                    </table>
-                  </div>
                 </div>
-              </div>
             </div>
-          </main>
-       </div>
-       <script>
+        </main>
+    </div>
+
+    <script>
         document.getElementById('fileUploadForm').addEventListener('submit', async function (event) {
             event.preventDefault();
             const formData = new FormData(this);
@@ -124,31 +104,17 @@
                 method: 'POST',
                 body: formData
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status == 'ADD_ROOM_SUCCESS') {
-                        AlertDialog('success', 'Room added successfully', 'success');
-                    }
-                })
-            // try {
-            //     const response = await fetch('/rooms/add', {
-            //         method: 'POST',
-            //         body: formData
-            //     });
-
-            //     if (!response.ok) {
-            //         throw new Error(`HTTP error! status: ${response.status}`);
-            //     }
-
-            //     const data = await response.json();
-            //     // AlertDialog("success", "ADD Room", "Add Room successfully"); 
-            //     console.log('Room added successfully:', data);
-            // } catch (error) {
-            //     console.error('Error adding room:', error);
-            // }
+            .then(response => response.json())
+            .then(data => {
+                if (data.status == 'ADD_ROOM_SUCCESS') {
+                    AlertDialog('success', 'Room added successfully', 'success');
+                    setTimeout(() => {
+                    window.location.href = '/admin/hotel/room/detail'; // Đổi URL này thành trang bạn muốn chuyển đến
+                }, 2000);
+                }
+            });
         });
-
-
     </script>
+
 </body>
 </html>

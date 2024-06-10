@@ -1,98 +1,213 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
-    <head th:replace="/Admin_UI/fragments/head::head">
+<html lang="en">
+<head th:replace="/Admin_UI/fragments/head::head">
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    </head>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Danh sách phòng</title>
+</head>
 <body>
-    <div th:replace="/Admin_UI/fragments/header::header">
-        
-    </div>
-    <div th:replace="/User_UI/fragments/script::script" ></div>
+    <div th:replace="/Admin_UI/fragments/header::header"></div>
+    <div th:replace="/User_UI/fragments/script::script"></div>
     <div style="margin-top: 50px;">
         <main class="app-content">
             <div class="app-title">
-              <ul class="app-breadcrumb breadcrumb side">
-                <li class="breadcrumb-item active"><a href="#"><b>Danh sách phòng</b></a></li>
-              </ul>
-            <div id="clock"></div>
+                <ul class="app-breadcrumb breadcrumb side">
+                    <li class="breadcrumb-item active"><a href="#"><b>Danh sách phòng</b></a></li>
+                </ul>
+                <div id="clock"></div>
             </div>
-        
             <div class="row">
-              <div class="col-md-12">
-                <div class="tile">
-                  <div class="tile-body">
-                    <div class="row element-button">
-                        <div class="col-sm-2">
-                        <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" 
-                      id="sampleTable">
-                      <form id="searchRoomForm" action="/admin/hotel/room/search" method="get" class="form-inline">
-                        <div class="form-group col-md-6">
-                            <label for="HotelName">Chọn khách sạn:</label>
-                            <select class="form-control" id="HotelName" name="hotelId" required>
-                                <option th:each="hotel : ${listHotel}" th:text="${hotel.hotelName}" th:value="${hotel.id}"></option>
-                            </select>
-                            <button type="submit" class="btn btn-add btn-sm" title="Tìm Phòng"><i class="fas fa-plus"></i> Tìm phòng</button>
+                <div class="col-md-12">
+                    <div class="tile">
+                        <div class="tile-body">
+                            <div class="row element-button">
+                                <div class="col-sm-4">
+                                    <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" id="sampleTable">
+                                        <form id="searchRoomForm" action="/admin/hotel/room/search" method="get" class="form-inline">
+                                            <div class="form-group col-md-6">
+                                                <label for="HotelName">Chọn khách sạn:</label>
+                                                <select class="form-control" id="HotelName" name="hotelId" required>
+                                                    <option th:each="hotel : ${listHotel}" th:text="${hotel.hotelName}" th:value="${hotel.id}"></option>
+                                                </select>
+                                                <button type="submit" class="btn btn-add btn-sm" title="Tìm Phòng"><i class="fas fa-plus"></i> Tìm phòng</button>
+                                            </div>
+                                        </form>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                                <table class="table table-hover table-bordered" cellpadding="0" cellspacing="0" id="sampleTable">
+                                    <thead>
+                                        <tr>
+                                            <th width="80">Mã phòng</th>
+                                            <th width="130">Loại phòng</th>
+                                            <th width="100">Giá</th>
+                                            <th width="90">Trạng thái</th>
+                                            <th width="190">Mô tả</th>
+                                            <th width="80">Chức năng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody th:each="roomHotel : ${listRooms}">
+                                        <tr>
+                                            <th th:text="${roomHotel.id}"></th>
+                                            <th th:text="${roomHotel.roomType}"></th>
+                                            <th th:text="${roomHotel.price}"></th>
+                                            <td>
+                                              <span th:if="${roomHotel.isBooking == true}" class="btn btn-primary btn-sm trash">Đã đặt</span>
+                                              <span th:if="${roomHotel.isBooking == false}" class="badge bg-success">Còn trống</span>
+                                          </td>
+                                          
+                                            <th th:text="${roomHotel.description}"></th>
+                                            <td class="table-td-center">
+                                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa" th:data-room-name="${roomHotel.id}" onclick="deleteRoom(this)"><i class="fas fa-trash-alt"></i></button>
+                                                <button class="btn btn-primary btn-sm edit" type="button" th:data-room-name="${roomHotel.id}" onclick="editRoom(this)" title="Sửa" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        </form>
-                   
                     </div>
-                      <thead>
-                        <tr>                 
-                          <th width="80">Mã phòng</th>
-                          <th width="130">Loại phòng</th>
-                          <th width="100">Giá</th>
-                          <th width="90">Trạng thái</th>
-                          <th width="190">Mô tả</th>
-                          <th width="80">Chức năng</th>
-                        </tr>
-                      </thead>
-                      <tbody th:each ="roomHotel : ${listRooms}">
-                            <tr >
-                                  <th th:text="${roomHotel.id}"></th>
-                                  <th th:text="${roomHotel.roomType}"></th>                                 
-                                  <th th:text="${roomHotel.price}"></th>                                 
-                                   <td>
-                                        <span class="btn btn-primary btn-sm trash">Đã đặt</span> 
-                                        <span class="badge bg-success">Còn trống</span>
-                                   </td>
-                                   <th th:text="${roomHotel.description}"></th>   
-                                  <td class="table-td-center"><button class="btn btn-primary btn-sm trash" type="button"  title="Xóa" th:data-room-name="${roomHotel.id}" onclick="deleteRoom(this)"><i class="fas fa-trash-alt" ></i>
-                                    </button>
-                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i class="fas fa-edit"></i>
-                                    </button>
-                                  </td>
-                            </tr>
-                      </tbody>
-                    </table>
-                  </div>
                 </div>
-              </div>
             </div>
-          </main>
-       </div>
-       
-<script>
-  function deleteRoom(element){
-    var roomid = element.getAttribute("data-room-name");
-    fetch('/rooms/delete' ,{
-      method: 'POST', 
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({roomid: roomid})
+        </main>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <span class="thong-tin-thanh-toan">
+                                    <h5>Chỉnh sửa thông tin Phòng</h5>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="idRoom">idRoom</label>
+                                <input type="text" class="form-control" id="idRoom" name="idRoom" placeholder="Id Room" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="roomType">roomType</label>
+                                <input type="text" class="form-control" id="roomType" name="roomType" placeholder="roomType" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="price">Price</label>
+                                <input type="text" class="form-control" id="price" name="price" placeholder="Price" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                              <label for="isBooking">Trạng thái</label>
+                              <select class="form-control" id="isBooking" name="isBooking">
+                                  <option value="true">Đã đặt</option>
+                                  <option value="false">Còn trống</option>
+                              </select>
+                          </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Mô tả</label>
+                                <textarea id="description" name="description" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <button id="updateButton" name="updateButton" class="btn btn-save" type="button">Save</button>
+                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Cancel</a>
+                    </div>
+                    <div class="modal-footer"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap and necessary plugins -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function deleteRoom(element) {
+            var roomid = element.getAttribute("data-room-name");
+            fetch('/rooms/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ roomid: roomid })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Delete_SUCCESS') {
+                    AlertDialog('success', 'Delete successfully', 'success');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    AlertDialog('error', 'Delete unsuccessfully', data.message);
+                }
+            });
+        }
+
+        function editRoom(element) {
+        var roomid = element.getAttribute("data-room-name");
+        fetch('/editRoom', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({roomid: roomid})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "edit_success") {
+                document.getElementById("idRoom").value = data.room.id;
+                document.getElementById("roomType").value = data.room.roomType;
+                document.getElementById("price").value = data.room.price;
+                document.getElementById("isBooking").value = data.room.isBooking;
+                document.getElementById("description").value = data.room.description;
+                var isBookingSelect = document.getElementById("isBooking");
+                isBookingSelect.value = data.room.isBooking;  
+
+            }
+        });
+    }
+    document.getElementById("updateButton").addEventListener("click", () => {
+    var roomid = document.querySelector('input[name="idRoom"]').value;
+    var roomType = document.querySelector('input[name="roomType"]').value;
+    var price = document.querySelector('input[name="price"]').value;
+    var description = document.querySelector('textarea[name="description"]').value;
+    var isBooking = document.querySelector('select[name="isBooking"]').value;
+
+       fetch('/updateHotel', {
+
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+
+      body: JSON.stringify({
+        roomid:roomid, 
+        roomType:roomType,
+        price:price,
+        description:description,
+        isBooking: isBooking,
+      })
     })
+
     .then(response => response.json())
     .then(data => {
-      if (data.message === 'Delete_SUCCESS' ){
-        AlertDialog('success', 'Delete successfully', 'success');
-
-      }else{
-        AlertDialog('error', 'Delete unsuccessfully', data.message);
+      if (data.status === "Save_Success") {
+        AlertDialog("success", "Save_Success", "Ok");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000); 
+      } else {
+        AlertDialog("message", "Save_Unsuccess", data.message);
       }
-
     })
-  }
-</script>
-
-
-</div>
+  })
+    </script>
 </body>
 </html>
