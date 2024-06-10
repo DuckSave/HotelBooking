@@ -1,5 +1,9 @@
 package com.hotelbooking.hotelbooking.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +23,6 @@ public class AccountService {
     public void updateAccount(Account account){
         accountRepo.save(account);
     }
+
 
 }

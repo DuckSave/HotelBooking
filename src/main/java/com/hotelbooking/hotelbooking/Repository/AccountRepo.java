@@ -1,6 +1,7 @@
 package com.hotelbooking.hotelbooking.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -32,5 +33,8 @@ public interface AccountRepo extends MongoRepository<Account, String> {
         }
         return false;
     }
+
+    @Query(value = "{'role': true}")
+    List<Account> findAccountsByRoleTrue();
 
 }

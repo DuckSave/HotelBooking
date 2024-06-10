@@ -10,28 +10,7 @@
       <div class="top-menu">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-xs-2">
-              <div id="colorlib-logo"><a th:href="@{/index}">Tour</a></div>
-            </div>
-            <div class="col-xs-10 text-right menu-1">
-              <ul>
-                <li><a th:href="@{/index}">Home</a></li>
-                <li class="has-dropdown">
-                  <a th:href="@{/tours}">Tours</a>
-                  <ul class="dropdown">
-                    <li><a href="#">Destination</a></li>
-                    <li><a href="#">Cruises</a></li>
-                    <li><a href="#">Hotels</a></li>
-                    <li><a href="#">Booking</a></li>
-                  </ul>
-                </li>
-                <li><a th:href="@{/hotels}">Hotels</a></li>
-                <li><a th:href="@{/services}">Services</a></li>
-                <li><a th:href="@{/blog}">Blog</a></li>
-                <li><a th:href="@{/about}">About</a></li>
-                <li class="active"><a th:href="@{/contact}">Contact</a></li>
-              </ul>
-            </div>
+            <div th:replace="User_UI/fragments/index1 :: index1"></div>
           </div>
         </div>
       </div>

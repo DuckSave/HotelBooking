@@ -16,8 +16,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+=======
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+>>>>>>> 0a4a996185e1f79477141821c144bc1a388068d9
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,9 +33,12 @@ import com.hotelbooking.hotelbooking.Repository.HotelRepo;
 import com.hotelbooking.hotelbooking.Service.HotelService;
 import com.hotelbooking.hotelbooking.Utils.FileStorageUtil;
 
+<<<<<<< HEAD
 import ch.qos.logback.core.model.Model;
 
 
+=======
+>>>>>>> 0a4a996185e1f79477141821c144bc1a388068d9
 @Controller
 public class HotelController {
 
@@ -39,7 +47,6 @@ public class HotelController {
 
     @Autowired
     HotelRepo hotelRepository;
-
 
     @PostMapping("/addHotel")
     public ResponseEntity<?> addHotel(
@@ -51,36 +58,36 @@ public class HotelController {
             @RequestParam("description") String description,
             @RequestParam("image") MultipartFile image) {
 
+        Hotel existHotel = hotelRepository.findHotelByAddress(address);
 
-            Hotel existHotel = hotelRepository.findHotelByAddress(address);
-
-            // Save the image
-            String imageFileName = FileStorageUtil.saveFile(image, ASSETS_IMAGES_DIR);
-            if (imageFileName == null) {
-                System.out.println("asdasd");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(Map.of("status", "ADD_HOTEL_FAILED", "message", "Image upload failed"));
-            }
-
-            if (existHotel == null) {
-                Hotel newHotel = new Hotel();
-                newHotel.setHotelName(hotelName);
-                newHotel.setLocation(location);
-                newHotel.setAddress(address);
-                newHotel.setStar(star);
-                newHotel.setPrice(price);
-                newHotel.setDescription(description);
-                newHotel.setImage(imageFileName); 
-                hotelRepository.save(newHotel);
-
-                return ResponseEntity.status(HttpStatus.OK).body(Map.of("status", "ADD_HOTEL_SUCCESS"));
-            }
-
+        // Save the image
+        String imageFileName = FileStorageUtil.saveFile(image, ASSETS_IMAGES_DIR);
+        if (imageFileName == null) {
+            System.out.println("asdasd");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("status", "ADD_HOTEL_FAILED", "message", "Hotel already exists"));
- 
+                    .body(Map.of("status", "ADD_HOTEL_FAILED", "message", "Image upload failed"));
+        }
+
+        if (existHotel == null) {
+            Hotel newHotel = new Hotel();
+            newHotel.setHotelName(hotelName);
+            newHotel.setLocation(location);
+            newHotel.setAddress(address);
+            newHotel.setStar(star);
+            newHotel.setPrice(price);
+            newHotel.setDescription(description);
+            newHotel.setImage(imageFileName);
+            hotelRepository.save(newHotel);
+
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("status", "ADD_HOTEL_SUCCESS"));
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("status", "ADD_HOTEL_FAILED", "message", "Hotel already exists"));
+
     }
 
+<<<<<<< HEAD
     @PostMapping("/deleteHotel")
     public ResponseEntity<?> deleteHotel(@RequestBody Map<String, String> payload, Model model ) {
         String id = payload.get("idHotel");
@@ -139,4 +146,7 @@ public class HotelController {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Save_Unseccess", "Erro", "Erro"));
     }
+=======
+   
+>>>>>>> 0a4a996185e1f79477141821c144bc1a388068d9
 }

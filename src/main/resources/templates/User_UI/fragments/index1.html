@@ -1,0 +1,26 @@
+<div th:fragment="index1">
+    <div class="row">
+        <div class="col-xs-2">
+          <div id="colorlib-logo"><a th:href="@{/index}">Tour</a></div>
+        </div>
+        <div class="col-xs-10 text-right menu-1">
+          <ul>
+            <li class="active"><a th:href="@{/index}">Home</a></li>
+            <li class="has-dropdown">
+              <a th:href="@{/tours}">Tours</a>
+              <ul class="dropdown">
+                <li><a th:href="@{#}">Destination</a></li>
+                <li><a th:href="@{#}">Cruises</a></li>
+                <li><a th:href="@{#}">Hotels</a></li>
+                <li><a th:href="@{#}">Booking</a></li>
+              </ul>
+            </li>
+            <li><a th:href="@{/hotels}">Hotels</a></li>
+            <li><a th:href="@{/services}">Services</a></li>
+            <li><a th:href="@{/blog}">Blog</a></li>
+            <li><a th:href="@{/about}">About</a></li>
+            <li><a th:href="@{/contact}">hả</a></li>
+          </ul>
+        </div>
+      </div>
+</div>

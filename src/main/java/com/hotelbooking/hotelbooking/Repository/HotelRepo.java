@@ -17,9 +17,18 @@ public interface HotelRepo extends MongoRepository<Hotel,String> {
     @Query(value = "{'location':?0}")
     List<Hotel> findListHotelByLocation(String location);
 
+<<<<<<< HEAD
     @Query(value = "{'hotelName':?0}")
     Hotel findByName(String hotelName);
 
     @Query(value = "{ 'hotelName' : { $regex: ?0, $options: 'i' } }")
     Page<Hotel> findByNameContainingIgnoreCase(String hotelName, Pageable pageable);
+=======
+    @Query(value = "{'location': ?0, 'address': ?1}")
+    Hotel findHotelByLocationAndAddress(String location, String address);
+
+    List<Hotel> findByPriceBetween(int priceFrom, int priceTo );
+
+    List<Hotel> findByStarIn(List<Integer> stars);
+>>>>>>> 0a4a996185e1f79477141821c144bc1a388068d9
 }
