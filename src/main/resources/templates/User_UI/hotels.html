@@ -63,6 +63,7 @@
           <div class="col-md-9">
             <div class="row">
               <div class="wrap-division">
+
                 <div th:each="hotel : ${listHotel}">
                   <div class="col-md-6 col-sm-6 animate-box">
                     <div class="hotel-entry">
@@ -84,13 +85,12 @@
                         <span class="place" th:text="${hotel.address}"></span>
                         <p th:text="${hotel.description}">
                         </p>
-
                         </div>
-
                       </div>
                     </div>
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="col-md-12 text-center">
                     <ul class="pagination">
@@ -203,6 +203,7 @@
                   </div>
                 </div>
               </div>
+              <!-- onchange="filterHotels()" -->
               <div class="side animate-box">
                 <div class="row">
                   <div class="col-md-12">
@@ -257,6 +258,124 @@
                   </div>
                 </div>
               </div>
+
+              <!-- <div class="side animate-box">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3 class="sidebar-heading">Categories</h3>
+                    <form method="post" class="colorlib-form-2">
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Apartment</h4>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Hotel</h4>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Hostel</h4>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Inn</h4>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Villa</h4>
+                        </label>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="side animate-box">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3 class="sidebar-heading">Location</h3>
+                    <form method="post" class="colorlib-form-2">
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Greece</h4>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Italy</h4>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Spain</h4>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Germany</h4>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Japan</h4>
+                        </label>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="side animate-box">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3 class="sidebar-heading">Facilities</h3>
+                    <form method="post" class="colorlib-form-2">
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Airport Transfer</h4>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Resto Bar</h4>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Restaurant</h4>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Swimming Pool</h4>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                          <h4 class="place">Japan</h4>
+                        </label>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -382,5 +501,37 @@
   </script>
   <div th:replace="/User_UI/fragments/script::script"></div>
 
+
+  <!-- <script>
+    function filterHotels() {
+      var selectedStars = [];
+      $('#filterForm input[name="stars"]:checked').each(function () {
+        selectedStars.push($(this).val());
+      });
+
+      // Tạo URL với các tham số query dựa trên các checkbox đã chọn
+      var queryString = $.param({ stars: selectedStars });
+
+      $.ajax({
+        url: '/hotels',
+        type: 'GET',
+        data: { stars: selectedStars },
+        success: function (response) {
+          var newContent = $(response).find('#listHotel').html();
+          if (newContent) {
+            $('#listHotel').html(newContent);
+            // Áp dụng lại trạng thái checked cho các checkbox
+            selectedStars.forEach(function (star) {
+              $('#filterForm input[name="stars"][value="' + star + '"]').prop('checked', true);
+            });
+            // Cập nhật URL mà không tải lại trang
+            history.pushState(null, '', '/hotels?' + queryString);
+          } else {
+            console.log('Không có phần tử #listHotel trong phản hồi.');
+          }
+        }
+      });
+    }
+  </script> -->
 
 </html>
