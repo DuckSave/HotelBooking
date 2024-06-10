@@ -276,6 +276,7 @@ public class MainController {
     }
 
 
+
     @GetMapping("admin/hotel/room")
     public String addRoom(Model model) {
         List<Hotel> listHotel = hotelRepo.findAll();
@@ -283,7 +284,6 @@ public class MainController {
         return "/Admin_UI/adminRoom.html";
         
     }
-
 
     @GetMapping("/admin/hotel/room/detail")
     public String getRoomDetail(Model model ) {
@@ -295,7 +295,7 @@ public class MainController {
     }
 
     @GetMapping("/admin/hotel/room/search")
-    public String searchRoomsByHotelId(@RequestParam("hotelId") String hotelId, Model model) {
+    public String searchRoomsByHotelId(@RequestParam("hotelId") String hotelId, Model model){
         List<Hotel> listHotel = hotelRepo.findAll();
         List<Room> listRooms = roomRepo.findRoomsByHotelId(hotelId); // Using roomRepo method to find rooms by hotelId
         model.addAttribute("listRooms", listRooms);
@@ -311,6 +311,7 @@ public class MainController {
     //     map.put("status", "SUCCESS");
     //     return ResponseEntity.ok().body(map);
     // }
+
 
 
 }
