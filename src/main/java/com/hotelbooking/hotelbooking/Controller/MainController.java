@@ -43,6 +43,9 @@ public class MainController {
     @Autowired
     private EmailSenderService mailService;
 
+    @Autowired
+    private HotelService hotelService;
+
     @GetMapping("/login")
     public String login() {
         return "login.html";
@@ -180,5 +183,28 @@ public class MainController {
         return "/User_UI/cart.html";
     }
 
+    @GetMapping("/admin/formHotel")
+    public String formHotel(Model model,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size) {
 
+        Page<Hotel> listHotel;
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (keyword != null && !keyword.isEmpty()) {
+            listHotel = hotelService.searchHotelsByName(keyword, pageable);
+        } else {
+            listHotel = hotelService.getAllHotels(pageable);
+        }
+
+        model.addAttribute("listHotel", listHotel.getContent());
+        model.addAttribute("totalPages", listHotel.getTotalPages());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("keyword", keyword);
+
+        return "/ADMIN_UI/formHotel.html";
+    }
+
+    
 }
