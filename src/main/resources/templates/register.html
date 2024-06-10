@@ -194,7 +194,7 @@
             otpModal.classList.remove('hidden');
             sendOTP(data.message);
           } else {
-            alert(data.message);
+            AlertDialog('error', 'Registration',data.message);
           }
         })
         .catch(error => console.error('Error:', error));
@@ -279,7 +279,6 @@
         .then((response) => response.text())
         .then((result) => console.log(result))
         .catch((error) => console.error(error));
-
     }
 
     function register(){

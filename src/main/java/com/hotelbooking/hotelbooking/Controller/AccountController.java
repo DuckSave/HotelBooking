@@ -126,16 +126,5 @@ public class AccountController {
         return ResponseEntity.ok(Map.of("status", "OTP_REQUIRED", "message", otp));
     }
 
-    @PostMapping("/testPhoneNumber")
-    public ResponseEntity<?> testPhoneNumber(@RequestBody Map<String, String> payload) {
-        String phoneNumber = payload.get("phoneNumber");
-        Account exitsAccount = accountRepository.findAccountByPhoneNumber(phoneNumber);
-
-        if (exitsAccount == null) {
-            return ResponseEntity.ok(Map.of("status", "yes", "message", "dang ky thanh cong"));
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "dang ky that bai"));
-    }
 
 }

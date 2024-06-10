@@ -65,6 +65,9 @@
             height: 150px;
             border: 15px solid white;
         }
+
+
+    
     </style>
 </head>
 
@@ -135,6 +138,8 @@
                 <input type="hidden" id="roomId" name="roomId" th:value="${room.id}" required>
                 <button type="submit" class="btn btn-success btn-block">Submit</button>
             </form>
+
+
         </div>
     </div>
 
@@ -147,10 +152,17 @@
     <script>
         document.getElementById('booking').addEventListener('submit', (event) => {
             event.preventDefault();
-            alert('submit');
 
             const form = event.target;
             const formData = new FormData(form);
+            const arrivalDate = new Date(formData.get('arrivalDate') + 'T' + formData.get('arrivalTime'));
+            const departureDate = new Date(formData.get('departureDate') + 'T' + formData.get('departureTime'));
+
+
+            if (arrivalDate >= departureDate) {
+                AlertDialog('error','Error Booking','Arrival date and time must be before departure date and time.');
+                return;
+            }
 
             const payload = {};
             formData.forEach((value, key) => {
@@ -170,15 +182,15 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    if(data.status === "BOOKING_SUCCESS"){
+                    if (data.status === "BOOKING_SUCCESS") {
                         window.location.href = "/services";
-                    }else{
-                        AlertDialog('error','BOOKING ROOM','this room has been booked');
+                    } else {
+                        AlertDialog('error', 'Error Booking', 'This room has been booked');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('There was an error with the booking process.');
+                    errorMessage.textContent = 'There was an error with the booking process.';
                 });
         });
     </script>
