@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,7 @@ import com.hotelbooking.hotelbooking.Entity.Hotel;
 import com.hotelbooking.hotelbooking.Entity.HotelBooking;
 import com.hotelbooking.hotelbooking.Entity.Room;
 import com.hotelbooking.hotelbooking.Repository.HotelRepo;
+import com.hotelbooking.hotelbooking.Repository.RoomRepo;
 import com.hotelbooking.hotelbooking.Service.BookingHotelService;
 import com.hotelbooking.hotelbooking.Service.EmailSenderService;
 import com.hotelbooking.hotelbooking.Service.HotelService;
@@ -34,6 +38,9 @@ public class MainController {
 
     @Autowired
     private HotelRepo hotelRepo;
+
+    @Autowired
+    private RoomRepo roomRepo ; 
 
     @Autowired
     private EmailSenderService mailService;
@@ -183,10 +190,68 @@ public class MainController {
         return "/Admin_UI/adminHotel.html";
     }
 
+
+
     @GetMapping("admin/hotel/room")
     public String addRoom(Model model) {
         List<Hotel> listHotel = hotelRepo.findAll();
         model.addAttribute("listHotel", listHotel);
-        return "/Admin_UI/addRoom.html";
+        return "/Admin_UI/adminRoom.html";
+        
     }
+
+
+    @GetMapping("/admin/hotel/room/detail")
+    public String getRoomDetail(Model model ) {
+        List<Hotel> listHotel = hotelRepo.findAll();
+        List<Room> listRooms = roomRepo.findAll();
+        model.addAttribute("listRooms", listRooms);
+        model.addAttribute("listHotel", listHotel);
+        return "/Admin_UI/adminRoomDetail.html" ;
+    }
+
+    @GetMapping("/admin/hotel/room/search")
+    public String searchRoomsByHotelId(@RequestParam("hotelId") String hotelId, Model model){
+        List<Hotel> listHotel = hotelRepo.findAll();
+        List<Room> listRooms = roomRepo.findRoomsByHotelId(hotelId); // Using roomRepo method to find rooms by hotelId
+        model.addAttribute("listRooms", listRooms);
+        model.addAttribute("listHotel", listHotel);
+        return "/Admin_UI/adminRoomDetail"; // Return the same view with updated room list
+    }
+    
+    // @GetMapping("/sendMail")
+    // public ResponseEntity<?> sendMail() {
+    //     HotelBooking booking = bookingService.getBooking("665d8e4945db4e4bb4f07446");
+    //     mailService.sendEmailToBookingPerson(booking);
+    //     Map<String, String> map = new HashMap<String, String>();
+    //     map.put("status", "SUCCESS");
+    //     return ResponseEntity.ok().body(map);
+    // }
+
+
+    @GetMapping("/admin/formHotel")
+    public String formHotel(Model model,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size) {
+
+        Page<Hotel> listHotel;
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (keyword != null && !keyword.isEmpty()) {
+            listHotel = hotelService.searchHotelsByName(keyword, pageable);
+        } else {
+            listHotel = hotelService.getAllHotels(pageable);
+        }
+
+        model.addAttribute("listHotel", listHotel.getContent());
+        model.addAttribute("totalPages", listHotel.getTotalPages());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("keyword", keyword);
+
+        return "/ADMIN_UI/formHotel.html";
+    }
+
+    
+
 }

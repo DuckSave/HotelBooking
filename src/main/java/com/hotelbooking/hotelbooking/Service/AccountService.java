@@ -5,13 +5,14 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.hotelbooking.hotelbooking.Entity.Account;
 import com.hotelbooking.hotelbooking.Repository.AccountRepo;
 
 @Service
-public class AccountService {
+public class AccountService  {
     @Autowired
     private AccountRepo accountRepo;
 
@@ -25,4 +26,7 @@ public class AccountService {
     }
 
 
-}
+    
+    }
+
+

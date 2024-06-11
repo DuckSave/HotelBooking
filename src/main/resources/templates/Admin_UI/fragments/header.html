@@ -1,52 +1,59 @@
 <div th:fragment="header">
-    <header class="app-header">
-    <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
-      aria-label="Hide Sidebar"></a>
-    <!-- Navbar Right Menu-->
-    <ul class="app-nav">
+      <header class="app-header">
+            <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
+                  aria-label="Hide Sidebar"></a>
+            <!-- Navbar Right Menu-->
+            <ul class="app-nav">
 
 
-      <!-- User Menu-->
-      <li><a class="app-nav__item" href="/index.html"><i class='bx bx-log-out bx-rotate-180'></i> </a>
+                  <!-- User Menu-->
+                  <li><a class="app-nav__item" href="/index.html"><i class='bx bx-log-out bx-rotate-180'></i> </a>
 
-      </li>
-    </ul>
-  </header>
-  <!-- Sidebar menu-->
-  <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-  <aside class="app-sidebar">
-    <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="https://avatars.githubusercontent.com/u/104569999?v=4" width="50px"
-        alt="User Image">
-      <div>
-        <p class="app-sidebar__user-name"><b>Baoo Lam</b></p>
-        <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
+                  </li>
+            </ul>
+      </header>
+      <!-- Sidebar menu-->
+      <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+      <aside class="app-sidebar">
+
+            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar"
+                        src="https://avatars.githubusercontent.com/u/104569999?v=4" width="50px">
+
+                  <p class="app-sidebar__user-name"><b>Baoo Lam</b></p>
+                  <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
+            </div>
+      <hr>
+      <ul class="app-menu">
+            <li><a class="app-menu__item haha" href=""><i class='app-menu__icon bx bx-cart-alt'></i>
+                        <span class="app-menu__label">Hóa đơn</span></a></li>
+      
+            <li><a class="app-menu__item active" href=""><i class='app-menu__icon bx bx-tachometer'></i><span
+                              class="app-menu__label">Bảng điều khiển</span></a></li>
+            <li><a class="app-menu__item " href="/admin/formHotel"><i class='app-menu__icon bx bx-id-card'></i> <span
+                              class="app-menu__label">Quản lý khách sạn</span></a></li>
+            <li><a class="app-menu__item" href="/admin/hotel/room/detail"><i
+                              class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý
+                              phòng</span></a>
+            </li>
+            <li><a class="app-menu__item" href="/admin/hotel/room"><i class='app-menu__icon bx bx-purchase-tag-alt'></i><span
+                              class="app-menu__label">Thêm phòng</span></a>
+            </li>
+            <li><a class="app-menu__item" href=""><i class='app-menu__icon bx bx-task'></i><span
+                              class="app-menu__label">Booking </span></a></li>
+            <li><a class="app-menu__item" href=""><i class='app-menu__icon bx bx-run'></i><span class="app-menu__label">Hình
+                              ảnh Phòng
+                        </span></a></li>
+            <li><a class="app-menu__item" href=""><i class='app-menu__icon bx bx-dollar'></i><span class="app-menu__label">Tài
+                              khoản</span></a></li>
+            <li><a class="app-menu__item" href="/admin/reports"><i class='app-menu__icon bx bx-pie-chart-alt-2'></i><span
+                              class="app-menu__label">Báo cáo doanh thu</span></a>
+            </li>
+            <li><a class="app-menu__item" href="/Web_Assignment/admin/calendar"><i
+                              class='app-menu__icon bx bx-calendar-check'></i><span class="app-menu__label">Lịch công tác
+                        </span></a></li>
+            <li><a class="app-menu__item " href="#"><i class='app-menu__icon bx bx-cog'></i> <span class="app-menu__label">Cài
+                              đặt hệ Thống</span></a></li>
+      </ul>
+      </aside>
       </div>
-    </div>
-    <hr>
-    <ul class="app-menu">
-      <li><a class="app-menu__item haha" href="phan-mem-ban-hang.html"><i class='app-menu__icon bx bx-cart-alt'></i>
-          <span class="app-menu__label">Hóa đơn</span></a></li>
-      <li><a class="app-menu__item active" href="/index"><i class='app-menu__icon bx bx-tachometer'></i><span
-            class="app-menu__label">Bảng điều khiển</span></a></li>
-      <li><a class="app-menu__item " href="/Web_Assignment/admin/hotel"><i class='app-menu__icon bx bx-id-card'></i> <span
-            class="app-menu__label">Quản lý khách sạn</span></a></li>
-      <li><a class="app-menu__item" href="/Web_Assignment/admin/room"><i
-            class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý phòng</span></a> 
-      </li>
-      <li><a class="app-menu__item" href="/Web_Assignment/admin/booking"><i class='app-menu__icon bx bx-task'></i><span
-            class="app-menu__label">Booking </span></a></li>
-      <li><a class="app-menu__item" href="/Web_Assignment/admin/images"><i class='app-menu__icon bx bx-run'></i><span
-            class="app-menu__label">Hình ảnh Phòng
-          </span></a></li>
-      <li><a class="app-menu__item" href=""><i class='app-menu__icon bx bx-dollar'></i><span
-            class="app-menu__label">Tài khoản</span></a></li>
-      <li><a class="app-menu__item" href="/admin/reports"><i
-            class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
-      </li>
-      <li><a class="app-menu__item" href="/Web_Assignment/admin/calendar"><i class='app-menu__icon bx bx-calendar-check'></i><span
-            class="app-menu__label">Lịch công tác </span></a></li>
-      <li><a class="app-menu__item " href="#"><i class='app-menu__icon bx bx-cog'></i> <span
-              class="app-menu__label">Cài đặt hệ Thống</span></a></li>
-    </ul>
-  </aside>
 </div>

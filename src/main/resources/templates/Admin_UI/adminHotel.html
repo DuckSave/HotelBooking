@@ -2,11 +2,118 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head th:replace="/Admin_UI/fragments/head::head">
 
+    <style>
+        .btn-block-custom {
+            display: inline-block;
+            width: auto;
+            margin-right: 10px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
-    <div th:replace="/Admin_UI/fragments/header::header">
-        
+    <div th:replace="/Admin_UI/fragments/header::header"></div>
+     <main class="app-content" style="margin-top: 80px;">
+    <div class="app-title">
+      <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item">Danh sách khác sạn</li>
+        <li class="breadcrumb-item"><a href="#">Thêm khách sạn</a></li>
+      </ul>
     </div>
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="tile">
+
+          <h3 class="tile-title">Tạo khách sạn mới</h3>
+          <div class="tile-body">
+            <div class="row element-button">
+            </div>
+            <form class="row" id="fileUploadForm" enctype="multipart/form-data">
+                <div class="form-group col-md-4">
+                    <label for="hotelName">Hotel Name</label>
+                    <input type="text" class="form-control" id="hotelName" name="hotelName" placeholder="Enter hotel name" required>
+                </div>
+                 <div class="form-group col-md-4">
+                    <label for="location">Location</label>
+                    <input type="text" class="form-control" id="location" name="location" placeholder="Enter location" required>
+                </div>
+                 <div class="form-group col-md-4">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" name="address" placeholder="Enter location" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="price">Price</label>
+                    <input type="number" class="form-control" name="price" id="price" required>
+                </div>
+             <div class="form-group col-md-3">
+                    <label for="star">Star Rating</label>
+                    <select class="form-control" id="star" name="star" required>
+                        <option value="" disabled selected>Select star rating</option>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+			<div class="form-group col-md-6">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter hotel description"
+                        required></textarea>
+                </div>
+            <div class="form-group col-md-12">
+                    <label for="image">Image URL</label>
+                    <input type="file" class="form-control" id="image" name="image" placeholder="Enter image URL" required>
+            </div>
+
+             <div class="form-group col-md-12">
+                <button type="submit" class="btn btn-primary btn-block-custom" id="addHotel">Submit</button>
+                <a class="btn btn-primary btn-block-custom" href="/admin/formHotel">Hủy bỏ</a>
+            </div>
+          </form>
+        </div>
+  </main>
+</body>
+ <script>
+        document.getElementById('fileUploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            // Gửi yêu cầu POST đến server
+            fetch('/addHotel', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to add hotel');
+                }
+                // Hiển thị thông báo thành công bằng SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Hotel added successfully!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                setTimeout(() => {
+                    window.location.href = '/admin/formHotel'; // Đổi URL này thành trang bạn muốn chuyển đến
+                }, 2000);
+            })
+            .catch(error => {
+                // Hiển thị thông báo lỗi bằng SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message
+                });
+            });
+        });
+    </script>
+    <div class="" th:replace="/User_UI/fragments/script::script"></div>
+=======
     <button id="buton"></button>
     <form action="" id="add">
         <input type="text" name="hotelName" id="">
@@ -37,4 +144,5 @@
             .catch(error => console.error('Error:', error));
     });
 </script>
+>>>>>>> 0a4a996185e1f79477141821c144bc1a388068d9
 </html>

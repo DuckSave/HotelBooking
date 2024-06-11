@@ -31,7 +31,7 @@ public class ReportService {
         String roomType = payload.get("roomType");
         String checkIn = payload.get("checkIn");
         String checkOut = payload.get("checkOut");
-        if (checkIn.isEmpty() && checkOut.isEmpty() && hotelName.isEmpty()) {
+        if (checkIn == null && checkOut == null && hotelName == null) {
             return getBookingReport();
         }
 

@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-
 import com.hotelbooking.hotelbooking.Entity.Hotel;
 import com.hotelbooking.hotelbooking.Repository.HotelRepo;
 
@@ -48,6 +48,14 @@ public class HotelService {
         return new PageImpl<>(paginatedList, PageRequest.of(page - 1, size), hotels.size());
 
     }
+    public Page<Hotel> searchHotelsByName(String keyword, Pageable pageable) {
+        return hotelRepo.findByNameContainingIgnoreCase(keyword, pageable);
+    }
+
+    public Page<Hotel> getAllHotels(Pageable pageable) {
+        return hotelRepo.findAll(pageable);
+    }
+    
     
 
     public List<Hotel> findHotelByPrice(int min, int max){
