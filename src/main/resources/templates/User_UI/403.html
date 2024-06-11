@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html>
+
+<head th:replace="/User_UI/fragments/head::head"></head>
+
+<body>
+  <div class="colorlib-loader"></div>
+  <div id="page">
+    <nav class="colorlib-nav" role="navigation">
+      <div class="top-menu">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-2">
+              <div id="colorlib-logo"><a th:href="@{/index}">Tour</a></div>
+            </div>
+            <div class="col-xs-10 text-right menu-1">
+              <ul>
+                <li><a th:href="@{/index}">Home</a></li>
+                <li class="has-dropdown">
+                  <a th:href="@{/tours}">Tours</a>
+                  <ul class="dropdown">
+                    <li><a href="#">Destination</a></li>
+                    <li><a href="#">Cruises</a></li>
+                    <li><a href="#">Hotels</a></li>
+                    <li><a href="#">Booking</a></li>
+                  </ul>
+                </li>
+                <li><a th:href="@{/hotels}">Hotels</a></li>
+                <li><a th:href="@{/services}">Services</a></li>
+                <li><a th:href="@{/blog}">Blog</a></li>
+                <li class="active"><a th:href="@{/about}">About</a></li>
+                <li><a th:href="@{/contact}">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <aside id="colorlib-hero">
+      <div class="flexslider">
+        <ul class="slides">
+          <li style="background-image: url(/assets/images/cover-img-5.jpg);">
+            <div class="overlay"></div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
+                  <div class="slider-text-inner text-center">
+                    <h1>403 - Access Denied</h1>
+                    <h1>chỉ có admin mới được truy cập</h1>
+                    <p th:text="${errorMessage}"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <footer id="colorlib-footer" role="contentinfo">
+      <div class="container">
+        <div class="row row-pb-md">
+          <div class="col-md-3 colorlib-widget">
+            <h4>Tour Agency</h4>
+            <p>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci architecto culpa amet.</p>
+            <p>
+              <ul class="colorlib-social-icons">
+                <li><a href="#"><i class="icon-twitter"></i></a></li>
+                <li><a href="#"><i class="icon-facebook"></i></a></li>
+                <li><a href="#"><i class="icon-linkedin"></i></a></li>
+                <li><a href="#"><i class="icon-dribbble"></i></a></li>
+              </ul>
+            </p>
+          </div>
+          <div class="col-md-2 colorlib-widget">
+            <h4>Book Now</h4>
+            <p>
+              <ul class="colorlib-footer-links">
+                <li><a href="#">Flight</a></li>
+                <li><a href="#">Hotels</a></li>
+                <li><a href="#">Tour</a></li>
+                <li><a href="#">Car Rent</a></li>
+                <li><a href="#">Beach &amp; Resorts</a></li>
+                <li><a href="#">Cruises</a></li>
+              </ul>
+            </p>
+          </div>
+          <div class="col-md-2 colorlib-widget">
+            <h4>Top Deals</h4>
+            <p>
+              <ul class="colorlib-footer-links">
+                <li><a href="#">Edina Hotel</a></li>
+                <li><a href="#">Quality Suites</a></li>
+                <li><a href="#">The Hotel Zephyr</a></li>
+                <li><a href="#">Da Vinci Villa</a></li>
+                <li><a href="#">Hotel Epikk</a></li>
+              </ul>
+            </p>
+          </div>
+          <div class="col-md-2">
+            <h4>Blog Post</h4>
+            <ul class="colorlib-footer-links">
+              <li><a href="#">The Ultimate Packing List For Female Travelers</a></li>
+              <li><a href="#">How These 5 People Found The Path to Their Dream Trip</a></li>
+              <li><a href="#">A Definitive Guide to the Best Dining and Drinking Venues in the City</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3 col-md-push-1">
+            <h4>Contact Information</h4>
+            <ul class="colorlib-footer-links">
+              <li>291 South 21th Street, <br> Suite 721 New York NY 10016</li>
+              <li><a href="tel://1234567920">+ 1235 2355 98</a></li>
+              <li><a href="https://preview.colorlib.com/cdn-cgi/l/email-protection#80e9eee6efc0f9eff5f2f3e9f4e5aee3efed"><span class="__cf_email__" data-cfemail="9bf2f5fdf4dbe2f4eee9e8f2effeb5f8f4f6">[email&#160;protected]</span></a></li>
+              <li><a href="#">yoursite.com</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <p>
+              Copyright &copy;
+              <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+              <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart2" aria-hidden="true"></i> by <a href="https://colorlib.com/" target="_blank">Colorlib</a>
+              </span>
+              <span class="block">Demo Images: <a href="http://unsplash.co/" target="_blank">Unsplash</a> , <a href="http://pexels.com/" target="_blank">Pexels.com</a></span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <div class="gototop js-top">
+    <a href="#" class="js-gotop"><i class="icon-arrow-up2"></i></a>
+  </div>
+
+  <div th:replace="/User_UI/fragments/script::script"></div>
+</body>
+</html>

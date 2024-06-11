@@ -57,16 +57,15 @@ public class CustomScurity implements Filter {
             String role = account.isRole() ? "ADMIN" : "USER";
 
             if (uri.startsWith("/admin") && !"ADMIN".equals(role)) {
-                httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
+                httpRequest.getRequestDispatcher("/403").forward(request, response);
                 return;
-            } 
+            }
 
         } else {
 
             httpResponse.sendRedirect("/login");
             return;
         }
-
 
         chain.doFilter(request, response);
     }
@@ -79,7 +78,6 @@ public class CustomScurity implements Filter {
     private boolean isExcludedUrl(String uri, String method) {
 
         boolean isExcluded = EXCLUDED_URLS.stream().anyMatch(uri::startsWith);
-
 
         if (isExcluded && "POST".equalsIgnoreCase(method)) {
             return true;

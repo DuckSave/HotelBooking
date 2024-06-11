@@ -40,7 +40,7 @@ public class MainController {
     private HotelRepo hotelRepo;
 
     @Autowired
-    private RoomRepo roomRepo ; 
+    private RoomRepo roomRepo;
 
     @Autowired
     private EmailSenderService mailService;
@@ -76,8 +76,15 @@ public class MainController {
         return "/User_UI/tours.html";
     }
 
+    @GetMapping("/403")
+    public String accessDenied(Model model, HttpServletRequest request) {
+        String errorMessage = (String) request.getAttribute("errorMessage");
+        model.addAttribute("errorMessage", errorMessage);
+        return "/User_UI/403.html";
+    }
+
     @GetMapping("/hotels")
-    public String hotel(Model model, @RequestParam(value = "page", defaultValue = "1") int page,HttpSession session) {
+    public String hotel(Model model, @RequestParam(value = "page", defaultValue = "1") int page, HttpSession session) {
         List<Hotel> hotels = (List<Hotel>) sessionService.getSession("listHotel", session);
         if (hotels == null) {
             System.out.println("null");
@@ -98,7 +105,7 @@ public class MainController {
     }
 
     @GetMapping("/hotels/stars")
-    public String filterByStars(Model model,HttpSession session,
+    public String filterByStars(Model model, HttpSession session,
             @RequestParam(value = "stars") List<Integer> stars,
             @RequestParam(value = "page", defaultValue = "1") int page) {
         List<Hotel> hotels = hotelRepo.findByStarIn(stars);
@@ -190,44 +197,40 @@ public class MainController {
         return "/Admin_UI/adminHotel.html";
     }
 
-
-
     @GetMapping("admin/hotel/room")
     public String addRoom(Model model) {
         List<Hotel> listHotel = hotelRepo.findAll();
         model.addAttribute("listHotel", listHotel);
         return "/Admin_UI/adminRoom.html";
-        
+
     }
 
-
     @GetMapping("/admin/hotel/room/detail")
-    public String getRoomDetail(Model model ) {
+    public String getRoomDetail(Model model) {
         List<Hotel> listHotel = hotelRepo.findAll();
         List<Room> listRooms = roomRepo.findAll();
         model.addAttribute("listRooms", listRooms);
         model.addAttribute("listHotel", listHotel);
-        return "/Admin_UI/adminRoomDetail.html" ;
+        return "/Admin_UI/adminRoomDetail.html";
     }
 
     @GetMapping("/admin/hotel/room/search")
-    public String searchRoomsByHotelId(@RequestParam("hotelId") String hotelId, Model model){
+    public String searchRoomsByHotelId(@RequestParam("hotelId") String hotelId, Model model) {
         List<Hotel> listHotel = hotelRepo.findAll();
         List<Room> listRooms = roomRepo.findRoomsByHotelId(hotelId); // Using roomRepo method to find rooms by hotelId
         model.addAttribute("listRooms", listRooms);
         model.addAttribute("listHotel", listHotel);
         return "/Admin_UI/adminRoomDetail"; // Return the same view with updated room list
     }
-    
+
     // @GetMapping("/sendMail")
     // public ResponseEntity<?> sendMail() {
-    //     HotelBooking booking = bookingService.getBooking("665d8e4945db4e4bb4f07446");
-    //     mailService.sendEmailToBookingPerson(booking);
-    //     Map<String, String> map = new HashMap<String, String>();
-    //     map.put("status", "SUCCESS");
-    //     return ResponseEntity.ok().body(map);
+    // HotelBooking booking = bookingService.getBooking("665d8e4945db4e4bb4f07446");
+    // mailService.sendEmailToBookingPerson(booking);
+    // Map<String, String> map = new HashMap<String, String>();
+    // map.put("status", "SUCCESS");
+    // return ResponseEntity.ok().body(map);
     // }
-
 
     @GetMapping("/admin/formHotel")
     public String formHotel(Model model,
@@ -251,7 +254,5 @@ public class MainController {
 
         return "/ADMIN_UI/formHotel.html";
     }
-
-    
 
 }
