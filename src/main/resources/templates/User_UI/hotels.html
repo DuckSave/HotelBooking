@@ -63,29 +63,6 @@
           <div class="col-md-9">
             <div class="row">
               <div class="wrap-division">
-
-
-                <div th:each="hotel : ${listHotel}">
-                  <div class="col-md-6 col-sm-6 animate-box">
-                    <div class="hotel-entry">
-                      <a th:href="@{/hotel(id=${hotel.id})}" class="hotel-img" th:style="'background-image: url(/assets/images/' + ${hotel.image} + ');'">
-                        
-                        <p class="price"><span th:text="${hotel.price}"></span>$<small> /night</small></p>
-                      </a>
-                      <div class="desc">
-                        <p class="star">
-                          <span th:each="i : ${#numbers.sequence(1, hotel.star)}">
-                            <i class="icon-star-full"></i>
-                          </span>
-                          <span th:each="i : ${#numbers.sequence(1, 5 - hotel.star)}">
-                            <i class="icon-star-empty"></i>
-                          </span>
-                        </p>
-                        <h3><a th:href="@{/room?id=${hotel.id}}" th:text="${hotel.hotelName}"></a></h3>
-                        <span class="place" th:text="${hotel.location}"></span>
-                        <span class="place" th:text="${hotel.address}"></span>
-                        <p th:text="${hotel.description}">
-                        </p>
                 <div th:if="${message}">
                   <p th:text="${message}"></p>
                 </div>
@@ -109,13 +86,13 @@
                           <h3><a th:href="@{/room?id=${hotel.id}}" th:text="${hotel.hotelName}"></a></h3>
                           <span class="place" th:text="${hotel.location}"></span>
                           <span class="place" th:text="${hotel.address}"></span>
-                          <p th:text="${hotel.description}">
-                          </p>
+                          <p th:text="${hotel.description}"></p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 
@@ -136,11 +113,14 @@
                   </div>
                 </div> -->
 >>>>>>> 3b0ed24ba4947834df16a4a9c2ee772573036169
+=======
+>>>>>>> 3eb3f3e4ef5fcefa1de027b4fbfe545882fed398
                 <div class="row">
                   <div class="col-md-12 text-center">
                     <ul class="pagination">
                       <li th:classappend="${currentPage == 1} ? 'disabled'">
                         <a th:if="${currentPage > 1}"
+<<<<<<< HEAD
                           th:href="@{/hotels(page=${currentPage - 1}, size=${size}, stars=${checkedStars}, priceFrom=${priceForm}, priceTo=${priceTo}, location=${location}, address=${address})}">&laquo;</a>
                         <span th:if="${currentPage == 1}">&laquo;</span>
                       </li>
@@ -158,6 +138,17 @@
                         <a th:if="${currentPage totalPages}" th:href="@{/hotels(page=${currentPage + 1}, size=${size})}">&raquo;</a>
                         <!-- <a th:if="${currentPage == totalPages}">&raquo;</a> -->
 >>>>>>> 3b0ed24ba4947834df16a4a9c2ee772573036169
+=======
+                          th:href="@{/hotels(page=${currentPage - 1}, size=${size})}">&laquo;</a>
+                      </li>
+                      <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
+                        th:classappend="${pageNum == currentPage} ? 'active'">
+                        <a th:href="@{/hotels(page=${pageNum}, size=${size})}" th:text="${pageNum}"></a>
+                      </li>
+                      <li th:classappend="${currentPage == totalPages} ? 'disabled'">
+                        <a th:if="${currentPage < totalPages}"
+                          th:href="@{/hotels(page=${currentPage + 1}, size=${size})}">&raquo;</a>
+>>>>>>> 3eb3f3e4ef5fcefa1de027b4fbfe545882fed398
                       </li>
                     </ul>
                   </div>
@@ -165,7 +156,6 @@
               </div>
             </div>
           </div>
-
           <div class="col-md-3">
             <div class="sidebar-wrap">
               <div class="side search-wrap animate-box">
@@ -210,7 +200,6 @@
                   </div>
                 </form>
               </div>
-
               <div class="side animate-box">
                 <div class="row">
                   <div class="col-md-12">
@@ -257,8 +246,11 @@
                   </div>
                 </div>
               </div>
+<<<<<<< HEAD
               <!-- onchange="filterHotels()" -->
               <!-- onclick="window.location.href = '/hotels/stars?stars=' + (this.checked ? '5' : '')" -->
+=======
+>>>>>>> 3eb3f3e4ef5fcefa1de027b4fbfe545882fed398
               <div class="side animate-box">
                 <div class="row">
                   <div class="col-md-12">
@@ -297,8 +289,7 @@
                           th:checked="${checkedStars != null and checkedStars.contains(2)}"
                           onchange="document.getElementById('starForm').submit();">
                         <label class="form-check-label" for="star2">
-                          <p class="rate"><span><i class="icon-star-full"></i><i class="icon-star-full"></i></span>
-                          </p>
+                          <p class="rate"><span><i class="icon-star-full"></i><i class="icon-star-full"></i></span></p>
                         </label>
                       </div>
                       <div class="form-check">
@@ -313,7 +304,6 @@
                   </div>
                 </div>
               </div>
-
               <!-- <div class="side animate-box">
                 <div class="row">
                   <div class="col-md-12">
@@ -523,7 +513,6 @@
         <div class="row">
           <div class="col-md-12 text-center">
             <p>
-
               Copyright &copy;
               <script data-cfasync="false"
                 src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
@@ -555,5 +544,9 @@
     });
   </script>
   <div th:replace="/User_UI/fragments/script::script"></div>
+<<<<<<< HEAD
+=======
+</body>
+>>>>>>> 3eb3f3e4ef5fcefa1de027b4fbfe545882fed398
 
 </html>

@@ -88,6 +88,7 @@ public class MainController {
 
 
     public String hotel(Model model, @RequestParam(value = "page", defaultValue = "1") int page,HttpSession session) {
+        @SuppressWarnings("unchecked")
         List<Hotel> hotels = (List<Hotel>) sessionService.getSession("listHotel", session);
         if (hotels == null) {
             System.out.println("null");
