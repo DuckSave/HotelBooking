@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head th:replace="/Admin_UI/fragments/head::head">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+
+<body onload="time()" class="app sidebar-mini rtl">
+  <div th:replace="/Admin_UI/fragments/header::header"></div>
+
+  <main class="app-content">
+    <div class="app-title">
+      <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a href="/admin/formHotel"><b>Hotels List</b></a></li>
+      </ul>
+      <div id="clock"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="tile">
+          <div class="tile-body">
+
+            <div class="row element-button">
+              <div class="col-sm-2">
+
+                <a class="btn btn-add btn-sm" href="/admin/hotel" title="Thêm"><i class="fas fa-plus"></i>
+                  Add New Hotel</a>
+              </div>
+              <div class="col-sm-2">
+                <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập"><i
+                    class="fas fa-file-upload"></i>Download File</a>
+              </div>
+
+              <div class="col-sm-2">
+                <a class="btn btn-delete btn-sm print-file" type="button" title="In"><i class="fas fa-print"></i>Print
+                  Data</a>
+              </div>
+              <div class="col-sm-2">
+                <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
+                    class="fas fa-copy"></i>Copy</a>
+              </div>
+
+              <div class="col-sm-2">
+                <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i>Export Excel</a>
+              </div>
+              <div class="col-sm-2">
+                <a class="btn btn-delete btn-sm pdf-file" title="In">
+                  <i class="fas fa-file-pdf"></i>Export PDF
+                </a>
+              </div>
+
+              <div class="col-md-3">
+                <form th:action="@{/admin/formHotel}" method="get">
+                  <div class="input-group">
+                    <input class="form-control" type="search" placeholder="Search by name" aria-label="Search"
+                      name="keyword" th:value="${keyword}">
+                    <div class="input-group-append" style="height: 50px">
+                      <button class="btn btn-outline-success" type="submit" style="z-index: 0;">Search</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
+              id="sampleTable">
+              <thead>
+                <tr>
+                  <th width="10"><input type="checkbox" id="all"></th>
+                  <th width="180">Name</th>
+                  <th width="150">Image</th>
+                  <th width="200">Location</th>
+                  <th width="200">Address</th>
+                  <th width="60">Star Rating</th>
+                  <th width="190">Description</th>
+                  <th width="200">Price</th>
+                  <th width="80">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="listHotel : ${listHotel}">
+                  <td width="10"><input type="checkbox" name="check1" value="1"></td>
+                  <td th:text="${listHotel.hotelName}"></td>
+                  <td><img th:src="@{/assets/images/{image}(image=${listHotel.image})}" alt=""
+                      style="width: 100%; height: 100%;"></td>
+                  <td th:text="${listHotel.location}"></td>
+                  <td th:text="${listHotel.address}"></td>
+                  <td th:text="${listHotel.star}"></td>
+                  <td th:text="${listHotel.description}"></td>
+                  <th th:text="${listHotel.price}"></th>
+                  <td class="table-td-center">
+                    <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
+                      th:data-id-name="${listHotel.id}" onclick="deleteHotel(this)"><i
+                        class="fas fa-trash-alt"></i></button>
+                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" th:data-id="${listHotel.id}"
+                      onclick="editHotel(this)" data-toggle="modal" data-target="#exampleModal"><i
+                        class="fas fa-edit"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                  <a class="page-link"
+                    th:href="@{/admin/formHotel(page=${currentPage - 1}, keyword=${keyword})}">Previous</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                  th:classappend="${i == currentPage} ? 'active'">
+                  <a class="page-link" th:href="@{/admin/formHotel(page=${i}, keyword=${keyword})}"
+                    th:text="${i + 1}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                  <a class="page-link"
+                    th:href="@{/admin/formHotel(page=${currentPage + 1}, keyword=${keyword})}">Next</a>
+                </li>
+              </ul>
+            </nav>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form id="updateForm" method="post" enctype="multipart/form-data">
+            <div class="modal-body">
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <span class="thong-tin-thanh-toan">
+                    <h5>Chỉnh sửa thông tin Khách sạn</h5>
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <input type="text" hidden id="editHotelId" name="idHotel">
+                <div class="form-group col-md-6">
+                  <label for="hotelName">Hotel Name</label>
+                  <input type="text" class="form-control" id="hotelName" name="hotelName" placeholder="Enter hotel name"
+                    required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="location">Location</label>
+                  <input type="text" class="form-control" id="location" name="location" placeholder="Enter location"
+                    required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="address">Address</label>
+                  <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address"
+                    required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="price">Price</label>
+                  <input type="number" class="form-control" name="price" id="price" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="exampleSelect1" class="control-label">Star</label>
+                  <select id="stars" name="stars" class="form-control">
+                    <option value="1">1 sao</option>
+                    <option value="2">2 sao</option>
+                    <option value="3">3 sao</option>
+                    <option value="4">4 sao</option>
+                    <option value="5">5 sao</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="control-label">Mô tả</label>
+                  <textarea id="description" name="description" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="image">Upload Image</label>
+                  <input id="image" name="image" class="form-control" type="file">
+                </div>
+              </div>
+              <br><br><br>
+              <button class="btn btn-save" type="submit">Save</button>
+              <a class="btn btn-cancel" data-dismiss="modal" href="#">Cancel</a>
+              <br>
+            </div>
+          </form>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+  <script>
+    function time() {
+      var today = new Date();
+      var weekday = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
+      var day = weekday[today.getDay()];
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      var h = today.getHours();
+      var m = today.getMinutes();
+      var s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      var nowTime = h + " giờ " + m + " phút " + s + " giây";
+      if (dd < 10) dd = '0' + dd;
+      if (mm < 10) mm = '0' + mm;
+      today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+      var tmp = '<span class="date"> ' + today + ' - ' + nowTime + '</span>';
+      document.getElementById("clock").innerHTML = tmp;
+      setTimeout(time, 1000);
+
+      function checkTime(i) {
+        if (i < 10) i = "0" + i;
+        return i;
+      }
+    }
+
+    function deleteHotel(element) {
+      var idHotel = element.getAttribute('data-id-name');
+      fetch('/deleteHotel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ idHotel: idHotel })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "Delete_Success") {
+            AlertDialog("success", "Delete_Success", "delete hotel successfully");
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          } else {
+            AlertDialog("error", "Delete_UnSuccess", "delete hotel unsuccessfully");
+          }
+        });
+    }
+
+    function editHotel(element) {
+      var idHotel = element.getAttribute("data-id");
+      fetch('/editHotel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ idHotel: idHotel })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "edit_success") {
+            document.getElementById("hotelName").value = data.hotel.hotelName;
+            document.getElementById("location").value = data.hotel.location;
+            document.getElementById("address").value = data.hotel.address;
+            document.getElementById("stars").value = data.hotel.star;
+            document.getElementById("description").value = data.hotel.description;
+            document.getElementById("price").value = data.hotel.price;
+            document.getElementById("editHotelId").value = data.hotel.id;
+          }
+        });
+    }
+
+    document.getElementById("updateForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      var formData = new FormData(e.target);
+
+      fetch('/updateHotel', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "Save_Success") {
+            AlertDialog("success", "Save_Success", "Ok");
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          } else {
+            AlertDialog("message", "Save_Unsuccess", data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    });
+
+    function AlertDialog(type, title, message) {
+      Swal.fire({
+        icon: type,
+        title: title,
+        text: message,
+      });
+    }
+  </script>
+
+  <div class="" th:replace="/User_UI/fragments/script::script"></div>
+</body>
+
+</html>

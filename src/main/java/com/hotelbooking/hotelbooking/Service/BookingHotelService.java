@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.hotelbooking.hotelbooking.Class.BookingDetail;
+import com.hotelbooking.hotelbooking.Class.TimeBooking;
 import com.hotelbooking.hotelbooking.Entity.Account;
 import com.hotelbooking.hotelbooking.Entity.HotelBooking;
 import com.hotelbooking.hotelbooking.Entity.Room;
@@ -35,11 +36,50 @@ public class BookingHotelService {
         return optionalBooking.orElse(null);
     }
 
-    public Page<HotelBooking> getBookings(int page, int size) {
-        return bookingRepo.findAll(PageRequest.of(page, size));
+    public boolean isAvaiable(String roomId, LocalDate checkIn, LocalDate checkOut) {
+        Room room = roomService.getRoomById(roomId);
+
+        if (room.getTimeBookings() == null) {
+            room.setTimeBookings(new ArrayList<>());
+        }
+
+        for (TimeBooking timeBooking : room.getTimeBookings()) {
+            LocalDate arrivalDate = timeBooking.getArrivalDate();
+            LocalDate departureDate = timeBooking.getDepartureDate();
+
+            if ((checkIn.isEqual(arrivalDate) || checkIn.isAfter(arrivalDate)) && checkIn.isBefore(departureDate)) {
+                return false;
+            }
+
+            if (checkOut.isAfter(arrivalDate)
+                    && (checkOut.isEqual(departureDate) || checkOut.isBefore(departureDate))) {
+                return false;
+            }
+
+            if ((checkIn.isBefore(arrivalDate) || checkIn.isEqual(arrivalDate))
+                    && (checkOut.isAfter(departureDate) || checkOut.isEqual(departureDate))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public HotelBooking createBooking(Map<String, String> payload, Account account) {
+        String firstName = payload.get("firstName");
+        String lastName = payload.get("lastName");
+        String email = payload.get("email");
+        int guests = Integer.parseInt(payload.get("guests"));
+        LocalTime arrivalTime = LocalTime.parse(payload.get("arrivalTime"));
+        LocalDate arrivalDate = LocalDate.parse(payload.get("arrivalDate"));
+        LocalTime departureTime = LocalTime.parse(payload.get("departureTime"));
+        LocalDate departureDate = LocalDate.parse(payload.get("departureDate"));
+        String roomId = payload.get("roomId");
+
+        if(!(isAvaiable(roomId, arrivalDate, departureDate))){
+            return null;
+        }
+
+
         HotelBooking booking = getBooking(account);
 
         if (booking == null) {
@@ -53,23 +93,48 @@ public class BookingHotelService {
             bookingDetailList = new ArrayList<>();
         }
         BookingDetail newBookingDetail = new BookingDetail();
-        newBookingDetail.setFirstName(payload.get("firstName"));
-        newBookingDetail.setLastName(payload.get("lastName"));
-        newBookingDetail.setEmail(payload.get("email"));
-        newBookingDetail.setNumberOfGuests(Integer.parseInt(payload.get("guests")));
-        newBookingDetail.setArrivalDate(LocalDate.parse(payload.get("arrivalDate")));
-        newBookingDetail.setArrivalTime(LocalTime.parse(payload.get("arrivalTime")));
-        newBookingDetail.setDepartureDate(LocalDate.parse(payload.get("departureDate")));
-        newBookingDetail.setDepartureTime(LocalTime.parse(payload.get("departureTime")));
+        newBookingDetail.setFirstName(firstName);
+        newBookingDetail.setLastName(lastName);
+        newBookingDetail.setEmail(email);
+        newBookingDetail.setNumberOfGuests(guests);
+        newBookingDetail.setBookingDate(LocalDate.now());
+        newBookingDetail.setArrivalDate(arrivalDate);
+        newBookingDetail.setArrivalTime(arrivalTime);
+        newBookingDetail.setDepartureDate(departureDate);
+        newBookingDetail.setDepartureTime(departureTime);
 
         Room room = roomService.getRoomById(payload.get("roomId"));
-        room.setBooking(true); // Cập nhật trạng thái phòng
-        newBookingDetail.setRoom(room);
 
+        // set room for bookingDetail
+        newBookingDetail.setRoom(room);
         bookingDetailList.add(newBookingDetail);
         booking.setBookingDetail(bookingDetailList);
 
-        roomService.updateRoom(room); // Lưu trạng thái phòng đã được cập nhật
+        // set timebooking for room
+        List<TimeBooking> timeBookingList = room.getTimeBookings();
+        if (timeBookingList == null) {
+            timeBookingList = new ArrayList<>();
+        }
+        TimeBooking timeBooking = new TimeBooking();
+        timeBooking.setArrivalDate(arrivalDate);
+        timeBooking.setDepartureDate(departureDate);
+        timeBookingList.add(timeBooking);
+        room.setTimeBookings(timeBookingList);
+        roomService.updateRoom(room);
+
         return bookingRepo.save(booking);
+    }
+
+    public HotelBooking getBookingById(String bookingId) {
+        return bookingRepo.findById(bookingId).orElse(null);
+    }
+
+    public void setStatusPayment(String vnp_vnp_TxnRef) {
+        HotelBooking booking = getBookingById(vnp_vnp_TxnRef);
+        List<BookingDetail> details = booking.getBookingDetail();
+        for (BookingDetail detail : details) {
+            detail.setPayment(true);
+        }
+        bookingRepo.save(booking);
     }
 }

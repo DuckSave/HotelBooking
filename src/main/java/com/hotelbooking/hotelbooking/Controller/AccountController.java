@@ -3,6 +3,7 @@ package com.hotelbooking.hotelbooking.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import com.hotelbooking.hotelbooking.Entity.Account;
 import com.hotelbooking.hotelbooking.Repository.AccountRepo;
+import com.hotelbooking.hotelbooking.Service.AccountService;
 import com.hotelbooking.hotelbooking.Service.GenerateCode;
 import com.hotelbooking.hotelbooking.Service.SessionService;
 import com.hotelbooking.hotelbooking.Utils.Encode;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @Controller
 public class AccountController {
 
@@ -37,53 +39,25 @@ public class AccountController {
     @Autowired
     SessionService sessionService;
 
+    @Autowired
+    AccountService accountService;
+
     @PostMapping("/login")
-    // public String login(@ModelAttribute Account account,
-    // @RequestParam(value = "rememberMe", required = false, defaultValue = "false")
-    // boolean rememberMe,
-    // HttpSession session, HttpServletResponse response, HttpServletRequest
-    // request, Model model){
-
-    public String login(@ModelAttribute Account account,
-            @RequestParam(value = "rememberMe", required = false, defaultValue = "false") boolean rememberMe,
-            HttpSession session, HttpServletResponse response, HttpServletRequest request, Model model) {
-
+    public String login(@ModelAttribute Account account, HttpSession session) {
+        System.out.println("login");
         Account existingAccount = accountRepository.findAccountByPhoneNumber(account.getPhoneNumber());
         String EncodePassword = Encode.encode(account.getPassword());
-        if (existingAccount != null) {
+        if(existingAccount != null ){
             if (existingAccount.getPassword().equals(EncodePassword)) {
-
-                if (rememberMe) {
-                    request.getSession().setAttribute("account", existingAccount);
-
-                    Cookie phoneNumberCookie = new Cookie("phoneNumber", account.getPhoneNumber());
-                    phoneNumberCookie.setMaxAge(60 * 60); // 1 hour
-                    phoneNumberCookie.setPath("/");
-                    phoneNumberCookie.setHttpOnly(true);
-
-                    Cookie passwordCookie = new Cookie("password", existingAccount.getPassword());
-                    passwordCookie.setMaxAge(60 * 60); // 1 hour
-                    passwordCookie.setPath("/");
-                    passwordCookie.setHttpOnly(true);
-
-                    response.addCookie(phoneNumberCookie);
-                    response.addCookie(passwordCookie);
-                    // model.addAttribute("loginUser", existingAccount);
-                }
-                // session.setAttribute("loginUser", existingAccount);
-
-                // return "redirect:/profile";
-
                 sessionService.setSession("account", existingAccount, session);
                 return "redirect:/index";
-
             } else {
                 return "redirect:/login";
             }
-        } else {
-            System.out.println("account not found");
-            return "redirect:/login";
         }
+
+        return "redirect:/login";
+
     }
 
     @PostMapping("/addAccount")
@@ -93,6 +67,7 @@ public class AccountController {
         newAccount.setLastName(payload.get("lastName"));
         newAccount.setPhoneNumber(payload.get("phoneNumber"));
         newAccount.setPassword(Encode.encode(payload.get("password")));
+        System.out.println(newAccount.toString());
         newAccount.setRole(false);
         newAccount.setBookingId(generateCode.generateCode());
         accountRepository.save(newAccount);
@@ -118,6 +93,8 @@ public class AccountController {
 
     @PostMapping("/check-phoneNumber")
     public ResponseEntity<?> checkPhoneNumber(@RequestBody Map<String, String> payload) {
+        System.out.println("checkPhoneNumber");
+
         String phoneNumber = payload.get("phoneNumber");
         Account exitsAccount = accountRepository.findAccountByPhoneNumber(phoneNumber);
         if (exitsAccount == null) {
@@ -149,16 +126,5 @@ public class AccountController {
         return ResponseEntity.ok(Map.of("status", "OTP_REQUIRED", "message", otp));
     }
 
-    @PostMapping("/testPhoneNumber")
-    public ResponseEntity<?> testPhoneNumber(@RequestBody Map<String, String> payload) {
-        String phoneNumber = payload.get("phoneNumber");
-        Account exitsAccount = accountRepository.findAccountByPhoneNumber(phoneNumber);
-
-        if (exitsAccount == null) {
-            return ResponseEntity.ok(Map.of("status", "yes", "message", "dang ky thanh cong"));
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "dang ky that bai"));
-    }
 
 }

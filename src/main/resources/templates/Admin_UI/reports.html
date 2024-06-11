@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="/Admin_UI/fragments/head::head">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <div th:replace="/Admin_UI/fragments/header::header"></div>
+        <div style="margin-top: 50px;">
+            <main class="app-content">
+                <div class="app-title">
+                    <ul class="app-breadcrumb breadcrumb side">
+                        <li class="breadcrumb-item active"><a href="#"><b>Danh sách phòng</b></a></li>
+                    </ul>
+                    <div id="clock"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tile">
+                            <div class="tile-body">
+                
+                                <div class="row element-button">
+                                    <div class="col-sm-2">
+                
+                                        <button class="btn btn-primary btn-sm edit" type="button" title="Booking Report" 
+                                            onclick="bookingReport(this)" data-toggle="modal" data-target="#bookingReportModal"><i class="fas fa-edit"></i>Booking Report</button>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập"><i
+                                                class="fas fa-file-upload"></i>Download File</a>
+                                    </div>
+                
+                                    <div class="col-sm-2">
+                                        <a class="btn btn-delete btn-sm print-file" type="button" title="In"><i
+                                                class="fas fa-print"></i>Print
+                                            Data</a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
+                                                class="fas fa-copy"></i>Copy</a>
+                                    </div>
+                
+                                    <div class="col-sm-2">
+                                        <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i>Export
+                                            Excel</a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a class="btn btn-delete btn-sm pdf-file" title="In">
+                                            <i class="fas fa-file-pdf"></i>Export PDF
+                                        </a>
+                                    </div>
+                
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-7 ">
+                                        <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
+                                            id="sampleTable">
+                                            <thead>
+                                                <tr id="tableHeader">
+                                                    <!-- Header will be generated dynamically -->
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tableBody">
+                                                <!-- Rows will be added here dynamically -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                        
+                                        <!-- <nav aria-label="Page navigation">
+                                            <ul class="pagination">
+                                                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                                    <a class="page-link" th:href="@{/admin/formHotel(page=${currentPage - 1}, keyword=${keyword})}">Previous</a>
+                                                </li>
+                                                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                                    th:classappend="${i == currentPage} ? 'active'">
+                                                    <a class="page-link" th:href="@{/admin/formHotel(page=${i}, keyword=${keyword})}" th:text="${i + 1}">1</a>
+                                                </li>
+                                                <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                                                    <a class="page-link" th:href="@{/admin/formHotel(page=${currentPage + 1}, keyword=${keyword})}">Next</a>
+                                                </li>
+                                            </ul>
+                                        </nav> -->
+                                    </div>
+                                </div>
+                                
+                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+            
+    <!-- Modal -->
+        <div class="modal fade" id="bookingReportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="bookingReportButton" >
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <span class="thong-tin-thanh-toan">
+                                        <h5>Booking Report</h5>
+                                    </span>
+                                    <div class="form-group col-md-12">
+                                        <label for="checkIn">Check In Date</label>
+                                        <input type="date" class="form-control" id="checkIn" name="checkIn">
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="checkOut">Check Out Date</label>
+                                        <input type="date" class="form-control" id="checkOut" name="checkOut">
+                                    </div>
+                                    <div class="form-group col-md-12" >
+                                        <select class="form-control" name="hotelName" id="hotelName" >
+                                            <option value="">Select a hotel name</option>
+                                            <option th:each="hotel : ${listHotel}" th:value="${hotel.hotelName}" th:text="${hotel.hotelName}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="roomType">Room Type</label>
+                                        <select class="form-control col-md-12" name="roomType" id="roomType">
+                                            <option value="">Select a room type</option>
+                                            <option value="King Room">King Room</option>
+                                            <option value="Double Room">Double Room</option>
+                                            <option value="Single Room">Single Room</option>
+                                            <option value="Suite Room">Suite Room</option>
+                                            <option value="Cabana Room">Cabana Room</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            </div>
+                            
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Report</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <div th:replace="/User_UI/fragments/script::script"></div>
+    <script>
+
+        document.getElementById('bookingReportButton').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('123')
+            var data = new FormData(e.target);
+            fetch('/admin/booking-report', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.status === "BOOKING_REPORT_SUCCESS"){
+                        // window.location.reload();
+                        console.log(data.bookings);
+                        updateTable(data.bookings);
+                    }else{
+                        AlertDialog('error','Report Booking', data.message);
+                    }
+                });
+        });
+
+
+        function updateTable(data) {
+                const tableHeader = document.getElementById('tableHeader');
+                const tableBody = document.getElementById('tableBody');
+
+                // Clear existing headers and rows
+                tableHeader.innerHTML = '';
+                tableBody.innerHTML = '';
+
+                // Get keys from the first object in the data array
+                const keys = Object.keys(data[0]);
+
+                // Create table headers
+                keys.forEach(key => {
+                    const th = document.createElement('th');
+                    // Split the key into words and capitalize the first letter of each word
+                    const headerText = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                    th.textContent = headerText;
+                    tableHeader.appendChild(th);
+                });
+
+                // Create table rows
+                data.forEach((item, index) => {
+                    const row = document.createElement('tr');
+
+                    keys.forEach(key => {
+                        const cell = document.createElement('td');
+                        if (key === 'payment') {
+                            cell.textContent = item[key] ? 'Paid' : 'Pending';
+                        } else {
+                            cell.textContent = item[key];
+                        }
+                        row.appendChild(cell);
+                    });
+
+                    tableBody.appendChild(row);
+                });
+            }
+
+
+    </script>
+</body>
+
+</html>

@@ -1,17 +1,12 @@
 package com.hotelbooking.hotelbooking.Controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +22,10 @@ import com.hotelbooking.hotelbooking.Service.BookingHotelService;
 import com.hotelbooking.hotelbooking.Service.EmailSenderService;
 import com.hotelbooking.hotelbooking.Service.HotelService;
 import com.hotelbooking.hotelbooking.Service.RoomService;
+import com.hotelbooking.hotelbooking.Service.SessionService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
@@ -43,7 +40,16 @@ public class MainController {
     private HotelRepo hotelRepo;
 
     @Autowired
+    private RoomRepo roomRepo ; 
+
+    @Autowired
     private EmailSenderService mailService;
+
+    @Autowired
+    private SessionService sessionService;
+
+    @Autowired
+    private HotelService hotelService;
 
     @GetMapping("/login")
     public String login() {
@@ -71,6 +77,7 @@ public class MainController {
     }
 
     @GetMapping("/hotels")
+
     public String hotel(Model model, @RequestParam(value = "priceFrom", required = false) Integer priceFrom,
             @RequestParam(value = "priceTo", required = false) Integer priceTo,
             @RequestParam(value = "stars", required = false) List<Integer> stars,
@@ -78,6 +85,42 @@ public class MainController {
             @RequestParam(value = "address", required = false) String address,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "4") int size) {
+
+
+    public String hotel(Model model, @RequestParam(value = "page", defaultValue = "1") int page,HttpSession session) {
+        List<Hotel> hotels = (List<Hotel>) sessionService.getSession("listHotel", session);
+        if (hotels == null) {
+            System.out.println("null");
+            hotels = hotelService.findAllHotel();
+        }
+        hotelService.fillHotels(hotels, model, page);
+        return "/User_UI/hotels.html";
+    }
+
+    @GetMapping("/hotels/price")
+    public String filterByPrice(Model model, HttpSession session,
+            @RequestParam(value = "priceFrom") int priceFrom,
+            @RequestParam(value = "priceTo") int priceTo,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        List<Hotel> hotels = hotelService.findHotelByPrice(priceFrom, priceTo);
+        sessionService.setSession("listHotel", hotels, session);
+        return "redirect:/hotels";
+    }
+
+    @GetMapping("/hotels/stars")
+    public String filterByStars(Model model,HttpSession session,
+            @RequestParam(value = "stars") List<Integer> stars,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        List<Hotel> hotels = hotelRepo.findByStarIn(stars);
+        sessionService.setSession("listHotel", hotels, session);
+        return "redirect:/hotels";
+    }
+
+    @GetMapping("/hotels/addressAndLocation")
+    public String filterByAddress(Model model,
+            @RequestParam(value = "location") String location,
+            @RequestParam(value = "address") String address,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
 
         List<Hotel> hotels = new ArrayList<>();
         if (priceFrom != null && priceTo != null) {
@@ -97,6 +140,7 @@ public class MainController {
         } else {
             hotels = hotelRepo.findAll();
         }
+
         // Phân trang kết quả
         Page<Hotel> hotelPage = paginateHotels(hotels, page, size);
         // Add checkedStars to the model to mark checkboxes as checked
@@ -124,14 +168,20 @@ public class MainController {
         System.out.println(start);
         System.out.println(end);
         return new PageImpl<>(paginatedList, PageRequest.of(page - 1, size), hotels.size());
+
+        hotelService.fillHotels(hotels, model, page);
+        return "/User_UI/hotels.html";
+
     }
 
     @GetMapping("/hotel")
     public String room(@RequestParam("id") String id, Model model) {
         Hotel hotel = hotelRepo.findById(id).orElse(null);
-        model.addAttribute("hotel", hotel);
-        List<Room> rooms = roomService.getRoomsByHotelId(hotel.getId());
-        model.addAttribute("listRoom", rooms);
+        if (hotel != null) {
+            model.addAttribute("hotel", hotel);
+            List<Room> rooms = roomService.getRoomsByHotelId(hotel.getId());
+            model.addAttribute("listRoom", rooms);
+        }
         return "User_UI/hotel-room.html";
     }
 
@@ -151,13 +201,13 @@ public class MainController {
     }
 
     @GetMapping("/services")
-    public String services(Model model,
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "1") int size) {
-        Page<HotelBooking> bookingPage = bookingService.getBookings(page, size);
-        model.addAttribute("bookings", bookingPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", bookingPage.getTotalPages());
+    public String services(Model model, HttpSession session,
+            @RequestParam(name = "page", defaultValue = "0") int page) {
+        Account account = (Account) sessionService.getSession("account", session);
+        if (account != null) {
+            HotelBooking booking = bookingService.getBooking(account);
+            model.addAttribute("bookings", booking);
+        }
         return "/User_UI/services.html";
     }
 
@@ -175,9 +225,13 @@ public class MainController {
     @GetMapping("/booking")
     public String booking(@RequestParam("id") String roomId, Model model) {
         Room room = roomService.getRoomById(roomId);
-        Hotel hotel = hotelRepo.findById(room.getHotelId()).get();
-        model.addAttribute("room", room);
-        model.addAttribute("hotel", hotel);
+        if (room != null) {
+            Hotel hotel = hotelRepo.findById(room.getHotelId()).orElse(null);
+            if (hotel != null) {
+                model.addAttribute("room", room);
+                model.addAttribute("hotel", hotel);
+            }
+        }
         return "/User_UI/bookingForm.html";
     }
 
@@ -186,36 +240,68 @@ public class MainController {
         return "/Admin_UI/adminHotel.html";
     }
 
-    @GetMapping("/admin/hotel/room")
-    public String adminRoom() {
+
+
+    @GetMapping("admin/hotel/room")
+    public String addRoom(Model model) {
+        List<Hotel> listHotel = hotelRepo.findAll();
+        model.addAttribute("listHotel", listHotel);
         return "/Admin_UI/adminRoom.html";
+        
     }
 
-    // @GetMapping("admin/hotel/room")
-    // public String addRoom(Model model) {
-    // List<Hotel> listHotel = hotelRepo.findAll();
-    // model.addAttribute("listHotel", listHotel);
-    // return "/Admin_UI/addRoom.html";
-    // }
 
+    @GetMapping("/admin/hotel/room/detail")
+    public String getRoomDetail(Model model ) {
+        List<Hotel> listHotel = hotelRepo.findAll();
+        List<Room> listRooms = roomRepo.findAll();
+        model.addAttribute("listRooms", listRooms);
+        model.addAttribute("listHotel", listHotel);
+        return "/Admin_UI/adminRoomDetail.html" ;
+    }
+
+    @GetMapping("/admin/hotel/room/search")
+    public String searchRoomsByHotelId(@RequestParam("hotelId") String hotelId, Model model){
+        List<Hotel> listHotel = hotelRepo.findAll();
+        List<Room> listRooms = roomRepo.findRoomsByHotelId(hotelId); // Using roomRepo method to find rooms by hotelId
+        model.addAttribute("listRooms", listRooms);
+        model.addAttribute("listHotel", listHotel);
+        return "/Admin_UI/adminRoomDetail"; // Return the same view with updated room list
+    }
+    
     // @GetMapping("/sendMail")
     // public ResponseEntity<?> sendMail() {
-    // HotelBooking booking = bookingService.getBooking("665d8e4945db4e4bb4f07446");
-    // mailService.sendEmailToBookingPerson(booking);
-    // Map<String, String> map = new HashMap<String, String>();
-    // map.put("status", "SUCCESS");
-    // return ResponseEntity.ok().body(map);
+    //     HotelBooking booking = bookingService.getBooking("665d8e4945db4e4bb4f07446");
+    //     mailService.sendEmailToBookingPerson(booking);
+    //     Map<String, String> map = new HashMap<String, String>();
+    //     map.put("status", "SUCCESS");
+    //     return ResponseEntity.ok().body(map);
     // }
 
-    @GetMapping("/cart")
-    public String getBookings(Model model,
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "1") int size) {
-        Page<HotelBooking> bookingPage = bookingService.getBookings(page, size);
-        model.addAttribute("bookings", bookingPage.getContent());
+
+    @GetMapping("/admin/formHotel")
+    public String formHotel(Model model,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size) {
+
+        Page<Hotel> listHotel;
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (keyword != null && !keyword.isEmpty()) {
+            listHotel = hotelService.searchHotelsByName(keyword, pageable);
+        } else {
+            listHotel = hotelService.getAllHotels(pageable);
+        }
+
+        model.addAttribute("listHotel", listHotel.getContent());
+        model.addAttribute("totalPages", listHotel.getTotalPages());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", bookingPage.getTotalPages());
-        return "/User_UI/cart.html";
+        model.addAttribute("keyword", keyword);
+
+        return "/ADMIN_UI/formHotel.html";
     }
+
+    
 
 }
