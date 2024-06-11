@@ -77,16 +77,6 @@ public class MainController {
     }
 
     @GetMapping("/hotels")
-
-    public String hotel(Model model, @RequestParam(value = "priceFrom", required = false) Integer priceFrom,
-            @RequestParam(value = "priceTo", required = false) Integer priceTo,
-            @RequestParam(value = "stars", required = false) List<Integer> stars,
-            @RequestParam(value = "location", required = false) String location,
-            @RequestParam(value = "address", required = false) String address,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "4") int size) {
-
-
     public String hotel(Model model, @RequestParam(value = "page", defaultValue = "1") int page,HttpSession session) {
         @SuppressWarnings("unchecked")
         List<Hotel> hotels = (List<Hotel>) sessionService.getSession("listHotel", session);
@@ -122,57 +112,17 @@ public class MainController {
             @RequestParam(value = "location") String location,
             @RequestParam(value = "address") String address,
             @RequestParam(value = "page", defaultValue = "1") int page) {
-
         List<Hotel> hotels = new ArrayList<>();
-        if (priceFrom != null && priceTo != null) {
-            hotels = hotelRepo.findByPriceBetween(priceFrom, priceTo);
-            if (hotels.isEmpty()) {
-                model.addAttribute("message", "No hotels found in the given price range");
-            }
-        } else if (stars != null && !stars.isEmpty()) {
-            hotels = hotelRepo.findByStarIn(stars);
-        } else if (address != null && !address.isEmpty()) {
+        if (address != null && !address.isEmpty()) {
             Hotel hotel = hotelRepo.findHotelByLocationAndAddress(location, address);
             if (hotel != null) {
                 hotels.add(hotel);
             }
         } else if (location != null && !location.isEmpty()) {
             hotels = hotelRepo.findListHotelByLocation(location);
-        } else {
-            hotels = hotelRepo.findAll();
         }
-
-        // Phân trang kết quả
-        Page<Hotel> hotelPage = paginateHotels(hotels, page, size);
-        // Add checkedStars to the model to mark checkboxes as checked
-        model.addAttribute("listHotel", hotelPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", hotelPage.getTotalPages());
-        model.addAttribute("size", size);
-
-
-        model.addAttribute("checkedStars", stars);
-        model.addAttribute("location", location);
-        model.addAttribute("address", address);
-        model.addAttribute("priceForm", priceFrom);
-        model.addAttribute("priceTo", priceTo);
-
-        return "/User_UI/hotels";
-
-    }
-
-    // Phương thức phân trang
-    private Page<Hotel> paginateHotels(List<Hotel> hotels, int page, int size) {
-        int start = Math.min((page - 1) * size, hotels.size());
-        int end = Math.min(start + size, hotels.size());
-        List<Hotel> paginatedList = hotels.subList(start, end);
-        System.out.println(start);
-        System.out.println(end);
-        return new PageImpl<>(paginatedList, PageRequest.of(page - 1, size), hotels.size());
-
         hotelService.fillHotels(hotels, model, page);
         return "/User_UI/hotels.html";
-
     }
 
     @GetMapping("/hotel")
