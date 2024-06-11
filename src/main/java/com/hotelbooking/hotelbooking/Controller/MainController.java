@@ -70,127 +70,50 @@ public class MainController {
         return "/User_UI/tours.html";
     }
 
-    // @GetMapping("/hotels")
-    // public String hotel(Model model, @RequestParam(value = "priceFrom", required
-    // = false) Integer priceFrom,
-    // @RequestParam(value = "priceTo", required = false) Integer priceTo,
-    // @RequestParam(value = "stars", required = false) List<Integer> stars,
-    // @RequestParam(value = "location", required = false) String location,
-    // @RequestParam(value = "address", required = false) String address,
-    // @RequestParam(value = "page", defaultValue = "1") int page,
-    // @RequestParam(value = "size", defaultValue = "4") int size) {
-
-    // List<Hotel> hotels = new ArrayList<>();
-    // if (priceFrom != null && priceTo != null) {
-    // hotels = hotelRepo.findByPriceBetween(priceFrom, priceTo);
-    // if (hotels.isEmpty()) {
-    // model.addAttribute("message", "No hotels found in the given price range");
-    // }
-    // } else if (stars != null && !stars.isEmpty()) {
-    // hotels = hotelRepo.findByStarIn(stars);
-    // } else if (address != null && !address.isEmpty()) {
-    // Hotel hotel = hotelRepo.findHotelByLocationAndAddress(location, address);
-    // if (hotel != null) {
-    // hotels.add(hotel);
-    // }
-    // } else if (location != null && !location.isEmpty()) {
-    // hotels = hotelRepo.findListHotelByLocation(location);
-    // } else {
-    // hotels = hotelRepo.findAll();
-    // }
-    // // Phân trang kết quả
-    // Page<Hotel> hotelPage = paginateHotels(hotels, page, size);
-    // // Add checkedStars to the model to mark checkboxes as checked
-    // model.addAttribute("checkedStars", stars);
-    // model.addAttribute("listHotel", hotelPage.getContent());
-    // model.addAttribute("currentPage", page);
-    // model.addAttribute("totalPages", hotelPage.getTotalPages());
-    // model.addAttribute("size", size);
-
-    // return "/User_UI/hotels";
-
-    // }
-
     @GetMapping("/hotels")
-    public String hotels(Model model,
+    public String hotel(Model model, @RequestParam(value = "priceFrom", required = false) Integer priceFrom,
+            @RequestParam(value = "priceTo", required = false) Integer priceTo,
+            @RequestParam(value = "stars", required = false) List<Integer> stars,
+            @RequestParam(value = "location", required = false) String location,
+            @RequestParam(value = "address", required = false) String address,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "4") int size) {
 
-        List<Hotel> hotels = hotelRepo.findAll();
-        Page<Hotel> hotelPage = paginateHotels(hotels, page, size);
-
-        model.addAttribute("listHotel", hotelPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", hotelPage.getTotalPages());
-        model.addAttribute("size", size);
-        return "/User_UI/hotels";
-    }
-
-    // Phương thức tìm kiếm khách sạn theo giá
-    @GetMapping("/hotels/price")
-    public String filterByPrice(Model model,
-            @RequestParam(value = "priceFrom") Integer priceFrom,
-            @RequestParam(value = "priceTo") Integer priceTo,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "4") int size) {
-
-        List<Hotel> hotels = hotelRepo.findByPriceBetween(priceFrom, priceTo);
-        if (hotels.isEmpty()) {
-            model.addAttribute("message", "No hotels found in the given price range");
-        }
-        Page<Hotel> hotelPage = paginateHotels(hotels, page, size);
-
-        model.addAttribute("listHotel", hotelPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", hotelPage.getTotalPages());
-        model.addAttribute("size", size);
-
-        return "/User_UI/hotels";
-    }
-
-    // Phương thức tìm kiếm khách sạn theo sao
-    @GetMapping("/hotels/stars")
-    public String filterByStars(Model model,
-            @RequestParam(value = "stars") List<Integer> stars,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "4") int size) {
-
-        List<Hotel> hotels = hotelRepo.findByStarIn(stars);
-        Page<Hotel> hotelPage = paginateHotels(hotels, page, size);
-
-        model.addAttribute("checkedStars", stars);
-        model.addAttribute("listHotel", hotelPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", hotelPage.getTotalPages());
-        model.addAttribute("size", size);
-
-        return "/User_UI/hotels";
-    }
-
-    // Phương thức tìm kiếm khách sạn theo địa chỉ và địa điểm
-    @GetMapping("/hotels/addressAndLocation")
-    public String filterByAddress(Model model,
-            @RequestParam(value = "location") String location,
-            @RequestParam(value = "address") String address,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "4") int size) {
         List<Hotel> hotels = new ArrayList<>();
-        if (address != null && !address.isEmpty()) {
+        if (priceFrom != null && priceTo != null) {
+            hotels = hotelRepo.findByPriceBetween(priceFrom, priceTo);
+            if (hotels.isEmpty()) {
+                model.addAttribute("message", "No hotels found in the given price range");
+            }
+        } else if (stars != null && !stars.isEmpty()) {
+            hotels = hotelRepo.findByStarIn(stars);
+        } else if (address != null && !address.isEmpty()) {
             Hotel hotel = hotelRepo.findHotelByLocationAndAddress(location, address);
             if (hotel != null) {
                 hotels.add(hotel);
             }
         } else if (location != null && !location.isEmpty()) {
             hotels = hotelRepo.findListHotelByLocation(location);
+        } else {
+            hotels = hotelRepo.findAll();
         }
+        // Phân trang kết quả
         Page<Hotel> hotelPage = paginateHotels(hotels, page, size);
-
+        // Add checkedStars to the model to mark checkboxes as checked
         model.addAttribute("listHotel", hotelPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", hotelPage.getTotalPages());
         model.addAttribute("size", size);
 
+
+        model.addAttribute("checkedStars", stars);
+        model.addAttribute("location", location);
+        model.addAttribute("address", address);
+        model.addAttribute("priceForm", priceFrom);
+        model.addAttribute("priceTo", priceTo);
+
         return "/User_UI/hotels";
+
     }
 
     // Phương thức phân trang

@@ -12,25 +12,27 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-xs-2">
-              <div id="colorlib-logo"><a th:href="@{/index}">Tour</a></div>
+              <div id="colorlib-logo"><a th:href="@{/index}" th:text="#{tours}">Tour</a></div>
             </div>
             <div class="col-xs-10 text-right menu-1">
               <ul>
-                <li class="active"><a th:href="@{/index}">Home</a></li>
+                <li class="active"><a th:href="@{/index}" th:text="#{home}">Home</a></li>
                 <li class="has-dropdown">
-                  <a th:href="@{/tours}">Tours</a>
+                  <a th:href="@{/tours}" th:text="#{tours}">Tours</a>
                   <ul class="dropdown">
-                    <li><a th:href="@{#}">Destination</a></li>
-                    <li><a th:href="@{#}">Cruises</a></li>
-                    <li><a th:href="@{#}">Hotels</a></li>
-                    <li><a th:href="@{#}">Booking</a></li>
+                    <li><a th:href="@{#}" th:text="#{destination}">Destination</a></li>
+                    <li><a th:href="@{#}" th:text="#{cruises}">Cruises</a></li>
+                    <li><a th:href="@{#}" th:text="#{hotels}">Hotels</a></li>
+                    <li><a th:href="@{#}" th:text="#{booking}">Booking</a></li>
                   </ul>
                 </li>
-                <li><a th:href="@{/hotels}">Hotels</a></li>
-                <li><a th:href="@{/services}">Services</a></li>
-                <li><a th:href="@{/blog}">Blog</a></li>
-                <li><a th:href="@{/about}">About</a></li>
-                <li><a th:href="@{/contact}">Contact</a></li>
+                <li><a th:href="@{/hotels}" th:text="#{hotels}">Hotels</a></li>
+                <li><a th:href="@{/services}" th:text="#{services}">Services</a></li>
+                <li><a th:href="@{/blog}" th:text="#{blog}">Blog</a></li>
+                <li><a th:href="@{/about}" th:text="#{about}">About</a></li>
+                <li><a th:href="@{/contact}" th:text="#{contact}">Contact</a></li>
+                <li><a href="/change-language?lang=vi">Tiếng Việt</a></li>
+                <li><a href="/change-language?lang=en">English</a></li>
               </ul>
             </div>
           </div>
@@ -46,8 +48,8 @@
               <div class="row">
                 <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
                   <div class="slider-text-inner text-center">
-                    <h2>2 Days Tour</h2>
-                    <h1>Amazing Maldives Tour</h1>
+                    <h2 th:text="#{2DaysTour}">2 Days Tour</h2>
+                    <h1 th:text="#{amazingMaldivesTour}">Amazing Maldives Tour</h1>
                   </div>
                 </div>
               </div>
@@ -59,8 +61,8 @@
               <div class="row">
                 <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
                   <div class="slider-text-inner text-center">
-                    <h2>10 Days Cruises</h2>
-                    <h1>From Greece to Spain</h1>
+                    <h2 th:text="#{10DaysCruises}">10 Days Cruises</h2>
+                    <h1 th:text="#{fromGreecetoSpain}">From Greece to Spain</h1>
                   </div>
                 </div>
               </div>
@@ -72,8 +74,8 @@
               <div class="row">
                 <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
                   <div class="slider-text-inner text-center">
-                    <h2>Explore our most tavel agency</h2>
-                    <h1>Our Travel Agency</h1>
+                    <h2 th:text="#{exploreourmosttravelagency}">Explore our most tavel agency</h2>
+                    <h1 th:text="#{ourTravelAgency}">Our Travel Agency</h1>
                   </div>
                 </div>
               </div>
@@ -85,8 +87,8 @@
               <div class="row">
                 <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
                   <div class="slider-text-inner text-center">
-                    <h2>Experience the</h2>
-                    <h1>Best Trip Ever</h1>
+                    <h2 th:text="#{experiencethe}">Experience the</h2>
+                    <h1 th:text="#{bestTripEver}">Best Trip Ever</h1>
                   </div>
                 </div>
               </div>
@@ -101,10 +103,10 @@
         <div class="search-wrap">
           <div class="container">
             <ul class="nav nav-tabs">
-              <li class="active"><a data-toggle="tab" href="#flight"><i class="flaticon-plane"></i> Flight</a></li>
-              <li><a data-toggle="tab" href="#hotel"><i class="flaticon-resort"></i> Hotel</a></li>
-              <li><a data-toggle="tab" href="#car"><i class="flaticon-car"></i> Car Rent</a></li>
-              <li><a data-toggle="tab" href="#cruises"><i class="flaticon-boat"></i> Cruises</a></li>
+              <li class="active"><a data-toggle="tab" href="#flight" th:text="#{flight}"><i class="flaticon-plane"></i> Flight</a></li>
+              <li><a data-toggle="tab" href="#hotel" th:text="#{hotels}"><i class="flaticon-resort"></i> Hotel</a></li>
+              <li><a data-toggle="tab" href="#car" th:text="#{carRent}"><i class="flaticon-car"></i> Car Rent</a></li>
+              <li><a data-toggle="tab" href="#cruises" th:text="#{cruises}"><i class="flaticon-boat"></i> Cruises</a></li>
             </ul>
           </div>
           <div class="tab-content">
@@ -113,7 +115,7 @@
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="date">Where:</label>
+                      <label for="date" th:text="#{where}">Where:</label>
                       <div class="form-field">
                         <input type="text" id="location" class="form-control" placeholder="Search Location">
                       </div>
@@ -121,7 +123,7 @@
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label for="date">Check-in:</label>
+                      <label for="date" th:text="#{check-in}">Check-in:</label>
                       <div class="form-field">
                         <i class="icon icon-calendar2"></i>
                         <input type="text" id="date" class="form-control date" placeholder="Check-in date">
@@ -130,7 +132,7 @@
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label for="date">Check-out:</label>
+                      <label for="date" th:text="#{check-out}">Check-out:</label>
                       <div class="form-field">
                         <i class="icon icon-calendar2"></i>
                         <input type="text" id="date" class="form-control date" placeholder="Check-out date">
@@ -139,7 +141,7 @@
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="guests">Guest</label>
+                      <label for="guests" th:text="#{guest}">Guest</label>
                       <div class="form-field">
                         <i class="icon icon-arrow-down3"></i>
                         <select name="people" id="people" class="form-control">
@@ -161,7 +163,7 @@
             </div>
             <!-- //HOTEL -->
             <div id="hotel" class="tab-pane fade">
-              <form method="get" th:action="@{/hotels}" class="colorlib-form">
+              <form method="get" th:action="@{/hotels/location}" class="colorlib-form">
                 <div class="row">
                   <div class="col-md-2">
                     <div class="booknow">
@@ -171,7 +173,7 @@
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label for="date">Where:</label>
+                      <label for="date" th:text="#{where}">Where:</label>
                       <div class="form-field">
                         <input type="text" name="location" id="location" class="form-control" placeholder="Search Location">
                       </div>
@@ -179,7 +181,7 @@
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label for="date">Check-in:</label>
+                      <label for="date" th:text="#{check-in}">Check-in:</label>
                       <div class="form-field">
                         <i class="icon icon-calendar2"></i>
                         <input type="text" id="date" class="form-control date" placeholder="Check-in date">
@@ -188,7 +190,7 @@
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label for="date">Check-out:</label>
+                      <label for="date" th:text="#{check-out}">Check-out:</label>
                       <div class="form-field">
                         <i class="icon icon-calendar2"></i>
                         <input type="text" id="date" class="form-control date" placeholder="Check-out date">
@@ -197,7 +199,7 @@
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label for="guests">Guest</label>
+                      <label for="guests" th:text="#{guest}">Guest</label>
                       <div class="form-field">
                         <i class="icon icon-arrow-down3"></i>
                         <select name="people" id="people" class="form-control">
@@ -221,7 +223,7 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="date">Where:</label>
+                      <label for="date" th:text="#{where}">Where:</label>
                       <div class="form-field">
                         <input type="text" id="location" class="form-control" placeholder="Search Location">
                       </div>
@@ -229,7 +231,7 @@
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="date">Start Date:</label>
+                      <label for="date" th:text="#{startDate}">Start Date:</label>
                       <div class="form-field">
                         <i class="icon icon-calendar2"></i>
                         <input type="text" id="date" class="form-control date" placeholder="Check-in date">
@@ -238,7 +240,7 @@
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="date">Return Date:</label>
+                      <label for="date" th:text="#{returnDate}">Return Date:</label>
                       <div class="form-field">
                         <i class="icon icon-calendar2"></i>
                         <input type="text" id="date" class="form-control date" placeholder="Check-out date">
@@ -256,7 +258,7 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="date">Where:</label>
+                      <label for="date" th:text="#{where}">Where:</label>
                       <div class="form-field">
                         <input type="text" id="location" class="form-control" placeholder="Search Location">
                       </div>
@@ -264,7 +266,7 @@
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="date">Start Date:</label>
+                      <label for="date" th:text="#{startDate}">Start Date:</label>
                       <div class="form-field">
                         <i class="icon icon-calendar2"></i>
                         <input type="text" id="date" class="form-control date" placeholder="Check-in date">
@@ -273,15 +275,15 @@
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="guests">Categories</label>
+                      <label for="guests" th:text="#{categories}">Categories</label>
                       <div class="form-field">
                         <i class="icon icon-arrow-down3"></i>
                         <select name="category" id="category" class="form-control">
-                          <option value="#">Suite</option>
-                          <option value="#">Super Deluxe</option>
-                          <option value="#">Balcony</option>
-                          <option value="#">Economy</option>
-                          <option value="#">Luxury</option>
+                          <option value="#" th:text="#{suite}">Suite</option>
+                          <option value="#" th:text="#{superDeluxe}">Super Deluxe</option>
+                          <option value="#" th:text="#{balcony}">Balcony</option>
+                          <option value="#" th:text="#{economy}">Economy</option>
+                          <option value="#" th:text="#{luxury}">Luxury</option>
                         </select>
                       </div>
                     </div>
@@ -854,14 +856,14 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box">
-          <h2>Sign Up for a Newsletter</h2>
-          <p>Sign up for our mailing list to get latest updates and offers.</p>
+          <h2 th:text="#{SignUpforaNewsletter}">Sign Up for a Newsletter</h2>
+          <p th:text="#{Signupforourmailinglisttogetlatestupdatesandoffers}">Sign up for our mailing list to get latest updates and offers.</p>
           <form class="form-inline qbstp-header-subscribe">
             <div class="row">
               <div class="col-md-12 col-md-offset-0">
                 <div class="form-group">
                   <input type="text" class="form-control" id="email" placeholder="Enter your email">
-                  <button type="submit" class="btn btn-primary">Subscribe</button>
+                  <button type="submit" class="btn btn-primary" th:text="#{Subscribe}">Subscribe</button>
                 </div>
               </div>
             </div>
@@ -874,8 +876,8 @@
     <div class="container">
       <div class="row row-pb-md">
         <div class="col-md-3 colorlib-widget">
-          <h4>Tour Agency</h4>
-          <p>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci
+          <h4 th:text="#{TourAgency}">Tour Agency</h4>
+          <p th:text="#{Facilis}">Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci
             architecto culpa amet.</p>
           <p>
           <ul class="colorlib-social-icons">
@@ -887,36 +889,36 @@
           </p>
         </div>
         <div class="col-md-2 colorlib-widget">
-          <h4>Book Now</h4>
+          <h4 th:text="#{BookNow}">Book Now</h4>
           <p>
           <ul class="colorlib-footer-links">
-            <li><a th:href="@{#}">Flight</a></li>
-            <li><a th:href="@{#}">Hotels</a></li>
-            <li><a th:href="@{#}">Tour</a></li>
-            <li><a th:href="@{#}">Car Rent</a></li>
-            <li><a th:href="@{#}">Beach &amp; Resorts</a></li>
-            <li><a th:href="@{#}">Cruises</a></li>
+            <li><a th:href="@{#}" th:text="#{flight}">Flight</a></li>
+            <li><a th:href="@{#}" th:text="#{hotels}">Hotels</a></li>
+            <li><a th:href="@{#}" th:text="#{tours}">Tour</a></li>
+            <li><a th:href="@{#}" th:text="#{carRent}">Car Rent</a></li>
+            <li><a th:href="@{#}" th:text="#{BeachResorts}">Beach &amp; Resorts</a></li>
+            <li><a th:href="@{#}" th:text="#{Cruises}">Cruises</a></li>
           </ul>
           </p>
         </div>
         <div class="col-md-2 colorlib-widget">
-          <h4>Top Deals</h4>
+          <h4 th:text="#{TopDeals}">Top Deals</h4>
           <p>
           <ul class="colorlib-footer-links">
-            <li><a th:href="@{#}">Edina Hotel</a></li>
-            <li><a th:href="@{#}">Quality Suites</a></li>
-            <li><a th:href="@{#}">The Hotel Zephyr</a></li>
-            <li><a th:href="@{#}">Da Vinci Villa</a></li>
-            <li><a th:href="@{#}">Hotel Epikk</a></li>
+            <li><a th:href="@{#}" th:text="#{EdinaHotel}">Edina Hotel</a></li>
+            <li><a th:href="@{#}" th:text="#{QualitySuites}">Quality Suites</a></li>
+            <li><a th:href="@{#}" th:text="#{TheHotelZephyr}">The Hotel Zephyr</a></li>
+            <li><a th:href="@{#}" th:text="#{DaVinciVilla}">Da Vinci Villa</a></li>
+            <li><a th:href="@{#}" th:text="#{HotelEpikk}">Hotel Epikk</a></li>
           </ul>
           </p>
         </div>
         <div class="col-md-2">
-          <h4>Blog Post</h4>
+          <h4 th:text="#{BlogPost}">Blog Post</h4>
           <ul class="colorlib-footer-links">
-            <li><a th:href="@{#}">The Ultimate Packing List For Female Travelers</a></li>
-            <li><a th:href="@{#}">How These 5 People Found The Path to Their Dream Trip</a></li>
-            <li><a th:href="@{#}">A Definitive Guide to the Best Dining and Drinking Venues in the City</a></li>
+            <li><a th:href="@{#}" th:text="#{TheUltimatePacking}">The Ultimate Packing List For Female Travelers</a></li>
+            <li><a th:href="@{#}" th:text="#{HowThese5People}">How These 5 People Found The Path to Their Dream Trip</a></li>
+            <li><a th:href="@{#}" th:text="#{ADefinitiveGuide}">A Definitive Guide to the Best Dining and Drinking Venues in the City</a></li>
           </ul>
         </div>
         <div class="col-md-3 col-md-push-1">
@@ -939,7 +941,7 @@
             <!-- Copyright &copy;<script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js}"></script><script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart2" aria-hidden="true"></i> by <a href="https://colorlib.com/" target="_blank">Colorlib</a> -->
             </span>
             <span class="block">Demo Images: <a href="http://unsplash.co/" target="_blank">Unsplash</a> , <a
-                href="http://pexels.com/" target="_blank">Pexels.com</a></span>
+                href="http://pexels.com/" target="_blank" >Pexels.com</a></span>
           </p>
         </div>
       </div>
