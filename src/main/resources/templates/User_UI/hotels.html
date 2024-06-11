@@ -13,25 +13,25 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-xs-2">
-              <div id="colorlib-logo"><a th:href="@{/index}" th:text="#{tours}">Tour</a></div>
+              <div id="colorlib-logo"><a th:href="@{/index}">Tour</a></div>
             </div>
             <div class="col-xs-10 text-right menu-1">
               <ul>
-                <li><a th:href="@{/index}" th:text="#{home}">Home</a></li>
+                <li><a th:href="@{/index}">Home</a></li>
                 <li class="has-dropdown">
-                  <a th:href="@{/tours}" th:text="#{tours}">Tours</a>
+                  <a th:href="@{/tours}">Tours</a>
                   <ul class="dropdown">
-                    <li><a href="#" th:text="#{destination}">Destination</a></li>
-                    <li><a href="#" th:text="#{cruises}">Cruises</a></li>
-                    <li><a href="#" th:text="#{hotels}">Hotels</a></li>
-                    <li><a href="#" th:text="#{booking}">Booking</a></li>
+                    <li><a href="#">Destination</a></li>
+                    <li><a href="#">Cruises</a></li>
+                    <li><a href="#">Hotels</a></li>
+                    <li><a href="#">Booking</a></li>
                   </ul>
                 </li>
-                <li class="active"><a th:href="@{/hotels}" th:text="#{hotels}">Hotels</a></li>
-                <li><a th:href="@{/services}" th:text="#{services}">Services</a></li>
-                <li><a th:href="@{/blog}" th:text="#{blog}">Blog</a></li>
-                <li><a th:href="@{/about}" th:text="#{about}">About</a></li>
-                <li><a th:href="@{/contact}" th:text="#{contact}">Contact</a></li>
+                <li class="active"><a th:href="@{/hotels}">Hotels</a></li>
+                <li><a th:href="@{/services}">Services</a></li>
+                <li><a th:href="@{/blog}">Blog</a></li>
+                <li><a th:href="@{/about}">About</a></li>
+                <li><a th:href="@{/contact}">Contact</a></li>
               </ul>
             </div>
           </div>
@@ -92,53 +92,11 @@
                     </div>
                   </div>
                 </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-                <!-- <div class="row">
-                  <div class="col-md-12 text-center">
-                    <ul class="pagination">
-                      <li th:classappend="${currentPage == 1} ? 'disabled'">
-                        <a th:if="${currentPage > 1}" th:href="@{/pageHotels(page=${currentPage - 1}, size=${size})}">&laquo;</a>
-                      </li>
-                      <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
-                        th:classappend="${pageNum == currentPage} ? 'active'">
-                        <a th:href="@{/pageHotels(page=${pageNum}, size=${size})}" th:text="${pageNum}"></a>
-                      </li>
-                      <li th:classappend="${currentPage == totalPages} ? 'disabled'">
-                        <a th:if="${currentPage < totalPages}" th:href="@{/pageHotels(page=${currentPage + 1}, size=${size})}">&raquo;</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div> -->
->>>>>>> 3b0ed24ba4947834df16a4a9c2ee772573036169
-=======
->>>>>>> 3eb3f3e4ef5fcefa1de027b4fbfe545882fed398
                 <div class="row">
                   <div class="col-md-12 text-center">
                     <ul class="pagination">
                       <li th:classappend="${currentPage == 1} ? 'disabled'">
                         <a th:if="${currentPage > 1}"
-<<<<<<< HEAD
-                          th:href="@{/hotels(page=${currentPage - 1}, size=${size}, stars=${checkedStars}, priceFrom=${priceForm}, priceTo=${priceTo}, location=${location}, address=${address})}">&laquo;</a>
-                        <span th:if="${currentPage == 1}">&laquo;</span>
-                      </li>
-                      <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
-                        th:classappend="${pageNum == currentPage} ? 'active'">
-                        <a th:href="@{/hotels(page=${pageNum}, size=${size}, stars=${checkedStars}, priceFrom=${priceForm}, priceTo=${priceTo}, location=${location}, address=${address})}"
-                          th:text="${pageNum}"></a>
-                      </li>
-                      <li th:classappend="${currentPage == totalPages} ? 'disabled'">
-<<<<<<< HEAD
-                        <a th:if="${currentPage < totalPages}"
-                          th:href="@{/hotels(page=${currentPage + 1}, size=${size}, stars=${checkedStars}, priceFrom=${priceForm}, priceTo=${priceTo}, location=${location}, address=${address})}">&raquo;</a>
-                        <span th:if="${currentPage == totalPages}">&raquo;</span>
-=======
-                        <a th:if="${currentPage totalPages}" th:href="@{/hotels(page=${currentPage + 1}, size=${size})}">&raquo;</a>
-                        <!-- <a th:if="${currentPage == totalPages}">&raquo;</a> -->
->>>>>>> 3b0ed24ba4947834df16a4a9c2ee772573036169
-=======
                           th:href="@{/hotels(page=${currentPage - 1}, size=${size})}">&laquo;</a>
                       </li>
                       <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
@@ -148,7 +106,6 @@
                       <li th:classappend="${currentPage == totalPages} ? 'disabled'">
                         <a th:if="${currentPage < totalPages}"
                           th:href="@{/hotels(page=${currentPage + 1}, size=${size})}">&raquo;</a>
->>>>>>> 3eb3f3e4ef5fcefa1de027b4fbfe545882fed398
                       </li>
                     </ul>
                   </div>
@@ -160,7 +117,7 @@
             <div class="sidebar-wrap">
               <div class="side search-wrap animate-box">
                 <h3 class="sidebar-heading">Find your hotel</h3>
-                <form th:action="@{/hotels}" method="get" class="colorlib-form">
+                <form th:action="@{/hotels/addressAndLocation}" method="get" class="colorlib-form">
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
@@ -204,7 +161,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <h3 class="sidebar-heading">Price Range</h3>
-                    <form th:action="@{/hotels}" method="get" class="colorlib-form-2">
+                    <form th:action="@{/hotels/price}" method="get" class="colorlib-form-2">
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group">
@@ -246,20 +203,15 @@
                   </div>
                 </div>
               </div>
-<<<<<<< HEAD
-              <!-- onchange="filterHotels()" -->
-              <!-- onclick="window.location.href = '/hotels/stars?stars=' + (this.checked ? '5' : '')" -->
-=======
->>>>>>> 3eb3f3e4ef5fcefa1de027b4fbfe545882fed398
               <div class="side animate-box">
                 <div class="row">
                   <div class="col-md-12">
                     <h3 class="sidebar-heading">Review Rating</h3>
-                    <form th:action="@{/hotels}" method="GET" class="colorlib-form-2" id="starForm">
+                    <form th:action="@{/hotels/stars}" method="GET" class="colorlib-form-2">
                       <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="star5" name="stars" value="5"
                           th:checked="${checkedStars != null and checkedStars.contains(5)}"
-                          onchange="document.getElementById('starForm').submit();">
+                          onclick="window.location.href = '/hotels/stars?stars=' + (this.checked ? '5' : '')">
                         <label class="form-check-label" for="star5">
                           <p class="rate"><span><i class="icon-star-full"></i><i class="icon-star-full"></i><i
                                 class="icon-star-full"></i><i class="icon-star-full"></i><i
@@ -269,7 +221,7 @@
                       <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="star4" name="stars" value="4"
                           th:checked="${checkedStars != null and checkedStars.contains(4)}"
-                          onchange="document.getElementById('starForm').submit();">
+                          onclick="window.location.href = '/hotels/stars?stars=' + (this.checked ? '4' : '')">
                         <label class="form-check-label" for="star4">
                           <p class="rate"><span><i class="icon-star-full"></i><i class="icon-star-full"></i><i
                                 class="icon-star-full"></i><i class="icon-star-full"></i></span></p>
@@ -278,7 +230,7 @@
                       <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="star3" name="stars" value="3"
                           th:checked="${checkedStars != null and checkedStars.contains(3)}"
-                          onchange="document.getElementById('starForm').submit();">
+                          onclick="window.location.href = '/hotels/stars?stars=' + (this.checked ? '3' : '')">
                         <label class="form-check-label" for="star3">
                           <p class="rate"><span><i class="icon-star-full"></i><i class="icon-star-full"></i><i
                                 class="icon-star-full"></i></span></p>
@@ -287,7 +239,7 @@
                       <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="star2" name="stars" value="2"
                           th:checked="${checkedStars != null and checkedStars.contains(2)}"
-                          onchange="document.getElementById('starForm').submit();">
+                          onclick="window.location.href = '/hotels/stars?stars=' + (this.checked ? '2' : '')">
                         <label class="form-check-label" for="star2">
                           <p class="rate"><span><i class="icon-star-full"></i><i class="icon-star-full"></i></span></p>
                         </label>
@@ -295,7 +247,7 @@
                       <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="star1" name="stars" value="1"
                           th:checked="${checkedStars != null and checkedStars.contains(1)}"
-                          onchange="document.getElementById('starForm').submit();">
+                          onclick="window.location.href = '/hotels/stars?stars=' + (this.checked ? '1' : '')">
                         <label class="form-check-label" for="star1">
                           <p class="rate"><span><i class="icon-star-full"></i></span></p>
                         </label>
@@ -304,123 +256,6 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class="side animate-box">
-                <div class="row">
-                  <div class="col-md-12">
-                    <h3 class="sidebar-heading">Categories</h3>
-                    <form method="post" class="colorlib-form-2">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Apartment</h4>
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Hotel</h4>
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Hostel</h4>
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Inn</h4>
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Villa</h4>
-                        </label>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="side animate-box">
-                <div class="row">
-                  <div class="col-md-12">
-                    <h3 class="sidebar-heading">Location</h3>
-                    <form method="post" class="colorlib-form-2">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Greece</h4>
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Italy</h4>
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Spain</h4>
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Germany</h4>
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Japan</h4>
-                        </label>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="side animate-box">
-                <div class="row">
-                  <div class="col-md-12">
-                    <h3 class="sidebar-heading">Facilities</h3>
-                    <form method="post" class="colorlib-form-2">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Airport Transfer</h4>
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Resto Bar</h4>
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Restaurant</h4>
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Swimming Pool</h4>
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                          <h4 class="place">Japan</h4>
-                        </label>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>
@@ -544,9 +379,6 @@
     });
   </script>
   <div th:replace="/User_UI/fragments/script::script"></div>
-<<<<<<< HEAD
-=======
 </body>
->>>>>>> 3eb3f3e4ef5fcefa1de027b4fbfe545882fed398
 
 </html>
