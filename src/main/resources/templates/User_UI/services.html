@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="https://www.thymeleaf.org">
 
 <head th:replace="/User_UI/fragments/head::head"></head>
 
@@ -11,25 +11,25 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-xs-2">
-              <div id="colorlib-logo"><a th:href="@{/index}">Tour</a></div>
+              <div id="colorlib-logo"><a th:href="@{/index}" th:text="#{tours}">Tour</a></div>
             </div>
             <div class="col-xs-10 text-right menu-1">
               <ul>
-                <li><a th:href="@{/index}">Home</a></li>
+                <li><a th:href="@{/index}" th:text="#{home}">Home</a></li>
                 <li class="has-dropdown">
-                  <a th:href="@{/tours}">Tours</a>
+                  <a th:href="@{/tours}" th:text="#{tours}">Tours</a>
                   <ul class="dropdown">
-                    <li><a href="#">Destination</a></li>
-                    <li><a href="#">Cruises</a></li>
-                    <li><a href="#">Hotels</a></li>
-                    <li><a href="#">Booking</a></li>
+                    <li><a href="#" th:text="#{destination}">Destination</a></li>
+                    <li><a href="#" th:text="#{cruises}">Cruises</a></li>
+                    <li><a href="#" th:text="#{hotels}">Hotels</a></li>
+                    <li><a href="#" th:text="#{booking}">Booking</a></li>
                   </ul>
                 </li>
-                <li><a th:href="@{/hotels}">Hotels</a></li>
-                <li class="active"><a th:href="@{/services}">Services</a></li>
-                <li><a th:href="@{/blog}">Blog</a></li>
-                <li><a th:href="@{/about}">About</a></li>
-                <li><a th:href="@{/contact}">Contact</a></li>
+                <li><a th:href="@{/hotels}" th:text="#{hotels}">Hotels</a></li>
+                <li class="active"><a th:href="@{/services}" th:text="#{services}">Services</a></li>
+                <li><a th:href="@{/blog}" th:text="#{blog}">Blog</a></li>
+                <li><a th:href="@{/about}" th:text="#{about}">About</a></li>
+                <li><a th:href="@{/contact}" th:text="#{contact}">Contact</a></li>
               </ul>
             </div>
           </div>

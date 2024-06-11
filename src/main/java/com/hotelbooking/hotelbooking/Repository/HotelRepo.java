@@ -11,10 +11,10 @@ import com.hotelbooking.hotelbooking.Entity.Hotel;
 
 public interface HotelRepo extends MongoRepository<Hotel,String> {
 
-    @Query(value = "{'address':?0}")
+    @Query(value = "{'address': {$regex: ?0, $options: 'i'}}")
     Hotel findHotelByAddress(String address);
 
-    @Query(value = "{'location':?0}")
+    @Query(value = "{'location': {$regex: ?0, $options: 'i'}}")
     List<Hotel> findListHotelByLocation(String location);
 
     @Query(value = "{ 'hotelName' : { $regex: ?0, $options: 'i' } }")
