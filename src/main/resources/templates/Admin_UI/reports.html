@@ -4,6 +4,7 @@
 <head th:replace="/Admin_UI/fragments/head::head">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
 </head>
 
 <body>
@@ -66,6 +67,10 @@
                                                 <!-- Rows will be added here dynamically -->
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <canvas id="chart"></canvas>
+                                        <canvas id="chart2"></canvas>
                                     </div>
                                 </div>
                                         
@@ -150,6 +155,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <div th:replace="/User_UI/fragments/script::script"></div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
 
         document.getElementById('bookingReportButton').addEventListener('submit', (e) => {
@@ -167,6 +173,7 @@
                         // window.location.reload();
                         console.log(data.bookings);
                         updateTable(data.bookings);
+                        drawCharts(data.bookings);
                     }else{
                         AlertDialog('error','Report Booking', data.message);
                     }
@@ -212,6 +219,58 @@
                 });
             }
 
+
+        function drawCharts(data) {
+                const ctx = document.getElementById('chart').getContext('2d');
+                const ctx2 = document.getElementById('chart2').getContext('2d');
+
+                const dates = data.map(item => item.arrivalDate);
+                const prices = data.map(item => item.totalPrice);
+                const roomTypes = data.reduce((acc, item) => {
+                    acc[item.roomType] = (acc[item.roomType] || 0) + 1;
+                    return acc;
+                }, {});
+                const payments = data.reduce((acc, item) => {
+                    acc[item.isPayment ? 'Paid' : 'Pending'] = (acc[item.isPayment ? 'Paid' : 'Pending'] || 0) + 1;
+                    return acc;
+                }, {});
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(roomTypes),
+                        datasets: [{
+                            label: 'Số lượng đặt phòng theo loại phòng',
+                            data: Object.values(roomTypes),
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+                new Chart(ctx2, {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(payments),
+                        datasets: [{
+                            label: 'Tỷ lệ thanh toán',
+                            data: Object.values(payments),
+                            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                            borderWidth: 1
+                        }]
+                    }
+ 
+                });
+            }
 
     </script>
 </body>
